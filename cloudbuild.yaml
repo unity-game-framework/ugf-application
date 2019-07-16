@@ -1,0 +1,130 @@
+steps:
+
+  # Setup
+- name: 'gcr.io/cloud-builders/npm'
+  entrypoint: 'bash'
+  volumes:
+  - name: 'vol1'
+    path: '/persistent_volume'
+  args:
+  - '-c'
+  - '-e'
+  - |
+        _PACKAGE_PATH=$(find "./Packages" -name "UGF.*" -type d)
+        
+        echo "Found package path '$$_PACKAGE_PATH'"
+        
+        _PACKAGE_REPO=${_REPO_DEV}
+        _PACKAGE_NAME=$(node -p "require('$$_PACKAGE_PATH/package.json').name")
+        _PACKAGE_VERSION=$(node -p "require('$$_PACKAGE_PATH/package.json').version")
+        _VERSION_PATTERN_DEV=${_VERSION_PATTERN_DEV}
+
+        echo "Check package version for '$$_VERSION_PATTERN_DEV'"
+        
+        if [[ $$_PACKAGE_VERSION =~ $$_VERSION_PATTERN_DEV ]]; then
+          _PACKAGE_REPO=${_REPO_DEV}
+        else
+          _PACKAGE_REPO=${_REPO_STABLE}
+        fi
+        
+        echo "Setup package repo as '$$_PACKAGE_REPO'"
+
+        echo $$_PACKAGE_PATH > /persistent_volume/package_path
+        echo $$_PACKAGE_REPO > /persistent_volume/package_repo
+        echo $$_PACKAGE_NAME > /persistent_volume/package_name
+        echo $$_PACKAGE_VERSION > /persistent_volume/package_version
+        
+        echo "Setup package path '$$_PACKAGE_PATH'"
+        echo "Setup package repo '$$_PACKAGE_REPO'"
+        echo "Setup package name '$$_PACKAGE_NAME'"
+        echo "Setup package version '$$_PACKAGE_VERSION'"
+  
+  # Pack
+- name: 'gcr.io/cloud-builders/npm'
+  entrypoint: 'bash'
+  volumes:
+  - name: 'vol1'
+    path: '/persistent_volume'
+  args: 
+  - '-c'
+  - '-e'
+  - |
+        _PACKAGE_PATH=$(cat /persistent_volume/package_path)
+        
+        echo "Load package path '$$_PACKAGE_PATH'"
+        
+        npm pack $$_PACKAGE_PATH
+  
+  # Upload
+- name: 'gcr.io/cloud-builders/curl'
+  entrypoint: 'bash'
+  volumes:
+  - name: 'vol1'
+    path: '/persistent_volume'
+  secretEnv: ['APIKEY']
+  args:
+  - '-c'
+  - '-e'
+  - |
+        _PACKAGE_REPO=$(cat /persistent_volume/package_repo)
+        _PACKAGE_NAME=$(cat /persistent_volume/package_name)
+        _PACKAGE_VERSION=$(cat /persistent_volume/package_version)
+        _TAG_NAME=${TAG_NAME}
+        _REPO_STABLE=${_REPO_STABLE}
+        
+        echo "Load package repo '$$_PACKAGE_REPO'"
+        echo "Load package name '$$_PACKAGE_NAME'"
+        echo "Load package version '$$_PACKAGE_VERSION'"
+        
+        echo "Check repository tag for '$$_TAG_NAME'"
+
+        if [[ $$_PACKAGE_VERSION != $$_TAG_NAME ]]; then
+         echo "ERROR package version must match tag name ('$$_PACKAGE_VERSION' != '$$_TAG_NAME')"
+         exit 1
+        fi
+        
+        echo $(curl -T $$_PACKAGE_NAME-$$_PACKAGE_VERSION.tgz -uvorobey:$$APIKEY https://api.bintray.com/content/unity-game-framework/$$_PACKAGE_REPO/$$_PACKAGE_NAME/$$_PACKAGE_VERSION/$$_PACKAGE_NAME/-/)
+
+        if [[ $$_PACKAGE_REPO == $$_REPO_STABLE ]]; then
+          echo $(curl -T $$_PACKAGE_NAME-$$_PACKAGE_VERSION.tgz -uvorobey:$$APIKEY https://api.bintray.com/content/unity-game-framework/${_REPO_DEV}/$$_PACKAGE_NAME/$$_PACKAGE_VERSION/$$_PACKAGE_NAME/-/)
+        fi
+
+  # Publish
+- name: 'gcr.io/cloud-builders/curl'
+  entrypoint: 'bash'
+  volumes:
+  - name: 'vol1'
+    path: '/persistent_volume'
+  secretEnv: ['APIKEY']
+  args:
+  - '-c'
+  - '-e'
+  - |
+        _PACKAGE_REPO=$(cat /persistent_volume/package_repo)
+        _PACKAGE_NAME=$(cat /persistent_volume/package_name)
+        _PACKAGE_VERSION=$(cat /persistent_volume/package_version)
+        _REPO_STABLE=${_REPO_STABLE}
+        
+        echo "Load package repo '$$_PACKAGE_REPO'"
+        echo "Load package name '$$_PACKAGE_NAME'"
+        echo "Load package version '$$_PACKAGE_VERSION'"
+        
+        echo $(curl -X POST -uvorobey:$$APIKEY https://api.bintray.com/content/unity-game-framework/$$_PACKAGE_REPO/$$_PACKAGE_NAME/$$_PACKAGE_VERSION/publish)
+        
+        if [[ $$_PACKAGE_REPO == $$_REPO_STABLE ]]; then
+          echo $(curl -X POST -uvorobey:$$APIKEY https://api.bintray.com/content/unity-game-framework/${_REPO_DEV}/$$_PACKAGE_NAME/$$_PACKAGE_VERSION/publish)
+        fi
+
+# Substitutions setup
+substitutions:
+  _REPO_DEV: 'dev'
+  _REPO_STABLE: 'stable'
+  _VERSION_PATTERN_DEV: '-preview'
+options:
+  substitution_option: 'ALLOW_LOOSE'
+
+# Secrets setup
+secrets:
+- kmsKeyName: projects/unity-game-framework/locations/global/keyRings/default/cryptoKeys/api-key
+  secretEnv:
+    APIKEY: CiQA7Jjc7QVF5fD4L5veNmtwHCJPOP/VIBMtMUXhUv0cgveZVr8SUgDt1p4YK6XYPcekMO9C7eiZeHfStHYOQL3bnEqdrg3fvOvzWZBPseCEEGQ+yywCcXBlvdgd9f0nwBpDBQiPjQbx8PZNp36RQ2Fr1iB9vHNF8Go=
