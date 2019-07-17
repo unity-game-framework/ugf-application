@@ -36,12 +36,22 @@ namespace UGF.Application.Runtime
             }
         }
 
+        public void AddModule<T>(IApplicationModule module) where T : IApplicationModule
+        {
+            AddModule(typeof(T), module);
+        }
+
         public void AddModule(Type registerType, IApplicationModule module)
         {
             if (module == null) throw new ArgumentNullException(nameof(module));
             if (registerType == null) throw new ArgumentNullException(nameof(registerType));
 
             m_modules.Add(registerType, module);
+        }
+
+        public bool RemoveModule<T>() where T : IApplicationModule
+        {
+            return RemoveModule(typeof(T));
         }
 
         public bool RemoveModule(Type registerType)
