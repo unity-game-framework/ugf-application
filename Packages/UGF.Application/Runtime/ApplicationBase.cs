@@ -38,11 +38,15 @@ namespace UGF.Application.Runtime
 
         public void AddModule(IApplicationModule module)
         {
+            if (module == null) throw new ArgumentNullException(nameof(module));
+
             m_modules.Add(module.RegisterType, module);
         }
 
         public bool RemoveModule(Type moduleRegisterType)
         {
+            if (moduleRegisterType == null) throw new ArgumentNullException(nameof(moduleRegisterType));
+
             return m_modules.Remove(moduleRegisterType);
         }
 
