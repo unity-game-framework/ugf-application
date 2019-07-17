@@ -36,18 +36,19 @@ namespace UGF.Application.Runtime
             }
         }
 
-        public void AddModule(IApplicationModule module)
+        public void AddModule(Type registerType, IApplicationModule module)
         {
             if (module == null) throw new ArgumentNullException(nameof(module));
+            if (registerType == null) throw new ArgumentNullException(nameof(registerType));
 
-            m_modules.Add(module.RegisterType, module);
+            m_modules.Add(registerType, module);
         }
 
-        public bool RemoveModule(Type moduleRegisterType)
+        public bool RemoveModule(Type registerType)
         {
-            if (moduleRegisterType == null) throw new ArgumentNullException(nameof(moduleRegisterType));
+            if (registerType == null) throw new ArgumentNullException(nameof(registerType));
 
-            return m_modules.Remove(moduleRegisterType);
+            return m_modules.Remove(registerType);
         }
 
         public void ClearModules()
@@ -70,6 +71,40 @@ namespace UGF.Application.Runtime
 
             module = default;
             return false;
+        }
+
+        public Type GetRegisterType(IApplicationModule module)
+        {
+            if (module == null) throw new ArgumentNullException(nameof(module));
+
+            if (TryGetRegisterType(module, out Type type))
+            {
+                return type;
+            }
+
+            throw new ArgumentException($"The register not found for specified module: '{module}'.", nameof(module));
+        }
+
+        public bool TryGetRegisterType(IApplicationModule module, out Type registerType)
+        {
+            if (module == null) throw new ArgumentNullException(nameof(module));
+
+            foreach (KeyValuePair<Type, IApplicationModule> pair in m_modules)
+            {
+                if (pair.Value == module)
+                {
+                    registerType = pair.Key;
+                    return true;
+                }
+            }
+
+            registerType = null;
+            return false;
+        }
+
+        public Dictionary<Type, IApplicationModule>.Enumerator GetEnumerator()
+        {
+            return m_modules.GetEnumerator();
         }
     }
 }
