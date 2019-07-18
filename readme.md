@@ -11,7 +11,7 @@ UGF.Application
 
 ### Dependencies
 
-- N/A
+- [UGF.Initialize](https://github.com/unity-game-framework/ugf-initialize): `1.0.0-preview`
 
 ### Changelog
 
