@@ -1,0 +1,15 @@
+{
+    "name": "UGF.Application.Runtime",
+    "references": [
+        "GUID:d067af32d09350a4bb33960432735e4d"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}
