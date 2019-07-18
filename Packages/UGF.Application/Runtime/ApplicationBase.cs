@@ -5,6 +5,9 @@ using UGF.Initialize.Runtime;
 
 namespace UGF.Application.Runtime
 {
+    /// <summary>
+    /// Represents an abstract implementation of the <see cref="IApplication"/>.
+    /// </summary>
     public abstract class ApplicationBase : InitializeBase, IApplication
     {
         public IReadOnlyDictionary<Type, IApplicationModule> Modules { get; }
@@ -36,6 +39,10 @@ namespace UGF.Application.Runtime
             }
         }
 
+        /// <summary>
+        /// Adds the specified module by the register type.
+        /// </summary>
+        /// <param name="module">The module to register.</param>
         public void AddModule<T>(IApplicationModule module) where T : IApplicationModule
         {
             AddModule(typeof(T), module);
@@ -49,6 +56,9 @@ namespace UGF.Application.Runtime
             m_modules.Add(registerType, module);
         }
 
+        /// <summary>
+        /// Removes a module by the specified register type.
+        /// </summary>
         public bool RemoveModule<T>() where T : IApplicationModule
         {
             return RemoveModule(typeof(T));
