@@ -1,7 +1,7 @@
 {
     "name": "com.ugf.application",
     "displayName": "UGF.Application",
-    "version": "1.0.0-preview",
+    "version": "1.0.0-preview.1",
     "unity": "2019.1",
     "description": "No description.",
     "author": {
