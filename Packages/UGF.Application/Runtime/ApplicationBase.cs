@@ -39,10 +39,6 @@ namespace UGF.Application.Runtime
             }
         }
 
-        /// <summary>
-        /// Adds the specified module by the register type.
-        /// </summary>
-        /// <param name="module">The module to register.</param>
         public void AddModule<T>(IApplicationModule module) where T : IApplicationModule
         {
             AddModule(typeof(T), module);
@@ -56,9 +52,6 @@ namespace UGF.Application.Runtime
             m_modules.Add(registerType, module);
         }
 
-        /// <summary>
-        /// Removes a module by the specified register type.
-        /// </summary>
         public bool RemoveModule<T>() where T : IApplicationModule
         {
             return RemoveModule(typeof(T));
@@ -83,9 +76,9 @@ namespace UGF.Application.Runtime
 
         public bool TryGetModule<T>(out T module) where T : IApplicationModule
         {
-            if (m_modules.TryGetValue(typeof(T), out IApplicationModule applicationModule) && applicationModule is T resultModule)
+            if (m_modules.TryGetValue(typeof(T), out IApplicationModule result) && result is T cast)
             {
-                module = resultModule;
+                module = cast;
                 return true;
             }
 
@@ -102,7 +95,7 @@ namespace UGF.Application.Runtime
                 return type;
             }
 
-            throw new ArgumentException($"The register not found for specified module: '{module}'.", nameof(module));
+            throw new ArgumentException($"The register type not found for specified module: '{module}'.", nameof(module));
         }
 
         public bool TryGetRegisterType(IApplicationModule module, out Type registerType)

@@ -17,9 +17,20 @@ namespace UGF.Application.Runtime
         /// <summary>
         /// Adds the specified module by the register type.
         /// </summary>
+        /// <param name="module">The module to register.</param>
+        void AddModule<T>(IApplicationModule module) where T : IApplicationModule;
+
+        /// <summary>
+        /// Adds the specified module by the register type.
+        /// </summary>
         /// <param name="registerType">The type to register module.</param>
         /// <param name="module">The module to register.</param>
         void AddModule(Type registerType, IApplicationModule module);
+
+        /// <summary>
+        /// Removes a module by the specified register type.
+        /// </summary>
+        bool RemoveModule<T>() where T : IApplicationModule;
 
         /// <summary>
         /// Removes a module by the specified register type.
