@@ -1,14 +1,14 @@
 {
     "name": "com.ugf.application",
     "displayName": "UGF.Application",
-    "version": "1.0.0-preview.1",
-    "unity": "2019.1",
-    "description": "No description.",
+    "version": "1.0.0",
+    "unity": "2019.2",
+    "description": "The entry point of the game.",
     "author": {
         "name": "Unity Game Framework",
         "url": "https://github.com/unity-game-framework"
     },
     "dependencies": {
-        "com.ugf.initialize": "1.0.0-preview"
+        "com.ugf.initialize": "1.0.0"
     }
 }
