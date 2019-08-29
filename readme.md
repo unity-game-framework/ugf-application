@@ -24,7 +24,7 @@ UGF.Application
 
 ## Description
 
-No description.
+The entry point of the game.
 
 ## How to Install
 
