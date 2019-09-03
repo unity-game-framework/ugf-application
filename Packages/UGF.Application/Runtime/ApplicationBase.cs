@@ -39,6 +39,11 @@ namespace UGF.Application.Runtime
             }
         }
 
+        public void AddModule<T>(T module) where T : IApplicationModule
+        {
+            AddModule(typeof(T), module);
+        }
+
         public void AddModule<T>(IApplicationModule module) where T : IApplicationModule
         {
             AddModule(typeof(T), module);

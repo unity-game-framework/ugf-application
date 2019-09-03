@@ -11,21 +11,79 @@ namespace UGF.Application.Runtime
     /// </summary>
     public abstract class ApplicationLauncher : MonoBehaviour
     {
-        private InitializeState m_launchState = new InitializeState();
+        [SerializeField] private bool m_launchOnStart = true;
+        [SerializeField] private bool m_stopOnQuit = true;
+
+        /// <summary>
+        /// Gets or sets value that determines whether to launch application on start.
+        /// </summary>
+        public bool LaunchOnStart { get { return m_launchOnStart; } set { m_launchOnStart = value; } }
+
+        /// <summary>
+        /// Gets or sets value that determines whether to stop application on Unity Application quit.
+        /// </summary>
+        public bool StopOnQuit { get { return m_stopOnQuit; } set { m_stopOnQuit = value; } }
+
+        /// <summary>
+        /// Gets value that determines whether launcher started already.
+        /// </summary>
+        /// <remarks>
+        /// This property becomes 'true' after launch immediately and stays 'true' until launcher will be called to stop.
+        /// </remarks>
+        public bool IsLaunched { get { return m_state.IsInitialized; } }
+
+        /// <summary>
+        /// Gets an instance of the application.
+        /// </summary>
+        /// <remarks>
+        /// Use 'HasApplication' property to determine whether application is available.
+        /// </remarks>
+        public IApplication Application { get { return m_application ?? throw new InvalidOperationException("The application is not created."); } }
+
+        /// <summary>
+        /// Gets the value that determines whether instance of the application is created and launch completed.
+        /// </summary>
+        /// <remarks>
+        /// You can use this property to determine whether launch is complete.
+        /// By itself application created during launch, but becomes available only after launch complete.
+        /// </remarks>
+        public bool HasApplication { get { return m_application != null; } }
+
+        private InitializeState m_state = new InitializeState();
+        private IApplication m_application;
 
         private IEnumerator Start()
         {
-            yield return Launch();
+            if (m_launchOnStart)
+            {
+                yield return Launch();
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (m_application != null && m_state.IsInitialized)
+            {
+                Stop();
+            }
+        }
+
+        private void OnApplicationQuit()
+        {
+            OnQuitting();
+
+            if (m_stopOnQuit && m_application != null && m_state.IsInitialized)
+            {
+                Stop();
+            }
         }
 
         /// <summary>
         /// Launch application creation and initialization.
-        /// <para>This method called from start, if component is active and enabled.</para>
-        /// <para>This method can be called only once.</para>
         /// </summary>
         public IEnumerator Launch()
         {
-            m_launchState.Initialize();
+            m_state.Initialize();
 
             OnLaunch();
 
@@ -42,7 +100,24 @@ namespace UGF.Application.Runtime
 
             yield return InitializeModulesAsync(application);
 
+            m_application = application;
+
             OnLaunched(application);
+        }
+
+        /// <summary>
+        /// Stops and uninitialize created application.
+        /// </summary>
+        public void Stop()
+        {
+            m_state.Uninitialize();
+
+            OnStop(m_application);
+
+            m_application.Uninitialize();
+            m_application = null;
+
+            OnStopped();
         }
 
         /// <summary>
@@ -90,10 +165,32 @@ namespace UGF.Application.Runtime
         }
 
         /// <summary>
-        /// Invoked after all launch completed.
+        /// Invoked after all launch completed and application becomes available.
         /// </summary>
         /// <param name="application">The application.</param>
         protected virtual void OnLaunched(IApplication application)
+        {
+        }
+
+        /// <summary>
+        /// Invoked right at the start of stopping launcher.
+        /// </summary>
+        /// <param name="application">The application.</param>
+        protected virtual void OnStop(IApplication application)
+        {
+        }
+
+        /// <summary>
+        /// Invoked after launcher is completely stopped and application no longer available.
+        /// </summary>
+        protected virtual void OnStopped()
+        {
+        }
+
+        /// <summary>
+        /// Invoked when Unity application performs quitting.
+        /// </summary>
+        protected virtual void OnQuitting()
         {
         }
     }

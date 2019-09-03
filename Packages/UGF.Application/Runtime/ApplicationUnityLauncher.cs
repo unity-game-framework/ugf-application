@@ -5,15 +5,9 @@ namespace UGF.Application.Runtime
     /// <summary>
     /// Represents <see cref="ApplicationUnity"/> launcher.
     /// </summary>
-    public class ApplicationUnityLauncher : ApplicationLauncher
+    public partial class ApplicationUnityLauncher : ApplicationLauncher
     {
-        [SerializeField] private bool m_uninitializeOnUnityQuitting = true;
         [SerializeField] private bool m_provideStaticInstance = true;
-
-        /// <summary>
-        /// Gets or sets the value that determines whether application subscribed to Unity application quitting event to uninitialize it self.
-        /// </summary>
-        public bool UninitializeOnUnityQuitting { get { return m_uninitializeOnUnityQuitting; } set { m_uninitializeOnUnityQuitting = value; } }
 
         /// <summary>
         /// Gets or sets the value that determines whether application provide static instance via <see cref="ApplicationInstance"/>.
@@ -22,7 +16,7 @@ namespace UGF.Application.Runtime
 
         protected override IApplication CreateApplication()
         {
-            return new ApplicationUnity(m_uninitializeOnUnityQuitting, m_provideStaticInstance);
+            return new ApplicationUnity(m_provideStaticInstance);
         }
     }
 }
