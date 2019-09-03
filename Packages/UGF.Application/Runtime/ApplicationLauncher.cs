@@ -11,11 +11,30 @@ namespace UGF.Application.Runtime
     /// </summary>
     public abstract class ApplicationLauncher : MonoBehaviour
     {
-        private InitializeState m_launchState = new InitializeState();
+        [SerializeField] private bool m_launchOnStart = true;
+
+        public bool LaunchOnStart { get { return m_launchOnStart; } set { m_launchOnStart = value; } }
+        public bool IsLaunched { get { return m_state.IsInitialized; } }
+        public IApplication Application { get { return m_application ?? throw new InvalidOperationException("The application is not created."); } }
+        public bool HasApplication { get { return m_application != null; } }
+
+        private InitializeState m_state = new InitializeState();
+        private IApplication m_application;
 
         private IEnumerator Start()
         {
-            yield return Launch();
+            if (m_launchOnStart)
+            {
+                yield return Launch();
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (m_application != null && m_state.IsInitialized)
+            {
+                Stop();
+            }
         }
 
         /// <summary>
@@ -25,7 +44,7 @@ namespace UGF.Application.Runtime
         /// </summary>
         public IEnumerator Launch()
         {
-            m_launchState.Initialize();
+            m_state.Initialize();
 
             OnLaunch();
 
@@ -42,7 +61,21 @@ namespace UGF.Application.Runtime
 
             yield return InitializeModulesAsync(application);
 
+            m_application = application;
+
             OnLaunched(application);
+        }
+
+        public void Stop()
+        {
+            m_state.Uninitialize();
+
+            OnStop(m_application);
+
+            m_application.Uninitialize();
+            m_application = null;
+
+            OnStopped();
         }
 
         /// <summary>
@@ -94,6 +127,14 @@ namespace UGF.Application.Runtime
         /// </summary>
         /// <param name="application">The application.</param>
         protected virtual void OnLaunched(IApplication application)
+        {
+        }
+
+        protected virtual void OnStop(IApplication application)
+        {
+        }
+
+        protected virtual void OnStopped()
         {
         }
     }

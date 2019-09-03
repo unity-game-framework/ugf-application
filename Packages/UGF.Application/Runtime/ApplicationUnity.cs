@@ -1,5 +1,4 @@
 using System;
-using UnityApplication = UnityEngine.Application;
 
 namespace UGF.Application.Runtime
 {
@@ -18,6 +17,8 @@ namespace UGF.Application.Runtime
         /// </summary>
         public bool ProvideStaticInstance { get; }
 
+        public IApplicationUnityEventHandler UnityEventHandler { get; }
+
         /// <summary>
         /// Creates application with specified arguments.
         /// </summary>
@@ -27,6 +28,14 @@ namespace UGF.Application.Runtime
         {
             UninitializeOnUnityQuitting = uninitializeOnUnityQuitting;
             ProvideStaticInstance = provideStaticInstance;
+            UnityEventHandler = new ApplicationUnityEventHandler();
+        }
+
+        public ApplicationUnity(bool uninitializeOnUnityQuitting, bool provideStaticInstance, IApplicationUnityEventHandler unityEventHandler)
+        {
+            UninitializeOnUnityQuitting = uninitializeOnUnityQuitting;
+            ProvideStaticInstance = provideStaticInstance;
+            UnityEventHandler = unityEventHandler ?? throw new ArgumentNullException(nameof(unityEventHandler));
         }
 
         protected override void OnPreInitialize()
@@ -35,7 +44,7 @@ namespace UGF.Application.Runtime
 
             if (UninitializeOnUnityQuitting)
             {
-                UnityApplication.quitting += OnUnityApplicationQuitting;
+                UnityEventHandler.Quitting += OnUnityApplicationQuitting;
             }
 
             if (ProvideStaticInstance)
@@ -55,7 +64,7 @@ namespace UGF.Application.Runtime
 
             if (UninitializeOnUnityQuitting)
             {
-                UnityApplication.quitting -= OnUnityApplicationQuitting;
+                UnityEventHandler.Quitting -= OnUnityApplicationQuitting;
             }
 
             if (ProvideStaticInstance)

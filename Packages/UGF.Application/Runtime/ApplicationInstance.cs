@@ -16,7 +16,7 @@ namespace UGF.Application.Runtime
             {
                 if (m_application == null)
                 {
-                    throw new InvalidOperationException("The application has not been assigned.");
+                    throw new InvalidOperationException("The application is not assigned.");
                 }
 
                 return m_application;
