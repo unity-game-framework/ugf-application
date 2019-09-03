@@ -12,11 +12,17 @@ namespace UGF.Application.Runtime
     public abstract class ApplicationLauncher : MonoBehaviour
     {
         [SerializeField] private bool m_launchOnStart = true;
+        [SerializeField] private bool m_stopOnQuit = true;
 
         /// <summary>
         /// Gets or sets value that determines whether to launch application on start.
         /// </summary>
         public bool LaunchOnStart { get { return m_launchOnStart; } set { m_launchOnStart = value; } }
+
+        /// <summary>
+        /// Gets or sets value that determines whether to stop application on Unity Application quit.
+        /// </summary>
+        public bool StopOnQuit { get { return m_stopOnQuit; } set { m_stopOnQuit = value; } }
 
         /// <summary>
         /// Gets value that determines whether launcher started already.
@@ -62,10 +68,18 @@ namespace UGF.Application.Runtime
             }
         }
 
+        private void OnApplicationQuit()
+        {
+            OnQuitting();
+
+            if (m_stopOnQuit && m_application != null && m_state.IsInitialized)
+            {
+                Stop();
+            }
+        }
+
         /// <summary>
         /// Launch application creation and initialization.
-        /// <para>This method called from start, if component is active and enabled.</para>
-        /// <para>This method can be called only once.</para>
         /// </summary>
         public IEnumerator Launch()
         {
@@ -91,6 +105,9 @@ namespace UGF.Application.Runtime
             OnLaunched(application);
         }
 
+        /// <summary>
+        /// Stops and uninitialize created application.
+        /// </summary>
         public void Stop()
         {
             m_state.Uninitialize();
@@ -167,6 +184,13 @@ namespace UGF.Application.Runtime
         /// Invoked after launcher is completely stopped and application no longer available.
         /// </summary>
         protected virtual void OnStopped()
+        {
+        }
+
+        /// <summary>
+        /// Invoked when Unity application performs quitting.
+        /// </summary>
+        protected virtual void OnQuitting()
         {
         }
     }

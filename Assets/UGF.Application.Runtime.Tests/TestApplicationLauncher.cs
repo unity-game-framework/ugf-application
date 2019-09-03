@@ -96,6 +96,11 @@ namespace UGF.Application.Runtime.Tests
                 m_module = null;
                 m_moduleAsync = null;
             }
+
+            public void Quit()
+            {
+                SendMessage("OnApplicationQuit");
+            }
         }
 
         private class Application : ApplicationBase
@@ -188,6 +193,32 @@ namespace UGF.Application.Runtime.Tests
 
             Assert.False(launcher.IsLaunched);
             Assert.False(launcher.HasApplication);
+        }
+
+        [UnityTest]
+        public IEnumerator LaunchAndQuit()
+        {
+            var launcher = new GameObject("launcher").AddComponent<Launcher>();
+
+            launcher.LaunchOnStart = false;
+
+            yield return null;
+            yield return null;
+
+            Assert.False(launcher.IsLaunched);
+            Assert.False(launcher.HasApplication);
+
+            yield return launcher.Launch();
+
+            Assert.True(launcher.IsLaunched);
+            Assert.True(launcher.HasApplication);
+
+            launcher.Quit();
+
+            Assert.False(launcher.IsLaunched);
+            Assert.False(launcher.HasApplication);
+
+            Object.DestroyImmediate(launcher.gameObject);
         }
     }
 }
