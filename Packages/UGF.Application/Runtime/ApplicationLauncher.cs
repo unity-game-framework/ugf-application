@@ -13,9 +13,34 @@ namespace UGF.Application.Runtime
     {
         [SerializeField] private bool m_launchOnStart = true;
 
+        /// <summary>
+        /// Gets or sets value that determines whether to launch application on start.
+        /// </summary>
         public bool LaunchOnStart { get { return m_launchOnStart; } set { m_launchOnStart = value; } }
+
+        /// <summary>
+        /// Gets value that determines whether launcher started already.
+        /// </summary>
+        /// <remarks>
+        /// This property becomes 'true' after launch immediately and stays 'true' until launcher will be called to stop.
+        /// </remarks>
         public bool IsLaunched { get { return m_state.IsInitialized; } }
+
+        /// <summary>
+        /// Gets an instance of the application.
+        /// </summary>
+        /// <remarks>
+        /// Use 'HasApplication' property to determine whether application is available.
+        /// </remarks>
         public IApplication Application { get { return m_application ?? throw new InvalidOperationException("The application is not created."); } }
+
+        /// <summary>
+        /// Gets the value that determines whether instance of the application is created and launch completed.
+        /// </summary>
+        /// <remarks>
+        /// You can use this property to determine whether launch is complete.
+        /// By itself application created during launch, but becomes available only after launch complete.
+        /// </remarks>
         public bool HasApplication { get { return m_application != null; } }
 
         private InitializeState m_state = new InitializeState();
@@ -123,17 +148,24 @@ namespace UGF.Application.Runtime
         }
 
         /// <summary>
-        /// Invoked after all launch completed.
+        /// Invoked after all launch completed and application becomes available.
         /// </summary>
         /// <param name="application">The application.</param>
         protected virtual void OnLaunched(IApplication application)
         {
         }
 
+        /// <summary>
+        /// Invoked right at the start of stopping launcher.
+        /// </summary>
+        /// <param name="application">The application.</param>
         protected virtual void OnStop(IApplication application)
         {
         }
 
+        /// <summary>
+        /// Invoked after launcher is completely stopped and application no longer available.
+        /// </summary>
         protected virtual void OnStopped()
         {
         }

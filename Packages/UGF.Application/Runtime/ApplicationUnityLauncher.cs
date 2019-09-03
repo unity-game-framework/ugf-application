@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace UGF.Application.Runtime
@@ -22,7 +23,22 @@ namespace UGF.Application.Runtime
 
         protected override IApplication CreateApplication()
         {
-            return new ApplicationUnity(m_uninitializeOnUnityQuitting, m_provideStaticInstance);
+            IApplicationUnityEventHandler eventHandler = GetUnityEventHandler();
+
+            if (eventHandler == null)
+            {
+                throw new ArgumentNullException(nameof(eventHandler), "The Unity Application event handler cannot be null.");
+            }
+
+            return new ApplicationUnity(m_uninitializeOnUnityQuitting, m_provideStaticInstance, eventHandler);
+        }
+
+        /// <summary>
+        /// Invoked to create Unity Application event handler used by application.
+        /// </summary>
+        protected virtual IApplicationUnityEventHandler GetUnityEventHandler()
+        {
+            return new ApplicationUnityEventHandler();
         }
     }
 }

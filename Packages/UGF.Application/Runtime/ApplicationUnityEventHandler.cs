@@ -3,6 +3,9 @@ using UnityApplication = UnityEngine.Application;
 
 namespace UGF.Application.Runtime
 {
+    /// <summary>
+    /// Represents default wrapper around Unity Application events.
+    /// </summary>
     public class ApplicationUnityEventHandler : IApplicationUnityEventHandler
     {
         public event Action Quitting { add { UnityApplication.quitting += value; } remove { UnityApplication.quitting -= value; } }

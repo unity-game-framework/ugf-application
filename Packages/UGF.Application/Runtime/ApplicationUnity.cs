@@ -17,6 +17,9 @@ namespace UGF.Application.Runtime
         /// </summary>
         public bool ProvideStaticInstance { get; }
 
+        /// <summary>
+        /// Gets the Unity Application event handler.
+        /// </summary>
         public IApplicationUnityEventHandler UnityEventHandler { get; }
 
         /// <summary>
@@ -31,6 +34,12 @@ namespace UGF.Application.Runtime
             UnityEventHandler = new ApplicationUnityEventHandler();
         }
 
+        /// <summary>
+        /// Creates application with specified arguments.
+        /// </summary>
+        /// <param name="uninitializeOnUnityQuitting">The value that determines whether to subscribe to Unity quitting event ot uninitialize it self.</param>
+        /// <param name="provideStaticInstance">The value that determines whether to provide static instance via <see cref="ApplicationInstance"/>.</param>
+        /// <param name="unityEventHandler">The Unity Application to use.</param>
         public ApplicationUnity(bool uninitializeOnUnityQuitting, bool provideStaticInstance, IApplicationUnityEventHandler unityEventHandler)
         {
             UninitializeOnUnityQuitting = uninitializeOnUnityQuitting;
