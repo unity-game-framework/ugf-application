@@ -62,7 +62,7 @@ namespace UGF.Application.Runtime
 
         private void OnDestroy()
         {
-            if (m_application != null && m_state.IsInitialized)
+            if (m_state.IsInitialized)
             {
                 Stop();
             }
@@ -72,7 +72,7 @@ namespace UGF.Application.Runtime
         {
             OnQuitting();
 
-            if (m_stopOnQuit && m_application != null && m_state.IsInitialized)
+            if (m_stopOnQuit && m_state.IsInitialized)
             {
                 Stop();
             }
@@ -112,9 +112,15 @@ namespace UGF.Application.Runtime
         {
             m_state.Uninitialize();
 
-            OnStop(m_application);
+            IApplication application = Application;
 
-            m_application.Uninitialize();
+            OnStop(application);
+
+            if (application.IsInitialized)
+            {
+                application.Uninitialize();
+            }
+
             m_application = null;
 
             OnStopped();

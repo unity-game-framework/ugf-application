@@ -23,16 +23,32 @@ namespace UGF.Application.Runtime
         {
             base.OnInitialize();
 
-            foreach (KeyValuePair<Type, IApplicationModule> pair in m_modules)
-            {
-                pair.Value.Initialize();
-            }
+            OnInitializeModules();
         }
 
         protected override void OnUninitialize()
         {
             base.OnUninitialize();
 
+            OnUninitializeModules();
+        }
+
+        /// <summary>
+        /// Invoked on modules initialization.
+        /// </summary>
+        protected virtual void OnInitializeModules()
+        {
+            foreach (KeyValuePair<Type, IApplicationModule> pair in m_modules)
+            {
+                pair.Value.Initialize();
+            }
+        }
+
+        /// <summary>
+        /// Invoked on modules uninitialization.
+        /// </summary>
+        protected virtual void OnUninitializeModules()
+        {
             foreach (KeyValuePair<Type, IApplicationModule> pair in m_modules)
             {
                 pair.Value.Uninitialize();
