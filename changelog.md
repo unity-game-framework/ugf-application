@@ -26,6 +26,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - Nothing.
 
+## 1.2.0 - 2019-09-08
+- [Commits](https://github.com/unity-game-framework/ugf-application/compare/1.1.0...1.2.0)
+- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/5?closed=1)
+
+### Added
+- `ApplicationBase`: `OnInitializeModules` and `OnInitializeModules` as possibility to override module initialization behaviour.
+
+### Changed
+- Package dependencies:
+    - `com.ugf.initialize`: from `1.1.0` to `1.2.0`.
+- `ApplicationLauncher.Stop`: application uninitialize behaviour.
+
 ## 1.1.0 - 2019-09-04
 - [Commits](https://github.com/unity-game-framework/ugf-application/compare/1.0.0...1.1.0)
 - [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/4?closed=1)
