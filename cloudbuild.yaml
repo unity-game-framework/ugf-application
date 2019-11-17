@@ -1,130 +1,100 @@
+# Version: 2.0
+
 steps:
 
   # Setup
 - name: 'gcr.io/cloud-builders/npm'
   entrypoint: 'bash'
   volumes:
-  - name: 'vol1'
-    path: '/persistent_volume'
+  - name: 'volume'
+    path: '/persistent'
   args:
   - '-c'
   - '-e'
   - |
-        _PACKAGE_PATH=$(find "./Packages" -name "UGF.*" -type d)
-        
-        echo "Found package path '$$_PACKAGE_PATH'"
-        
-        _PACKAGE_REPO=${_REPO_DEV}
-        _PACKAGE_NAME=$(node -p "require('$$_PACKAGE_PATH/package.json').name")
-        _PACKAGE_VERSION=$(node -p "require('$$_PACKAGE_PATH/package.json').version")
-        _VERSION_PATTERN_DEV=${_VERSION_PATTERN_DEV}
+        _TAG=${TAG_NAME}
+        _PATH=$(find "./Packages" -name "UGF.*" -type d)
 
-        echo "Check package version for '$$_VERSION_PATTERN_DEV'"
+        echo "Setup package at path '$$_PATH'"
+
+        _NAME=$(node -p "require('$$_PATH/package.json').name")
+        _VERSION=$(node -p "require('$$_PATH/package.json').version")
         
-        if [[ $$_PACKAGE_VERSION =~ $$_VERSION_PATTERN_DEV ]]; then
-          _PACKAGE_REPO=${_REPO_DEV}
-        else
-          _PACKAGE_REPO=${_REPO_STABLE}
+        if [[ $$_VERSION != $$_TAG ]]; then
+         echo "ERROR package version must match tag name ('$$_VERSION' != '$$_TAG')"
+         exit 1
         fi
-        
-        echo "Setup package repo as '$$_PACKAGE_REPO'"
 
-        echo $$_PACKAGE_PATH > /persistent_volume/package_path
-        echo $$_PACKAGE_REPO > /persistent_volume/package_repo
-        echo $$_PACKAGE_NAME > /persistent_volume/package_name
-        echo $$_PACKAGE_VERSION > /persistent_volume/package_version
-        
-        echo "Setup package path '$$_PACKAGE_PATH'"
-        echo "Setup package repo '$$_PACKAGE_REPO'"
-        echo "Setup package name '$$_PACKAGE_NAME'"
-        echo "Setup package version '$$_PACKAGE_VERSION'"
+        echo $$_PATH > /persistent/path
+        echo $$_NAME > /persistent/name
+        echo $$_VERSION > /persistent/version
+
+        echo "Package path '$$_PATH'"
+        echo "Package name '$$_NAME'"
+        echo "Package version '$$_VERSION'"
   
   # Pack
 - name: 'gcr.io/cloud-builders/npm'
   entrypoint: 'bash'
   volumes:
-  - name: 'vol1'
-    path: '/persistent_volume'
+  - name: 'volume'
+    path: '/persistent'
   args: 
   - '-c'
   - '-e'
   - |
-        _PACKAGE_PATH=$(cat /persistent_volume/package_path)
+        _PATH=$(cat /persistent/path)
+
+        echo "Pack package '$$_PATH'"
         
-        echo "Load package path '$$_PACKAGE_PATH'"
-        
-        npm pack $$_PACKAGE_PATH
+        npm pack $$_PATH
   
   # Upload
 - name: 'gcr.io/cloud-builders/curl'
   entrypoint: 'bash'
   volumes:
-  - name: 'vol1'
-    path: '/persistent_volume'
-  secretEnv: ['APIKEY']
+  - name: 'volume'
+    path: '/persistent'
+  secretEnv: ['_USER']
   args:
   - '-c'
   - '-e'
   - |
-        _PACKAGE_REPO=$(cat /persistent_volume/package_repo)
-        _PACKAGE_NAME=$(cat /persistent_volume/package_name)
-        _PACKAGE_VERSION=$(cat /persistent_volume/package_version)
-        _TAG_NAME=${TAG_NAME}
-        _REPO_STABLE=${_REPO_STABLE}
-        
-        echo "Load package repo '$$_PACKAGE_REPO'"
-        echo "Load package name '$$_PACKAGE_NAME'"
-        echo "Load package version '$$_PACKAGE_VERSION'"
-        
-        echo "Check repository tag for '$$_TAG_NAME'"
+        _NAME=$(cat /persistent/name)
+        _VERSION=$(cat /persistent/version)
+        _DEV=https://api.bintray.com/content/unity-game-framework/dev/$$_NAME/$$_VERSION/$$_NAME/-/
+        _STABLE=https://api.bintray.com/content/unity-game-framework/stable/$$_NAME/$$_VERSION/$$_NAME/-/
 
-        if [[ $$_PACKAGE_VERSION != $$_TAG_NAME ]]; then
-         echo "ERROR package version must match tag name ('$$_PACKAGE_VERSION' != '$$_TAG_NAME')"
-         exit 1
-        fi
-        
-        echo $(curl -T $$_PACKAGE_NAME-$$_PACKAGE_VERSION.tgz -uvorobey:$$APIKEY https://api.bintray.com/content/unity-game-framework/$$_PACKAGE_REPO/$$_PACKAGE_NAME/$$_PACKAGE_VERSION/$$_PACKAGE_NAME/-/)
+        echo $(curl -T $$_NAME-$$_VERSION.tgz -$$_USER $$_DEV)
 
-        if [[ $$_PACKAGE_REPO == $$_REPO_STABLE ]]; then
-          echo $(curl -T $$_PACKAGE_NAME-$$_PACKAGE_VERSION.tgz -uvorobey:$$APIKEY https://api.bintray.com/content/unity-game-framework/${_REPO_DEV}/$$_PACKAGE_NAME/$$_PACKAGE_VERSION/$$_PACKAGE_NAME/-/)
+        if [[ $$_VERSION != *"-preview"* ]]; then
+          echo $(curl -T $$_NAME-$$_VERSION.tgz -$$_USER $$_STABLE)
         fi
 
   # Publish
 - name: 'gcr.io/cloud-builders/curl'
   entrypoint: 'bash'
   volumes:
-  - name: 'vol1'
-    path: '/persistent_volume'
-  secretEnv: ['APIKEY']
+  - name: 'volume'
+    path: '/persistent'
+  secretEnv: ['_USER']
   args:
   - '-c'
   - '-e'
   - |
-        _PACKAGE_REPO=$(cat /persistent_volume/package_repo)
-        _PACKAGE_NAME=$(cat /persistent_volume/package_name)
-        _PACKAGE_VERSION=$(cat /persistent_volume/package_version)
-        _REPO_STABLE=${_REPO_STABLE}
-        
-        echo "Load package repo '$$_PACKAGE_REPO'"
-        echo "Load package name '$$_PACKAGE_NAME'"
-        echo "Load package version '$$_PACKAGE_VERSION'"
-        
-        echo $(curl -X POST -uvorobey:$$APIKEY https://api.bintray.com/content/unity-game-framework/$$_PACKAGE_REPO/$$_PACKAGE_NAME/$$_PACKAGE_VERSION/publish)
-        
-        if [[ $$_PACKAGE_REPO == $$_REPO_STABLE ]]; then
-          echo $(curl -X POST -uvorobey:$$APIKEY https://api.bintray.com/content/unity-game-framework/${_REPO_DEV}/$$_PACKAGE_NAME/$$_PACKAGE_VERSION/publish)
-        fi
+        _NAME=$(cat /persistent/name)
+        _VERSION=$(cat /persistent/version)
+        _DEV=https://api.bintray.com/content/unity-game-framework/dev/$$_NAME/$$_VERSION/publish
+        _STABLE=https://api.bintray.com/content/unity-game-framework/stable/$$_NAME/$$_VERSION/publish
 
-# Substitutions setup
-substitutions:
-  _REPO_DEV: 'dev'
-  _REPO_STABLE: 'stable'
-  _VERSION_PATTERN_DEV: '-preview'
-options:
-  substitution_option: 'ALLOW_LOOSE'
+        echo $(curl -X POST -$$_USER $$_DEV)
+
+        if [[ $$_VERSION != *"-preview"* ]]; then
+          echo $(curl -X POST -$$_USER $$_STABLE)
+        fi
 
 # Secrets setup
 secrets:
-- kmsKeyName: projects/unity-game-framework/locations/global/keyRings/default/cryptoKeys/api-key
+- kmsKeyName: projects/unity-game-framework/locations/global/keyRings/default/cryptoKeys/packages-remote-user
   secretEnv:
-    APIKEY: CiQA7Jjc7QVF5fD4L5veNmtwHCJPOP/VIBMtMUXhUv0cgveZVr8SUgDt1p4YK6XYPcekMO9C7eiZeHfStHYOQL3bnEqdrg3fvOvzWZBPseCEEGQ+yywCcXBlvdgd9f0nwBpDBQiPjQbx8PZNp36RQ2Fr1iB9vHNF8Go=
+    _USER: CiQAFgirOBfQ1m7tfWWHqD6yTDYHNGCGzLLOzJYg3xcfExaFYecSWgAN9TMrOmRTBBE9jo4B1vWyZr0EjqRwPIGDGd9t9Ozo0WZIMJ2IfZbrNuNUPllHeYdwcn0XpeG+11mthqc7GVdmZtsQn8bOw7xHHui38dN5nAQ/hFN3Ie1vEw==
