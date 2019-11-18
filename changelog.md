@@ -26,6 +26,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - Nothing.
 
+## 2.0.0-preview - 2019-11-18
+- [Commits](https://github.com/unity-game-framework/ugf-application/compare/1.2.0...2.0.0-preview)
+- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/6?closed=1)
+
+### Changed
+- Update to Unity 2019.3.
+- Package dependencies:
+    - `com.ugf.initialize`: from `1.2.0` to `2.0.0-preview`.
+- Change async initialization to use C# async/awaits.
+
+### Removed
+- `ApplicationUnity` deprecated code.
+
 ## 1.2.0 - 2019-09-08
 - [Commits](https://github.com/unity-game-framework/ugf-application/compare/1.1.0...1.2.0)
 - [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/5?closed=1)
