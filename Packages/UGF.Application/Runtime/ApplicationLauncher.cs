@@ -1,6 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UGF.Initialize.Runtime;
 using UnityEngine;
 
@@ -52,11 +52,11 @@ namespace UGF.Application.Runtime
         private InitializeState m_state;
         private IApplication m_application;
 
-        private IEnumerator Start()
+        private async void Start()
         {
             if (m_launchOnStart)
             {
-                yield return Launch();
+                await Launch();
             }
         }
 
@@ -81,13 +81,13 @@ namespace UGF.Application.Runtime
         /// <summary>
         /// Launch application creation and initialization.
         /// </summary>
-        public IEnumerator Launch()
+        public async Task Launch()
         {
             m_state = m_state.Initialize();
 
             OnLaunch();
 
-            yield return PreloadResourcesAsync();
+            await PreloadResourcesAsync();
 
             IApplication application = CreateApplication();
 
@@ -98,7 +98,7 @@ namespace UGF.Application.Runtime
 
             InitializeApplication(application);
 
-            yield return InitializeModulesAsync(application);
+            await InitializeModulesAsync(application);
 
             m_application = application;
 
@@ -136,9 +136,9 @@ namespace UGF.Application.Runtime
         /// <summary>
         /// Invoked before application creation.
         /// </summary>
-        protected virtual IEnumerator PreloadResourcesAsync()
+        protected virtual Task PreloadResourcesAsync()
         {
-            yield break;
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -159,13 +159,13 @@ namespace UGF.Application.Runtime
         /// Invoked after application and modules initialized.
         /// </summary>
         /// <param name="application">The application.</param>
-        protected virtual IEnumerator InitializeModulesAsync(IApplication application)
+        protected virtual async Task InitializeModulesAsync(IApplication application)
         {
             foreach (KeyValuePair<Type, IApplicationModule> pair in application.Modules)
             {
-                if (pair.Value is IInitializeAsync module)
+                if (pair.Value is ApplicationModuleBaseAsync module)
                 {
-                    yield return module.InitializeAsync();
+                    await module.InitializeAsync();
                 }
             }
         }
