@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Threading.Tasks;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -20,9 +21,9 @@ namespace UGF.Application.Runtime.Tests
                 Assert.False(HasApplication);
             }
 
-            protected override IEnumerator PreloadResourcesAsync()
+            protected override async Task PreloadResourcesAsync()
             {
-                yield return null;
+                await Task.Yield();
 
                 Assert.True(IsLaunched);
                 Assert.False(HasApplication);
@@ -54,9 +55,9 @@ namespace UGF.Application.Runtime.Tests
                 Assert.False(application.GetModule<ModuleAsync>().IsInit);
             }
 
-            protected override IEnumerator InitializeModulesAsync(IApplication application)
+            protected override async Task InitializeModulesAsync(IApplication application)
             {
-                yield return base.InitializeModulesAsync(application);
+                await base.InitializeModulesAsync(application);
 
                 Assert.True(IsLaunched);
                 Assert.False(HasApplication);
@@ -130,9 +131,9 @@ namespace UGF.Application.Runtime.Tests
         {
             public bool IsInit { get; private set; }
 
-            protected override IEnumerator OnInitializeAsync()
+            public override async Task InitializeAsync()
             {
-                yield return null;
+                await Task.Yield();
 
                 IsInit = true;
             }
@@ -158,7 +159,12 @@ namespace UGF.Application.Runtime.Tests
             Assert.False(launcher.IsLaunched);
             Assert.False(launcher.HasApplication);
 
-            yield return launcher.Launch();
+            Task launchTask = launcher.Launch();
+
+            while (!launchTask.IsCompleted)
+            {
+                yield return null;
+            }
 
             Assert.True(launcher.IsLaunched);
             Assert.True(launcher.HasApplication);
@@ -184,7 +190,12 @@ namespace UGF.Application.Runtime.Tests
             Assert.False(launcher.IsLaunched);
             Assert.False(launcher.HasApplication);
 
-            yield return launcher.Launch();
+            Task launchTask = launcher.Launch();
+
+            while (!launchTask.IsCompleted)
+            {
+                yield return null;
+            }
 
             Assert.True(launcher.IsLaunched);
             Assert.True(launcher.HasApplication);
@@ -208,7 +219,12 @@ namespace UGF.Application.Runtime.Tests
             Assert.False(launcher.IsLaunched);
             Assert.False(launcher.HasApplication);
 
-            yield return launcher.Launch();
+            Task launchTask = launcher.Launch();
+
+            while (!launchTask.IsCompleted)
+            {
+                yield return null;
+            }
 
             Assert.True(launcher.IsLaunched);
             Assert.True(launcher.HasApplication);

@@ -4,13 +4,13 @@ UGF.Application
 
 ## Info
 
-- **Version**: `1.2.0`
-- **Unity Version**: `2019.2.0`
+- **Version**: `2.0.0-preview`
+- **Unity Version**: `2019.3.0`
 - **Api Compatibility Level**: `.NET Standard 2.0`
 
 ### Dependencies
 
-- [UGF.Initialize](https://github.com/unity-game-framework/ugf-initialize): `1.2.0`
+- [UGF.Initialize](https://github.com/unity-game-framework/ugf-initialize): `2.0.0-preview`
 
 ### Changelog
 
@@ -18,7 +18,7 @@ UGF.Application
 
 ### Registries
 
-- [Stable][2]
+- [Stable][2] (N/A)
 - [Develop][3]
 
 ## Description
