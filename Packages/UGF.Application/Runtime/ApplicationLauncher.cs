@@ -30,7 +30,7 @@ namespace UGF.Application.Runtime
         /// <remarks>
         /// This property becomes 'true' after launch immediately and stays 'true' until launcher will be called to stop.
         /// </remarks>
-        public bool IsLaunched { get { return m_state.IsInitialized; } }
+        public bool IsLaunched { get { return m_state; } }
 
         /// <summary>
         /// Gets an instance of the application.
@@ -49,7 +49,7 @@ namespace UGF.Application.Runtime
         /// </remarks>
         public bool HasApplication { get { return m_application != null; } }
 
-        private InitializeState m_state = new InitializeState();
+        private InitializeState m_state;
         private IApplication m_application;
 
         private IEnumerator Start()
@@ -62,7 +62,7 @@ namespace UGF.Application.Runtime
 
         private void OnDestroy()
         {
-            if (m_state.IsInitialized)
+            if (m_state)
             {
                 Stop();
             }
@@ -72,7 +72,7 @@ namespace UGF.Application.Runtime
         {
             OnQuitting();
 
-            if (m_stopOnQuit && m_state.IsInitialized)
+            if (m_stopOnQuit && m_state)
             {
                 Stop();
             }
@@ -83,7 +83,7 @@ namespace UGF.Application.Runtime
         /// </summary>
         public IEnumerator Launch()
         {
-            m_state.Initialize();
+            m_state = m_state.Initialize();
 
             OnLaunch();
 
@@ -110,7 +110,7 @@ namespace UGF.Application.Runtime
         /// </summary>
         public void Stop()
         {
-            m_state.Uninitialize();
+            m_state = m_state.Uninitialize();
 
             IApplication application = Application;
 
