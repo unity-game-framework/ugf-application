@@ -10,6 +10,6 @@
     },
     "dependencies": {
         "com.ugf.initialize": "2.0.0-preview",
-        "com.ugf.builder": "1.1.0"
+        "com.ugf.customsettings": "1.0.0"
     }
 }
