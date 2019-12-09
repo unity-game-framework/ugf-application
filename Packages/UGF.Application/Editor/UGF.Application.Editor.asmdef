@@ -1,10 +1,13 @@
 {
-    "name": "UGF.Application.Runtime",
+    "name": "UGF.Application.Editor",
     "references": [
-        "GUID:d067af32d09350a4bb33960432735e4d",
-        "GUID:6c7389a7d4bbed54e96eb1e71a69798e"
+        "GUID:a4312e46e9f64bb4aa011ac96ffd2a61",
+        "GUID:ff62901452104d14cae29322ac133c05",
+        "GUID:4806a292f99efd44aba38aea20847e17"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

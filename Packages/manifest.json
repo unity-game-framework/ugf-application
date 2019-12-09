@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.ugf.testing": "0.1.1-preview",
     "com.unity.ide.rider": "1.1.1",
     "com.unity.test-framework": "1.1.5"
   },
