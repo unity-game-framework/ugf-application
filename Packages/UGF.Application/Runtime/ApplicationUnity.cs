@@ -5,7 +5,7 @@ namespace UGF.Application.Runtime
     /// <summary>
     /// Represents an unity application implementation.
     /// </summary>
-    public partial class ApplicationUnity : ApplicationBase
+    public class ApplicationUnity : ApplicationBase
     {
         /// <summary>
         /// Gets the value that determines whether application provide static instance via <see cref="ApplicationInstance"/>.

@@ -5,7 +5,7 @@ namespace UGF.Application.Runtime
     /// <summary>
     /// Represents <see cref="ApplicationUnity"/> launcher.
     /// </summary>
-    public partial class ApplicationUnityLauncher : ApplicationLauncher
+    public class ApplicationUnityLauncher : ApplicationLauncher
     {
         [SerializeField] private bool m_provideStaticInstance = true;
 
