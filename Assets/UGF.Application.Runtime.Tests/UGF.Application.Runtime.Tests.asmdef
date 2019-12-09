@@ -3,7 +3,8 @@
     "references": [
         "GUID:a4312e46e9f64bb4aa011ac96ffd2a61",
         "GUID:d067af32d09350a4bb33960432735e4d",
-        "GUID:27619889b8ba8c24980f49ee34dbb44a"
+        "GUID:27619889b8ba8c24980f49ee34dbb44a",
+        "GUID:caf53a88a5f705b469991beeab5f32d0"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -16,5 +17,6 @@
     "defineConstraints": [
         "UNITY_INCLUDE_TESTS"
     ],
-    "versionDefines": []
+    "versionDefines": [],
+    "noEngineReferences": false
 }

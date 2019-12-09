@@ -1,0 +1,20 @@
+{
+    "name": "UGF.Application.Editor.Tests",
+    "references": [
+        "GUID:a4312e46e9f64bb4aa011ac96ffd2a61",
+        "GUID:0a8cfea8c226a8041bc7a5979811d462"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
