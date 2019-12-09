@@ -31,6 +31,8 @@ namespace UGF.Application.Runtime
 
                 if (module.Active)
                 {
+                    if (module.Info == null) throw new ArgumentNullException(nameof(module.Info), "A module info asset not specified.");
+
                     IApplicationModuleInfo info = module.Info.GetInfo();
 
                     config.Modules.Add(info);

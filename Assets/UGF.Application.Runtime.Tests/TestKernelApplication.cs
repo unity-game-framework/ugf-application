@@ -1,22 +1,12 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using UGF.Application.Runtime;
-using UGF.Module.Runtime;
 using UGF.Testing.Runtime.Tests;
 
-namespace UGF.Kernel.Runtime.Tests
+namespace UGF.Application.Runtime.Tests
 {
     public class TestKernelApplication : TestNoLogs
     {
-        private class Config : IKernelConfig
-        {
-            public string Name { get; } = "Test";
-            public List<IModuleBuildInfo> Modules { get; } = new List<IModuleBuildInfo>();
-
-            IReadOnlyList<IModuleBuildInfo> IKernelConfig.Modules { get { return Modules; } }
-        }
-
         private class ModuleA : ModuleBase
         {
             public ModuleA(Action init = null, Action uninit = null) : base(init, uninit)
@@ -64,34 +54,22 @@ namespace UGF.Kernel.Runtime.Tests
             }
         }
 
-        private class ModuleBuilder : IModuleBuilder
+        private class ModuleInfo : IApplicationModuleInfo
         {
-            public IApplicationModule Module { get; }
             public Type RegisterType { get; }
+            public IApplicationModuleBuilder Builder { get; }
 
-            public ModuleBuilder(IApplicationModule module)
+            public ModuleInfo(IApplicationModule module)
             {
-                Module = module;
                 RegisterType = module.GetType();
-            }
-
-            public IApplicationModule Build(IApplication application, IModuleBuildArguments<object> arguments)
-            {
-                return Module;
-            }
-        }
-
-        private class ModuleInfo : ModuleBuildInfo
-        {
-            public ModuleInfo(IApplicationModule module) : base(new ModuleBuilder(module), ModuleBuildArguments<object>.Empty)
-            {
+                Builder = new ApplicationModuleBuilder(application => module);
             }
         }
 
         [Test]
         public void CreateModules()
         {
-            var config = new Config
+            var config = new ApplicationConfig()
             {
                 Modules =
                 {
@@ -100,7 +78,7 @@ namespace UGF.Kernel.Runtime.Tests
                 }
             };
 
-            var application = new KernelApplication(config, false);
+            var application = new ApplicationConfigured(config, false);
 
             application.Initialize();
 
@@ -118,7 +96,7 @@ namespace UGF.Kernel.Runtime.Tests
         {
             var order = new List<string>();
 
-            var config = new Config
+            var config = new ApplicationConfig()
             {
                 Modules =
                 {
@@ -127,7 +105,7 @@ namespace UGF.Kernel.Runtime.Tests
                 }
             };
 
-            var application = new KernelApplication(config, false);
+            var application = new ApplicationConfigured(config, false);
 
             application.Initialize();
 
@@ -141,7 +119,7 @@ namespace UGF.Kernel.Runtime.Tests
         {
             var order = new List<string>();
 
-            var config = new Config
+            var config = new ApplicationConfig()
             {
                 Modules =
                 {
@@ -150,7 +128,7 @@ namespace UGF.Kernel.Runtime.Tests
                 }
             };
 
-            var application = new KernelApplication(config, false);
+            var application = new ApplicationConfigured(config, false);
 
             application.AddModule(new ModuleC(() => order.Add("moduleC")));
             application.Initialize();
@@ -166,7 +144,7 @@ namespace UGF.Kernel.Runtime.Tests
         {
             var order = new List<string>();
 
-            var config = new Config
+            var config = new ApplicationConfig()
             {
                 Modules =
                 {
@@ -175,7 +153,7 @@ namespace UGF.Kernel.Runtime.Tests
                 }
             };
 
-            var application = new KernelApplication(config, false);
+            var application = new ApplicationConfigured(config, false);
 
             application.Initialize();
             application.Uninitialize();
@@ -190,7 +168,7 @@ namespace UGF.Kernel.Runtime.Tests
         {
             var order = new List<string>();
 
-            var config = new Config
+            var config = new ApplicationConfig()
             {
                 Modules =
                 {
@@ -199,7 +177,7 @@ namespace UGF.Kernel.Runtime.Tests
                 }
             };
 
-            var application = new KernelApplication(config, false);
+            var application = new ApplicationConfigured(config, false);
 
             application.Initialize();
 
