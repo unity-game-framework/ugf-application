@@ -1,0 +1,15 @@
+{
+    "name": "com.ugf.kernel",
+    "displayName": "UGF.Kernel",
+    "version": "0.3.0-preview",
+    "unity": "2019.3",
+    "description": "No description.",
+    "author": {
+        "name": "Unity Game Framework",
+        "url": "https://github.com/unity-game-framework"
+    },
+    "dependencies": {
+        "com.ugf.module": "0.2.0-preview",
+        "com.ugf.logs": "1.1.0"
+    }
+}
