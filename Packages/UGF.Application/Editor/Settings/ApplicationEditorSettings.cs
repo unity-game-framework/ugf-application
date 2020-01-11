@@ -13,15 +13,14 @@ namespace UGF.Application.Editor.Settings
             set
             {
                 m_settings.Data.Config = value;
-                m_settings.Save();
+                m_settings.SaveSettings();
             }
         }
 
         private static readonly CustomSettingsEditorPackage<ApplicationEditorSettingsData> m_settings = new CustomSettingsEditorPackage<ApplicationEditorSettingsData>
         (
             "UGF.Application",
-            "ApplicationEditorSettings",
-            CustomSettingsEditorUtility.DefaultPackageExternalFolder
+            "ApplicationEditorSettings"
         );
 
         [SettingsProvider, UsedImplicitly]
