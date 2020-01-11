@@ -1,15 +1,15 @@
 {
     "name": "com.ugf.application",
     "displayName": "UGF.Application",
-    "version": "3.0.0-preview",
+    "version": "3.1.0-preview",
     "unity": "2019.3",
-    "description": "The entry point of the game.",
+    "description": "The entry point of the application.",
     "author": {
         "name": "Unity Game Framework",
         "url": "https://github.com/unity-game-framework"
     },
     "dependencies": {
         "com.ugf.initialize": "2.0.0-preview",
-        "com.ugf.customsettings": "1.0.0"
+        "com.ugf.customsettings": "2.0.0"
     }
 }

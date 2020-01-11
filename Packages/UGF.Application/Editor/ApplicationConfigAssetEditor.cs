@@ -37,7 +37,7 @@ namespace UGF.Application.Editor
                 EditorGUILayout.PropertyField(m_propertyScript);
             }
 
-            using (new CustomSettingsGUIScope())
+            using (new CustomSettingsInspectorScope())
             {
                 m_list.DoLayoutList();
             }
@@ -46,7 +46,7 @@ namespace UGF.Application.Editor
 
             if (m_editors.Count > 0)
             {
-                using (new CustomSettingsGUIScope())
+                using (new CustomSettingsInspectorScope())
                 {
                     DrawEditors();
                 }
