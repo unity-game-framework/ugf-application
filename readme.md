@@ -4,14 +4,14 @@ UGF.Application
 
 ## Info
 
-- **Version**: `3.0.0-preview`
+- **Version**: `3.1.0-preview`
 - **Unity Version**: `2019.3.0`
-- **Api Compatibility Level**: `.NET Standard 2.0`
+- **API Compatibility Level**: `.NET Standard 2.0`
 
 ### Dependencies
 
 - [UGF.Initialize](https://github.com/unity-game-framework/ugf-initialize): `2.0.0-preview`
-- [UGF.CustomSettings](https://github.com/unity-game-framework/ugf-customsettings): `1.0.0`
+- [UGF.CustomSettings](https://github.com/unity-game-framework/ugf-customsettings): `2.0.0`
 
 ### Changelog
 
@@ -24,7 +24,7 @@ UGF.Application
 
 ## Description
 
-The entry point of the game.
+The entry point of the application.
 
 ## How to Install
 
