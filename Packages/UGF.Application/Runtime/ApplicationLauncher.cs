@@ -49,6 +49,21 @@ namespace UGF.Application.Runtime
         /// </remarks>
         public bool HasApplication { get { return m_application != null; } }
 
+        /// <summary>
+        /// Triggered after all launch completed and application becomes available.
+        /// </summary>
+        public event ApplicationHandler Launched;
+
+        /// <summary>
+        /// Triggered after launcher is completely stopped and application no longer available.
+        /// </summary>
+        public event Action Stopped;
+
+        /// <summary>
+        /// Triggered when Unity application performs quitting.
+        /// </summary>
+        public event Action Quitting;
+
         private InitializeState m_state;
         private IApplication m_application;
 
@@ -72,6 +87,8 @@ namespace UGF.Application.Runtime
         {
             OnQuitting();
 
+            Quitting?.Invoke();
+
             if (m_stopOnQuit && m_state)
             {
                 Stop();
@@ -89,12 +106,7 @@ namespace UGF.Application.Runtime
 
             await PreloadResourcesAsync();
 
-            IApplication application = CreateApplication();
-
-            if (application == null)
-            {
-                throw new ArgumentNullException(nameof(application), "Result of application creation is null.");
-            }
+            IApplication application = CreateApplication() ?? throw new ArgumentNullException(nameof(application), "Result of application creation is null.");
 
             InitializeApplication(application);
 
@@ -103,6 +115,8 @@ namespace UGF.Application.Runtime
             m_application = application;
 
             OnLaunched(application);
+
+            Launched?.Invoke(application);
         }
 
         /// <summary>
@@ -116,14 +130,13 @@ namespace UGF.Application.Runtime
 
             OnStop(application);
 
-            if (application.IsInitialized)
-            {
-                application.Uninitialize();
-            }
+            UninitializeApplication(application);
 
             m_application = null;
 
             OnStopped();
+
+            Stopped?.Invoke();
         }
 
         /// <summary>
@@ -153,6 +166,15 @@ namespace UGF.Application.Runtime
         protected virtual void InitializeApplication(IApplication application)
         {
             application.Initialize();
+        }
+
+        /// <summary>
+        /// Invoked after launcher is stopped.
+        /// </summary>
+        /// <param name="application">The application.</param>
+        protected virtual void UninitializeApplication(IApplication application)
+        {
+            application.Uninitialize();
         }
 
         /// <summary>
