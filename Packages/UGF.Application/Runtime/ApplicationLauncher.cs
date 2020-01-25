@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using UGF.Initialize.Runtime;
 using UnityEngine;
@@ -13,6 +12,7 @@ namespace UGF.Application.Runtime
     {
         [SerializeField] private bool m_launchOnStart = true;
         [SerializeField] private bool m_stopOnQuit = true;
+        [SerializeField] private ApplicationLauncherResourceLoader m_resourceLoader;
 
         /// <summary>
         /// Gets or sets value that determines whether to launch application on start.
@@ -23,6 +23,8 @@ namespace UGF.Application.Runtime
         /// Gets or sets value that determines whether to stop application on Unity Application quit.
         /// </summary>
         public bool StopOnQuit { get { return m_stopOnQuit; } set { m_stopOnQuit = value; } }
+
+        public ApplicationLauncherResourceLoader ResourceLoader { get { return m_resourceLoader; } set { m_resourceLoader = value; } }
 
         /// <summary>
         /// Gets value that determines whether launcher started already.
@@ -100,17 +102,18 @@ namespace UGF.Application.Runtime
         /// </summary>
         public async Task Launch()
         {
+            if (m_resourceLoader == null) throw new ArgumentNullException(nameof(m_resourceLoader), "Resource loader must be specified.");
+
             m_state = m_state.Initialize();
 
             OnLaunch();
 
-            await PreloadResourcesAsync();
-
-            IApplication application = CreateApplication() ?? throw new ArgumentNullException(nameof(application), "Result of application creation is null.");
+            IApplicationResources resources = await m_resourceLoader.LoadAsync() ?? throw new ArgumentNullException(nameof(resources), "Resources not loaded.");
+            IApplication application = CreateApplication(resources) ?? throw new ArgumentNullException(nameof(application), "Application not created.");
 
             InitializeApplication(application);
 
-            await InitializeModulesAsync(application);
+            await application.InitializeAsync();
 
             m_application = application;
 
@@ -147,17 +150,10 @@ namespace UGF.Application.Runtime
         }
 
         /// <summary>
-        /// Invoked before application creation.
-        /// </summary>
-        protected virtual Task PreloadResourcesAsync()
-        {
-            return Task.CompletedTask;
-        }
-
-        /// <summary>
         /// Invoked after resources preload and ready to create application.
         /// </summary>
-        protected abstract IApplication CreateApplication();
+        /// <param name="resources"></param>
+        protected abstract IApplication CreateApplication(IApplicationResources resources);
 
         /// <summary>
         /// Invoked after application creation.
@@ -175,21 +171,6 @@ namespace UGF.Application.Runtime
         protected virtual void UninitializeApplication(IApplication application)
         {
             application.Uninitialize();
-        }
-
-        /// <summary>
-        /// Invoked after application and modules initialized.
-        /// </summary>
-        /// <param name="application">The application.</param>
-        protected virtual async Task InitializeModulesAsync(IApplication application)
-        {
-            foreach (KeyValuePair<Type, IApplicationModule> pair in application.Modules)
-            {
-                if (pair.Value is ApplicationModuleBaseAsync module)
-                {
-                    await module.InitializeAsync();
-                }
-            }
         }
 
         /// <summary>

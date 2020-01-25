@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using UGF.Initialize.Runtime;
 
 namespace UGF.Application.Runtime
@@ -10,13 +11,20 @@ namespace UGF.Application.Runtime
     /// </summary>
     public abstract class ApplicationBase : InitializeBase, IApplication
     {
+        public IApplicationResources Resources { get; }
         public IReadOnlyDictionary<Type, IApplicationModule> Modules { get; }
 
         private readonly Dictionary<Type, IApplicationModule> m_modules = new Dictionary<Type, IApplicationModule>();
 
-        protected ApplicationBase()
+        protected ApplicationBase(IApplicationResources resources)
         {
+            Resources = resources ?? throw new ArgumentNullException(nameof(resources));
             Modules = new ReadOnlyDictionary<Type, IApplicationModule>(m_modules);
+        }
+
+        public async Task InitializeAsync()
+        {
+            await OnInitializeAsync();
         }
 
         protected override void OnInitialize()
@@ -24,6 +32,11 @@ namespace UGF.Application.Runtime
             base.OnInitialize();
 
             OnInitializeModules();
+        }
+
+        protected virtual Task OnInitializeAsync()
+        {
+            return Task.CompletedTask;
         }
 
         protected override void OnUninitialize()

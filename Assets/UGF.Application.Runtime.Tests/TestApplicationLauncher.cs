@@ -29,7 +29,7 @@ namespace UGF.Application.Runtime.Tests
                 Assert.False(HasApplication);
             }
 
-            protected override IApplication CreateApplication()
+            protected override IApplication CreateApplication(IApplicationResources resources)
             {
                 Assert.True(IsLaunched);
                 Assert.False(HasApplication);
