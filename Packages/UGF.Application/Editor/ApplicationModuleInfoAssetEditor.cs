@@ -18,13 +18,33 @@ namespace UGF.Application.Editor
         {
             Type type = target.GetType();
 
-            if (typeof(ApplicationModuleInfoAsset<>).IsAssignableFrom(type))
+            if (TryGetRegisterType(type, out Type registerType))
             {
-                Type registerType = type.GetGenericArguments()[0];
-
                 EditorGUILayout.Space();
                 EditorGUILayout.HelpBox($"Register Type: '{registerType}'.", MessageType.Info);
             }
+        }
+
+        private static bool TryGetRegisterType(Type target, out Type type)
+        {
+            while (target != null)
+            {
+                if (target.IsGenericType)
+                {
+                    Type definition = target.GetGenericTypeDefinition();
+
+                    if (definition == typeof(ApplicationModuleInfoAsset<>))
+                    {
+                        type = target.GetGenericArguments()[0];
+                        return true;
+                    }
+                }
+
+                target = target.BaseType;
+            }
+
+            type = null;
+            return false;
         }
     }
 }
