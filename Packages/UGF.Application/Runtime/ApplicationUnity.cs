@@ -17,7 +17,7 @@ namespace UGF.Application.Runtime
         /// </summary>
         /// <param name="resources">The application resources.</param>
         /// <param name="provideStaticInstance">The value that determines whether to provide static instance via <see cref="ApplicationInstance"/>.</param>
-        public ApplicationUnity(IApplicationResources resources, bool provideStaticInstance) : base(resources)
+        public ApplicationUnity(IApplicationResources resources = null, bool provideStaticInstance = false) : base(resources)
         {
             ProvideStaticInstance = provideStaticInstance;
         }

@@ -8,7 +8,7 @@ namespace UGF.Application.Runtime
     {
         public IApplicationConfig Config { get; }
 
-        public ApplicationConfigured(IApplicationResources resources, bool provideStaticInstance) : base(resources, provideStaticInstance)
+        public ApplicationConfigured(IApplicationResources resources, bool provideStaticInstance = false) : base(resources, provideStaticInstance)
         {
             Config = resources.Get<IApplicationConfig>();
         }
@@ -68,7 +68,7 @@ namespace UGF.Application.Runtime
             {
                 if (!HasModule(Config, pair.Key))
                 {
-                    pair.Value.Uninitialize();
+                    pair.Value.Initialize();
                 }
             }
         }

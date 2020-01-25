@@ -102,13 +102,21 @@ namespace UGF.Application.Runtime
         /// </summary>
         public async Task Launch()
         {
-            if (m_resourceLoader == null) throw new ArgumentNullException(nameof(m_resourceLoader), "Resource loader must be specified.");
-
             m_state = m_state.Initialize();
 
             OnLaunch();
 
-            IApplicationResources resources = await m_resourceLoader.LoadAsync() ?? throw new ArgumentNullException(nameof(resources), "Resources not loaded.");
+            IApplicationResources resources;
+
+            if (m_resourceLoader != null)
+            {
+                resources = await m_resourceLoader.LoadAsync() ?? throw new ArgumentNullException(nameof(resources), "Resources not loaded.");
+            }
+            else
+            {
+                resources = new ApplicationResources();
+            }
+
             IApplication application = CreateApplication(resources) ?? throw new ArgumentNullException(nameof(application), "Application not created.");
 
             InitializeApplication(application);

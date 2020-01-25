@@ -1,8 +1,11 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
+using Object = UnityEngine.Object;
 
 namespace UGF.Application.Runtime.Tests
 {
@@ -16,14 +19,6 @@ namespace UGF.Application.Runtime.Tests
             protected override void OnLaunch()
             {
                 base.OnLaunch();
-
-                Assert.True(IsLaunched);
-                Assert.False(HasApplication);
-            }
-
-            protected override async Task PreloadResourcesAsync()
-            {
-                await Task.Yield();
 
                 Assert.True(IsLaunched);
                 Assert.False(HasApplication);
@@ -53,16 +48,6 @@ namespace UGF.Application.Runtime.Tests
                 Assert.False(HasApplication);
                 Assert.True(application.GetModule<Module>().IsInit);
                 Assert.False(application.GetModule<ModuleAsync>().IsInit);
-            }
-
-            protected override async Task InitializeModulesAsync(IApplication application)
-            {
-                await base.InitializeModulesAsync(application);
-
-                Assert.True(IsLaunched);
-                Assert.False(HasApplication);
-                Assert.True(application.GetModule<Module>().IsInit);
-                Assert.True(application.GetModule<ModuleAsync>().IsInit);
             }
 
             protected override void OnLaunched(IApplication application)
@@ -106,6 +91,16 @@ namespace UGF.Application.Runtime.Tests
 
         private class Application : ApplicationBase
         {
+            protected override async Task OnInitializeAsync()
+            {
+                foreach (KeyValuePair<Type, IApplicationModule> pair in Modules)
+                {
+                    if (pair.Value is IApplicationModuleAsync module)
+                    {
+                        await module.InitializeAsync();
+                    }
+                }
+            }
         }
 
         private class Module : ApplicationModuleBase
@@ -127,11 +122,11 @@ namespace UGF.Application.Runtime.Tests
             }
         }
 
-        private class ModuleAsync : ApplicationModuleBaseAsync
+        private class ModuleAsync : ApplicationModuleBase, IApplicationModuleAsync
         {
             public bool IsInit { get; private set; }
 
-            public override async Task InitializeAsync()
+            public async Task InitializeAsync()
             {
                 await Task.Yield();
 

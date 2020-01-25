@@ -7,6 +7,9 @@ namespace UGF.Application.Runtime
     {
         int Count { get; }
 
+        bool Contains(object resource);
+        void Add(object resource);
+        void Remove(object resource);
         T Get<T>();
         object Get(Type type);
         bool TryGet<T>(out T resource);

@@ -78,7 +78,8 @@ namespace UGF.Application.Runtime.Tests
                 }
             };
 
-            var application = new ApplicationConfigured(config, false);
+            var resources = new ApplicationResources { config };
+            var application = new ApplicationConfigured(resources, false);
 
             application.Initialize();
 
@@ -105,7 +106,8 @@ namespace UGF.Application.Runtime.Tests
                 }
             };
 
-            var application = new ApplicationConfigured(config, false);
+            var resources = new ApplicationResources { config };
+            var application = new ApplicationConfigured(resources, false);
 
             application.Initialize();
 
@@ -128,7 +130,8 @@ namespace UGF.Application.Runtime.Tests
                 }
             };
 
-            var application = new ApplicationConfigured(config, false);
+            var resources = new ApplicationResources { config };
+            var application = new ApplicationConfigured(resources, false);
 
             application.AddModule(new ModuleC(() => order.Add("moduleC")));
             application.Initialize();
@@ -153,7 +156,8 @@ namespace UGF.Application.Runtime.Tests
                 }
             };
 
-            var application = new ApplicationConfigured(config, false);
+            var resources = new ApplicationResources { config };
+            var application = new ApplicationConfigured(resources, false);
 
             application.Initialize();
             application.Uninitialize();
@@ -177,7 +181,8 @@ namespace UGF.Application.Runtime.Tests
                 }
             };
 
-            var application = new ApplicationConfigured(config, false);
+            var resources = new ApplicationResources { config };
+            var application = new ApplicationConfigured(resources, false);
 
             application.Initialize();
 

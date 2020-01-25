@@ -20,7 +20,7 @@ namespace UGF.Application.Runtime
             return Task.FromResult((IApplicationResources)resources);
         }
 
-        protected void AddResources(ApplicationResources resources)
+        protected void AddResources(IApplicationResources resources)
         {
             for (int i = 0; i < m_resources.Count; i++)
             {

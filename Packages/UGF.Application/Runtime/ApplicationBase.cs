@@ -16,9 +16,9 @@ namespace UGF.Application.Runtime
 
         private readonly Dictionary<Type, IApplicationModule> m_modules = new Dictionary<Type, IApplicationModule>();
 
-        protected ApplicationBase(IApplicationResources resources)
+        protected ApplicationBase(IApplicationResources resources = null)
         {
-            Resources = resources ?? throw new ArgumentNullException(nameof(resources));
+            Resources = resources ?? new ApplicationResources();
             Modules = new ReadOnlyDictionary<Type, IApplicationModule>(m_modules);
         }
 
