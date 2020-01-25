@@ -97,7 +97,7 @@ namespace UGF.Application.Runtime
             for (int i = 0; i < config.Modules.Count; i++)
             {
                 IApplicationModuleInfo info = config.Modules[i];
-                IApplicationModule module = info.Builder.Build(this);
+                IApplicationModule module = info.Builder.Invoke(this);
 
                 AddModule(info.RegisterType, module);
             }

@@ -57,12 +57,12 @@ namespace UGF.Application.Runtime.Tests
         private class ModuleInfo : IApplicationModuleInfo
         {
             public Type RegisterType { get; }
-            public IApplicationModuleBuilder Builder { get; }
+            public ApplicationModuleBuildHandler Builder { get; }
 
             public ModuleInfo(IApplicationModule module)
             {
                 RegisterType = module.GetType();
-                Builder = new ApplicationModuleBuilder(application => module);
+                Builder = application => module;
             }
         }
 
