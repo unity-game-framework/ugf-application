@@ -26,7 +26,14 @@ namespace UGF.Application.Runtime
             {
                 Object resource = m_resources[i];
 
-                resources.Add(resource);
+                if (resource is ApplicationResourceAsset resourceAsset)
+                {
+                    resources.Add(resourceAsset.GetResource());
+                }
+                else
+                {
+                    resources.Add(resource);
+                }
             }
         }
     }

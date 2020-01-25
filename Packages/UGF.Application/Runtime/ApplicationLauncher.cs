@@ -10,9 +10,11 @@ namespace UGF.Application.Runtime
     /// </summary>
     public abstract class ApplicationLauncher : MonoBehaviour
     {
+        [SerializeField] private ApplicationLauncherResourceLoader m_resourceLoader;
         [SerializeField] private bool m_launchOnStart = true;
         [SerializeField] private bool m_stopOnQuit = true;
-        [SerializeField] private ApplicationLauncherResourceLoader m_resourceLoader;
+
+        public ApplicationLauncherResourceLoader ResourceLoader { get { return m_resourceLoader; } set { m_resourceLoader = value; } }
 
         /// <summary>
         /// Gets or sets value that determines whether to launch application on start.
@@ -23,8 +25,6 @@ namespace UGF.Application.Runtime
         /// Gets or sets value that determines whether to stop application on Unity Application quit.
         /// </summary>
         public bool StopOnQuit { get { return m_stopOnQuit; } set { m_stopOnQuit = value; } }
-
-        public ApplicationLauncherResourceLoader ResourceLoader { get { return m_resourceLoader; } set { m_resourceLoader = value; } }
 
         /// <summary>
         /// Gets value that determines whether launcher started already.
