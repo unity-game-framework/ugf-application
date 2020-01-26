@@ -190,6 +190,10 @@ namespace UGF.Application.Runtime
         /// <param name="application">The application.</param>
         protected virtual void OnLaunched(IApplication application)
         {
+            if (application is IApplicationLauncherEventHandler handler)
+            {
+                handler.OnLaunched(application);
+            }
         }
 
         /// <summary>
@@ -198,6 +202,10 @@ namespace UGF.Application.Runtime
         /// <param name="application">The application.</param>
         protected virtual void OnStopped(IApplication application)
         {
+            if (application is IApplicationLauncherEventHandler handler)
+            {
+                handler.OnStopped(application);
+            }
         }
 
         /// <summary>
@@ -205,6 +213,10 @@ namespace UGF.Application.Runtime
         /// </summary>
         protected virtual void OnQuitting(IApplication application)
         {
+            if (application is IApplicationLauncherEventHandler handler)
+            {
+                handler.OnQuitting(application);
+            }
         }
     }
 }

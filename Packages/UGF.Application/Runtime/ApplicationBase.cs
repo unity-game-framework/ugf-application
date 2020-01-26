@@ -9,7 +9,7 @@ namespace UGF.Application.Runtime
     /// <summary>
     /// Represents an abstract implementation of the <see cref="IApplication"/>.
     /// </summary>
-    public abstract class ApplicationBase : InitializeBase, IApplication
+    public abstract class ApplicationBase : InitializeBase, IApplication, IApplicationLauncherEventHandler
     {
         public IApplicationResources Resources { get; }
         public IReadOnlyDictionary<Type, IApplicationModule> Modules { get; }
@@ -66,6 +66,60 @@ namespace UGF.Application.Runtime
             {
                 pair.Value.Uninitialize();
             }
+        }
+
+        protected virtual void OnLaunched()
+        {
+            foreach (KeyValuePair<Type, IApplicationModule> pair in m_modules)
+            {
+                if (pair.Value is IApplicationLauncherEventHandler handler)
+                {
+                    handler.OnLaunched(this);
+                }
+            }
+        }
+
+        protected virtual void OnStopped()
+        {
+            foreach (KeyValuePair<Type, IApplicationModule> pair in m_modules)
+            {
+                if (pair.Value is IApplicationLauncherEventHandler handler)
+                {
+                    handler.OnStopped(this);
+                }
+            }
+        }
+
+        protected virtual void OnQuitting()
+        {
+            foreach (KeyValuePair<Type, IApplicationModule> pair in m_modules)
+            {
+                if (pair.Value is IApplicationLauncherEventHandler handler)
+                {
+                    handler.OnQuitting(this);
+                }
+            }
+        }
+
+        void IApplicationLauncherEventHandler.OnLaunched(IApplication application)
+        {
+            if (application != this) throw new ArgumentException("Application launcher event handler process another application.");
+
+            OnLaunched();
+        }
+
+        void IApplicationLauncherEventHandler.OnStopped(IApplication application)
+        {
+            if (application != this) throw new ArgumentException("Application launcher event handler process another application.");
+
+            OnStopped();
+        }
+
+        void IApplicationLauncherEventHandler.OnQuitting(IApplication application)
+        {
+            if (application != this) throw new ArgumentException("Application launcher event handler process another application.");
+
+            OnQuitting();
         }
 
         public void AddModule<T>(T module) where T : class, IApplicationModule

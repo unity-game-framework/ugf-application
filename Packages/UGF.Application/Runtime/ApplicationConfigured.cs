@@ -22,29 +22,7 @@ namespace UGF.Application.Runtime
 
         protected override async Task OnInitializeAsync()
         {
-            for (int i = 0; i < Config.Modules.Count; i++)
-            {
-                IApplicationModuleInfo info = Config.Modules[i];
-                IApplicationModule module = Modules[info.RegisterType];
-
-                if (module is IApplicationModuleAsync moduleAsync)
-                {
-                    await moduleAsync.InitializeAsync();
-                }
-            }
-
-            foreach (KeyValuePair<Type, IApplicationModule> pair in Modules)
-            {
-                if (!HasModule(Config, pair.Key))
-                {
-                    IApplicationModule module = pair.Value;
-
-                    if (module is IApplicationModuleAsync moduleAsync)
-                    {
-                        await moduleAsync.InitializeAsync();
-                    }
-                }
-            }
+            await OnInitializeModulesAsync();
         }
 
         protected override void OnPostUninitialize()
@@ -69,6 +47,33 @@ namespace UGF.Application.Runtime
                 if (!HasModule(Config, pair.Key))
                 {
                     pair.Value.Initialize();
+                }
+            }
+        }
+
+        protected virtual async Task OnInitializeModulesAsync()
+        {
+            for (int i = 0; i < Config.Modules.Count; i++)
+            {
+                IApplicationModuleInfo info = Config.Modules[i];
+                IApplicationModule module = Modules[info.RegisterType];
+
+                if (module is IApplicationModuleAsync moduleAsync)
+                {
+                    await moduleAsync.InitializeAsync();
+                }
+            }
+
+            foreach (KeyValuePair<Type, IApplicationModule> pair in Modules)
+            {
+                if (!HasModule(Config, pair.Key))
+                {
+                    IApplicationModule module = pair.Value;
+
+                    if (module is IApplicationModuleAsync moduleAsync)
+                    {
+                        await moduleAsync.InitializeAsync();
+                    }
                 }
             }
         }
