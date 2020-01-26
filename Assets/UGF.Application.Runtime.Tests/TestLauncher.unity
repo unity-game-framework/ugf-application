@@ -185,10 +185,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 751223699}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b749b92ac6739744a11b2c2d1e210bc, type: 3}
+  m_Script: {fileID: 11500000, guid: 14eef761f8fc4df7a4277b1e26a1a2dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_config: {fileID: 11400000, guid: 49b43443fc77272468d7150aab75f8b7, type: 2}
+  m_resources:
+  - {fileID: 11400000, guid: 6bc36f1f88841b84c95cc6913e691767, type: 2}
 --- !u!114 &751223703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201,17 +202,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e06c74279fbf611478f2f1175ebed56d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_resourceLoader: {fileID: 751223702}
   m_launchOnStart: 1
   m_stopOnQuit: 1
   m_provideStaticInstance: 1
-  m_launchedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_stoppedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_quittingEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_configLoader: {fileID: 751223702}
   m_requestScriptReloadOnQuit: 0

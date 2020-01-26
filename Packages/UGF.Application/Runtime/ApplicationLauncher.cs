@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using UGF.Initialize.Runtime;
 using UnityEngine;
@@ -11,8 +10,11 @@ namespace UGF.Application.Runtime
     /// </summary>
     public abstract class ApplicationLauncher : MonoBehaviour
     {
+        [SerializeField] private ApplicationLauncherResourceLoader m_resourceLoader;
         [SerializeField] private bool m_launchOnStart = true;
         [SerializeField] private bool m_stopOnQuit = true;
+
+        public ApplicationLauncherResourceLoader ResourceLoader { get { return m_resourceLoader; } set { m_resourceLoader = value; } }
 
         /// <summary>
         /// Gets or sets value that determines whether to launch application on start.
@@ -55,14 +57,14 @@ namespace UGF.Application.Runtime
         public event ApplicationHandler Launched;
 
         /// <summary>
-        /// Triggered after launcher is completely stopped and application no longer available.
+        /// Triggered when launcher performs stop.
         /// </summary>
-        public event Action Stopped;
+        public event ApplicationHandler Stopped;
 
         /// <summary>
         /// Triggered when Unity application performs quitting.
         /// </summary>
-        public event Action Quitting;
+        public event ApplicationHandler Quitting;
 
         private InitializeState m_state;
         private IApplication m_application;
@@ -85,9 +87,14 @@ namespace UGF.Application.Runtime
 
         private void OnApplicationQuit()
         {
-            OnQuitting();
+            if (HasApplication)
+            {
+                IApplication application = Application;
 
-            Quitting?.Invoke();
+                OnQuitting(application);
+
+                Quitting?.Invoke(application);
+            }
 
             if (m_stopOnQuit && m_state)
             {
@@ -104,13 +111,22 @@ namespace UGF.Application.Runtime
 
             OnLaunch();
 
-            await PreloadResourcesAsync();
+            IApplicationResources resources;
 
-            IApplication application = CreateApplication() ?? throw new ArgumentNullException(nameof(application), "Result of application creation is null.");
+            if (m_resourceLoader != null)
+            {
+                resources = await m_resourceLoader.LoadAsync() ?? throw new ArgumentNullException(nameof(resources), "Resources not loaded.");
+            }
+            else
+            {
+                resources = new ApplicationResources();
+            }
+
+            IApplication application = CreateApplication(resources) ?? throw new ArgumentNullException(nameof(application), "Application not created.");
 
             InitializeApplication(application);
 
-            await InitializeModulesAsync(application);
+            await application.InitializeAsync();
 
             m_application = application;
 
@@ -128,15 +144,13 @@ namespace UGF.Application.Runtime
 
             IApplication application = Application;
 
-            OnStop(application);
+            OnStopped(application);
+
+            Stopped?.Invoke(application);
 
             UninitializeApplication(application);
 
             m_application = null;
-
-            OnStopped();
-
-            Stopped?.Invoke();
         }
 
         /// <summary>
@@ -147,17 +161,10 @@ namespace UGF.Application.Runtime
         }
 
         /// <summary>
-        /// Invoked before application creation.
-        /// </summary>
-        protected virtual Task PreloadResourcesAsync()
-        {
-            return Task.CompletedTask;
-        }
-
-        /// <summary>
         /// Invoked after resources preload and ready to create application.
         /// </summary>
-        protected abstract IApplication CreateApplication();
+        /// <param name="resources"></param>
+        protected abstract IApplication CreateApplication(IApplicationResources resources);
 
         /// <summary>
         /// Invoked after application creation.
@@ -178,48 +185,38 @@ namespace UGF.Application.Runtime
         }
 
         /// <summary>
-        /// Invoked after application and modules initialized.
-        /// </summary>
-        /// <param name="application">The application.</param>
-        protected virtual async Task InitializeModulesAsync(IApplication application)
-        {
-            foreach (KeyValuePair<Type, IApplicationModule> pair in application.Modules)
-            {
-                if (pair.Value is ApplicationModuleBaseAsync module)
-                {
-                    await module.InitializeAsync();
-                }
-            }
-        }
-
-        /// <summary>
         /// Invoked after all launch completed and application becomes available.
         /// </summary>
         /// <param name="application">The application.</param>
         protected virtual void OnLaunched(IApplication application)
         {
+            if (application is IApplicationLauncherEventHandler handler)
+            {
+                handler.OnLaunched(application);
+            }
         }
 
         /// <summary>
         /// Invoked right at the start of stopping launcher.
         /// </summary>
         /// <param name="application">The application.</param>
-        protected virtual void OnStop(IApplication application)
+        protected virtual void OnStopped(IApplication application)
         {
+            if (application is IApplicationLauncherEventHandler handler)
+            {
+                handler.OnStopped(application);
+            }
         }
 
         /// <summary>
-        /// Invoked after launcher is completely stopped and application no longer available.
+        /// Invoked when Unity application performs quitting, only if application has been created.
         /// </summary>
-        protected virtual void OnStopped()
+        protected virtual void OnQuitting(IApplication application)
         {
-        }
-
-        /// <summary>
-        /// Invoked when Unity application performs quitting.
-        /// </summary>
-        protected virtual void OnQuitting()
-        {
+            if (application is IApplicationLauncherEventHandler handler)
+            {
+                handler.OnQuitting(application);
+            }
         }
     }
 }

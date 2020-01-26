@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace UGF.Application.Runtime
 {
@@ -7,9 +8,9 @@ namespace UGF.Application.Runtime
     {
         public IApplicationConfig Config { get; }
 
-        public ApplicationConfigured(IApplicationConfig config, bool provideStaticInstance = true) : base(provideStaticInstance)
+        public ApplicationConfigured(IApplicationResources resources, bool provideStaticInstance = false) : base(resources, provideStaticInstance)
         {
-            Config = config ?? throw new ArgumentNullException(nameof(config));
+            Config = resources.Get<IApplicationConfig>();
         }
 
         protected override void OnPreInitialize()
@@ -17,6 +18,11 @@ namespace UGF.Application.Runtime
             base.OnPreInitialize();
 
             CreateModules(Config);
+        }
+
+        protected override async Task OnInitializeAsync()
+        {
+            await OnInitializeModulesAsync();
         }
 
         protected override void OnPostUninitialize()
@@ -36,13 +42,37 @@ namespace UGF.Application.Runtime
                 module.Initialize();
             }
 
-            if (Modules.Count != Config.Modules.Count)
+            foreach (KeyValuePair<Type, IApplicationModule> pair in Modules)
             {
-                foreach (KeyValuePair<Type, IApplicationModule> pair in Modules)
+                if (!HasModule(Config, pair.Key))
                 {
-                    if (!pair.Value.IsInitialized)
+                    pair.Value.Initialize();
+                }
+            }
+        }
+
+        protected virtual async Task OnInitializeModulesAsync()
+        {
+            for (int i = 0; i < Config.Modules.Count; i++)
+            {
+                IApplicationModuleInfo info = Config.Modules[i];
+                IApplicationModule module = Modules[info.RegisterType];
+
+                if (module is IApplicationModuleAsync moduleAsync)
+                {
+                    await moduleAsync.InitializeAsync();
+                }
+            }
+
+            foreach (KeyValuePair<Type, IApplicationModule> pair in Modules)
+            {
+                if (!HasModule(Config, pair.Key))
+                {
+                    IApplicationModule module = pair.Value;
+
+                    if (module is IApplicationModuleAsync moduleAsync)
                     {
-                        pair.Value.Initialize();
+                        await moduleAsync.InitializeAsync();
                     }
                 }
             }
@@ -58,14 +88,11 @@ namespace UGF.Application.Runtime
                 module.Uninitialize();
             }
 
-            if (Modules.Count != Config.Modules.Count)
+            foreach (KeyValuePair<Type, IApplicationModule> pair in Modules)
             {
-                foreach (KeyValuePair<Type, IApplicationModule> pair in Modules)
+                if (!HasModule(Config, pair.Key))
                 {
-                    if (pair.Value.IsInitialized)
-                    {
-                        pair.Value.Uninitialize();
-                    }
+                    pair.Value.Uninitialize();
                 }
             }
         }
@@ -75,10 +102,25 @@ namespace UGF.Application.Runtime
             for (int i = 0; i < config.Modules.Count; i++)
             {
                 IApplicationModuleInfo info = config.Modules[i];
-                IApplicationModule module = info.Builder.Build(this);
+                IApplicationModule module = info.Builder.Invoke(this);
 
                 AddModule(info.RegisterType, module);
             }
+        }
+
+        private static bool HasModule(IApplicationConfig config, Type registerType)
+        {
+            for (int i = 0; i < config.Modules.Count; i++)
+            {
+                IApplicationModuleInfo module = config.Modules[i];
+
+                if (module.RegisterType == registerType)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

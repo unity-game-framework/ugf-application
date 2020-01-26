@@ -7,7 +7,7 @@ namespace UGF.Application.Runtime.Tests
         [Test]
         public void Create()
         {
-            var application = new ApplicationUnity(true);
+            var application = new ApplicationUnity(provideStaticInstance: true);
 
             Assert.False(ApplicationInstance.HasApplication);
 

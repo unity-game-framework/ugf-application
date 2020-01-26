@@ -26,13 +26,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - Nothing.
 
+## 4.0.0-preview - 2020-01-26
+- [Commits](https://github.com/unity-game-framework/ugf-application/compare/3.2.0-preview...4.0.0-preview)
+- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/10?closed=1)
+
+### Added
+- `IApplicationResources` replace config loader.
+- `IApplicationModuleAsync` to implement async loading for each module.
+- `IApplication.InitializeAsync` method to implement async initialization.
+- `ApplicationResourceAsset` to use in `ApplicationLauncherResources` component.
+- `IApplicationLauncherEventHandler` to handler launcher events in application and modules.
+
+### Changed
+- `ApplicationLauncher`: rework all events.
+
+### Removed
+- Resource loading from `ApplicationLauncher` use `IApplicationResources` instead.
+- Application config loaders.
+- `ApplicationModuleBaseAsync` use `IApplicationModuleAsync` instead.
+- `IApplicationModuleBuilder` and `ApplicationModuleBuilder` use `ApplicationModuleBuildHandler` instead.
+
+### Fixed
+- `ApplicationModuleInfoAssetEditor` register type display in inspector.
+
 ## 3.2.0-preview - 2020-01-13
 - [Commits](https://github.com/unity-game-framework/ugf-application/compare/3.1.0-preview...3.2.0-preview)
 - [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/9?closed=1)
 
 ### Added
 - `ApplicationLauncher`: `Launched`, `Stopped` and `Quttings` events.
-- `ApplicationLauncher.UninitializeApplication` method wich invoked after launcher is stopped.
+- `ApplicationLauncher.UninitializeApplication` method which invoked after launcher is stopped.
 - `ApplicationLauncherEvents` component with `Launched`, `Stopped` and `Quttings` Unity events.
 
 ## 3.1.0-preview - 2020-01-11

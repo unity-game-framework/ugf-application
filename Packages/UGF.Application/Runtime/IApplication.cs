@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UGF.Initialize.Runtime;
 
 namespace UGF.Application.Runtime
@@ -9,10 +10,14 @@ namespace UGF.Application.Runtime
     /// </summary>
     public interface IApplication : IInitialize
     {
+        IApplicationResources Resources { get; }
+
         /// <summary>
         /// Gets the collection of the all modules.
         /// </summary>
         IReadOnlyDictionary<Type, IApplicationModule> Modules { get; }
+
+        Task InitializeAsync();
 
         /// <summary>
         /// Adds the specified module by the register type.

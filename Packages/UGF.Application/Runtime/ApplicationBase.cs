@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using UGF.Initialize.Runtime;
 
 namespace UGF.Application.Runtime
@@ -8,15 +9,22 @@ namespace UGF.Application.Runtime
     /// <summary>
     /// Represents an abstract implementation of the <see cref="IApplication"/>.
     /// </summary>
-    public abstract class ApplicationBase : InitializeBase, IApplication
+    public abstract class ApplicationBase : InitializeBase, IApplication, IApplicationLauncherEventHandler
     {
+        public IApplicationResources Resources { get; }
         public IReadOnlyDictionary<Type, IApplicationModule> Modules { get; }
 
         private readonly Dictionary<Type, IApplicationModule> m_modules = new Dictionary<Type, IApplicationModule>();
 
-        protected ApplicationBase()
+        protected ApplicationBase(IApplicationResources resources = null)
         {
+            Resources = resources ?? new ApplicationResources();
             Modules = new ReadOnlyDictionary<Type, IApplicationModule>(m_modules);
+        }
+
+        public async Task InitializeAsync()
+        {
+            await OnInitializeAsync();
         }
 
         protected override void OnInitialize()
@@ -24,6 +32,11 @@ namespace UGF.Application.Runtime
             base.OnInitialize();
 
             OnInitializeModules();
+        }
+
+        protected virtual Task OnInitializeAsync()
+        {
+            return Task.CompletedTask;
         }
 
         protected override void OnUninitialize()
@@ -53,6 +66,60 @@ namespace UGF.Application.Runtime
             {
                 pair.Value.Uninitialize();
             }
+        }
+
+        protected virtual void OnLaunched()
+        {
+            foreach (KeyValuePair<Type, IApplicationModule> pair in m_modules)
+            {
+                if (pair.Value is IApplicationLauncherEventHandler handler)
+                {
+                    handler.OnLaunched(this);
+                }
+            }
+        }
+
+        protected virtual void OnStopped()
+        {
+            foreach (KeyValuePair<Type, IApplicationModule> pair in m_modules)
+            {
+                if (pair.Value is IApplicationLauncherEventHandler handler)
+                {
+                    handler.OnStopped(this);
+                }
+            }
+        }
+
+        protected virtual void OnQuitting()
+        {
+            foreach (KeyValuePair<Type, IApplicationModule> pair in m_modules)
+            {
+                if (pair.Value is IApplicationLauncherEventHandler handler)
+                {
+                    handler.OnQuitting(this);
+                }
+            }
+        }
+
+        void IApplicationLauncherEventHandler.OnLaunched(IApplication application)
+        {
+            if (application != this) throw new ArgumentException("Application launcher event handler process another application.");
+
+            OnLaunched();
+        }
+
+        void IApplicationLauncherEventHandler.OnStopped(IApplication application)
+        {
+            if (application != this) throw new ArgumentException("Application launcher event handler process another application.");
+
+            OnStopped();
+        }
+
+        void IApplicationLauncherEventHandler.OnQuitting(IApplication application)
+        {
+            if (application != this) throw new ArgumentException("Application launcher event handler process another application.");
+
+            OnQuitting();
         }
 
         public void AddModule<T>(T module) where T : class, IApplicationModule
