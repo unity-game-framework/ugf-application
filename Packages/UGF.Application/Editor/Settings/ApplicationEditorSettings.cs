@@ -23,7 +23,7 @@ namespace UGF.Application.Editor.Settings
             "ApplicationEditorSettings"
         );
 
-        [SettingsProvider, UsedImplicitly]
+        [SettingsProvider]
         private static SettingsProvider GetProvider()
         {
             return new CustomSettingsProvider<ApplicationEditorSettingsData>("Project/UGF/Application", m_settings, SettingsScope.Project);
