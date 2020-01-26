@@ -23,9 +23,9 @@ namespace UGF.Application.Runtime
         }
 
 #if UNITY_EDITOR
-        protected override void OnQuitting()
+        protected override void OnQuitting(IApplication application)
         {
-            base.OnQuitting();
+            base.OnQuitting(application);
 
             if (m_requestScriptReloadOnQuit)
             {

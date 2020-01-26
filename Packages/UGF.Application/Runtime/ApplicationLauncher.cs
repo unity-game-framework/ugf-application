@@ -57,14 +57,14 @@ namespace UGF.Application.Runtime
         public event ApplicationHandler Launched;
 
         /// <summary>
-        /// Triggered after launcher is completely stopped and application no longer available.
+        /// Triggered when launcher performs stop.
         /// </summary>
-        public event Action Stopped;
+        public event ApplicationHandler Stopped;
 
         /// <summary>
         /// Triggered when Unity application performs quitting.
         /// </summary>
-        public event Action Quitting;
+        public event ApplicationHandler Quitting;
 
         private InitializeState m_state;
         private IApplication m_application;
@@ -87,9 +87,14 @@ namespace UGF.Application.Runtime
 
         private void OnApplicationQuit()
         {
-            OnQuitting();
+            if (HasApplication)
+            {
+                IApplication application = Application;
 
-            Quitting?.Invoke();
+                OnQuitting(application);
+
+                Quitting?.Invoke(application);
+            }
 
             if (m_stopOnQuit && m_state)
             {
@@ -139,15 +144,13 @@ namespace UGF.Application.Runtime
 
             IApplication application = Application;
 
-            OnStop(application);
+            OnStopped(application);
+
+            Stopped?.Invoke(application);
 
             UninitializeApplication(application);
 
             m_application = null;
-
-            OnStopped();
-
-            Stopped?.Invoke();
         }
 
         /// <summary>
@@ -193,21 +196,14 @@ namespace UGF.Application.Runtime
         /// Invoked right at the start of stopping launcher.
         /// </summary>
         /// <param name="application">The application.</param>
-        protected virtual void OnStop(IApplication application)
+        protected virtual void OnStopped(IApplication application)
         {
         }
 
         /// <summary>
-        /// Invoked after launcher is completely stopped and application no longer available.
+        /// Invoked when Unity application performs quitting, only if application has been created.
         /// </summary>
-        protected virtual void OnStopped()
-        {
-        }
-
-        /// <summary>
-        /// Invoked when Unity application performs quitting.
-        /// </summary>
-        protected virtual void OnQuitting()
+        protected virtual void OnQuitting(IApplication application)
         {
         }
     }

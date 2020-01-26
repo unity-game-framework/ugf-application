@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Events;
 
 namespace UGF.Application.Runtime
 {
@@ -7,28 +6,13 @@ namespace UGF.Application.Runtime
     {
         [SerializeField] private ApplicationLauncher m_launcher;
         [SerializeField] private ApplicationHandlerEvent m_launchedEvent = new ApplicationHandlerEvent();
-        [SerializeField] private UnityEvent m_stoppedEvent = new UnityEvent();
-        [SerializeField] private UnityEvent m_quittingEvent = new UnityEvent();
+        [SerializeField] private ApplicationHandlerEvent m_stoppedEvent = new ApplicationHandlerEvent();
+        [SerializeField] private ApplicationHandlerEvent m_quittingEvent = new ApplicationHandlerEvent();
 
-        /// <summary>
-        /// Gets or sets application launcher to subscribe.
-        /// </summary>
         public ApplicationLauncher Launcher { get { return m_launcher; } set { m_launcher = value; } }
-
-        /// <summary>
-        /// Triggered after all launch completed and application becomes available.
-        /// </summary>
         public ApplicationHandlerEvent LaunchedEvent { get { return m_launchedEvent; } }
-
-        /// <summary>
-        /// Triggered after launcher is completely stopped and application no longer available.
-        /// </summary>
-        public UnityEvent StoppedEvent { get { return m_stoppedEvent; } }
-
-        /// <summary>
-        /// Triggered when Unity application performs quitting.
-        /// </summary>
-        public UnityEvent QuittingEvent { get { return m_quittingEvent; } }
+        public ApplicationHandlerEvent StoppedEvent { get { return m_stoppedEvent; } }
+        public ApplicationHandlerEvent QuittingEvent { get { return m_quittingEvent; } }
 
         private void Awake()
         {
@@ -55,14 +39,14 @@ namespace UGF.Application.Runtime
             m_launchedEvent.Invoke(application);
         }
 
-        private void OnStopped()
+        private void OnStopped(IApplication application)
         {
-            m_stoppedEvent.Invoke();
+            m_stoppedEvent.Invoke(application);
         }
 
-        private void OnQuitting()
+        private void OnQuitting(IApplication application)
         {
-            m_quittingEvent.Invoke();
+            m_quittingEvent.Invoke(application);
         }
     }
 }

@@ -60,24 +60,14 @@ namespace UGF.Application.Runtime.Tests
                 Assert.True(application.GetModule<ModuleAsync>().IsInit);
             }
 
-            protected override void OnStop(IApplication application)
+            protected override void OnStopped(IApplication application)
             {
-                base.OnStop(application);
+                base.OnStopped(application);
 
                 Assert.False(IsLaunched);
                 Assert.True(HasApplication);
                 Assert.True(application.GetModule<Module>().IsInit);
                 Assert.True(application.GetModule<ModuleAsync>().IsInit);
-            }
-
-            protected override void OnStopped()
-            {
-                base.OnStopped();
-
-                Assert.False(IsLaunched);
-                Assert.False(HasApplication);
-                Assert.False(m_module.IsInit);
-                Assert.False(m_moduleAsync.IsInit);
 
                 m_module = null;
                 m_moduleAsync = null;
