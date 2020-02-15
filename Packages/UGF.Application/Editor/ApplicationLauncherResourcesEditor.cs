@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace UGF.Application.Editor
 {
-    [CustomEditor(typeof(ApplicationLauncherResources))]
+    [CustomEditor(typeof(ApplicationLauncherResources), true)]
     internal class ApplicationLauncherResourcesEditor : UnityEditor.Editor
     {
         private SerializedProperty m_propertyScript;
