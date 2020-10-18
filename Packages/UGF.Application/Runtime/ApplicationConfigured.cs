@@ -15,6 +15,8 @@ namespace UGF.Application.Runtime
     {
         public IApplicationConfig Config { get; }
 
+        public int Count { get { return m_modules.Count; } }
+
         /// <summary>
         /// Gets or sets value that determines whether to use reverse order when uninitialize modules.
         /// </summary>
@@ -26,6 +28,17 @@ namespace UGF.Application.Runtime
         public ApplicationConfigured(IApplicationConfig config, bool provideStaticInstance = false) : base(provideStaticInstance)
         {
             Config = config ?? throw new ArgumentNullException(nameof(config));
+        }
+
+        protected virtual void OnCreateModules(IApplicationConfig config)
+        {
+            for (int i = 0; i < config.Modules.Count; i++)
+            {
+                IApplicationModuleInfo info = config.Modules[i];
+                IApplicationModule module = info.Builder.Invoke(this);
+
+                AddModule(info.RegisterType, module);
+            }
         }
 
         protected override void OnPreInitialize()
@@ -80,19 +93,26 @@ namespace UGF.Application.Runtime
             }
         }
 
-        public override void AddModule(Type registerType, IApplicationModule module)
+        protected override bool OnHasModule(Type registerType)
         {
-            if (registerType == null) throw new ArgumentNullException(nameof(registerType));
-            if (module == null) throw new ArgumentNullException(nameof(module));
+            return m_modules.ContainsKey(registerType);
+        }
+
+        protected override bool OnHasModule(IApplicationModule module)
+        {
+            return m_order.Contains(module);
+        }
+
+        protected override void OnAddModule(Type registerType, IApplicationModule module)
+        {
             if (IsInitialized) throw new InvalidOperationException("Application modules can not be changed after initialization.");
 
             m_modules.Add(registerType, module);
             m_order.Add(module);
         }
 
-        public override bool RemoveModule(Type registerType)
+        protected override bool OnRemoveModule(Type registerType)
         {
-            if (registerType == null) throw new ArgumentNullException(nameof(registerType));
             if (IsInitialized) throw new InvalidOperationException("Application modules can not be changed after initialization.");
 
             if (m_modules.TryGetValue(registerType, out IApplicationModule module))
@@ -105,7 +125,7 @@ namespace UGF.Application.Runtime
             return false;
         }
 
-        public override void ClearModules()
+        protected override void OnClearModules()
         {
             if (IsInitialized) throw new InvalidOperationException("Application modules can not be changed after initialization.");
 
@@ -113,27 +133,14 @@ namespace UGF.Application.Runtime
             m_order.Clear();
         }
 
-        public override bool TryGetModule(Type registerType, out IApplicationModule module)
+        protected override bool OnTryGetModule(Type registerType, out IApplicationModule module)
         {
-            if (registerType == null) throw new ArgumentNullException(nameof(registerType));
-
             return m_modules.TryGetValue(registerType, out module);
         }
 
-        public override IEnumerator<IApplicationModule> GetEnumerator()
+        protected override IEnumerator<IApplicationModule> OnGetEnumerator()
         {
             return m_order.GetEnumerator();
-        }
-
-        protected virtual void OnCreateModules(IApplicationConfig config)
-        {
-            for (int i = 0; i < config.Modules.Count; i++)
-            {
-                IApplicationModuleInfo info = config.Modules[i];
-                IApplicationModule module = info.Builder.Invoke(this);
-
-                AddModule(info.RegisterType, module);
-            }
         }
     }
 }
