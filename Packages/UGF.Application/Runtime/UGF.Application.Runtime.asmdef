@@ -1,8 +1,8 @@
 {
     "name": "UGF.Application.Runtime",
+    "rootNamespace": "UGF.Application.Runtime",
     "references": [
-        "GUID:d067af32d09350a4bb33960432735e4d",
-        "GUID:6c7389a7d4bbed54e96eb1e71a69798e"
+        "GUID:d067af32d09350a4bb33960432735e4d"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

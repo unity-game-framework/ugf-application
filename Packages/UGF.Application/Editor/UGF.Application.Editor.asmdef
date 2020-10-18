@@ -1,5 +1,6 @@
 {
     "name": "UGF.Application.Editor",
+    "rootNamespace": "UGF.Application.Editor",
     "references": [
         "GUID:a4312e46e9f64bb4aa011ac96ffd2a61",
         "GUID:ff62901452104d14cae29322ac133c05",
