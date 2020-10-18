@@ -9,6 +9,8 @@ namespace UGF.Application.Runtime
     /// </summary>
     public interface IApplication : IInitialize
     {
+        IApplicationResources Resources { get; }
+
         /// <summary>
         /// Initializing created modules which require additional asynchronous initialization.
         /// </summary>

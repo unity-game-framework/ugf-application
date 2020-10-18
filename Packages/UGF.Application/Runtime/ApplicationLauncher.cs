@@ -122,9 +122,9 @@ namespace UGF.Application.Runtime
                 resources = new ApplicationResources();
             }
 
-            IApplication application = CreateApplication(resources) ?? throw new ArgumentNullException(nameof(application), "Application not created.");
+            IApplication application = OnCreateApplication(resources) ?? throw new ArgumentNullException(nameof(application), "Application not created.");
 
-            InitializeApplication(application);
+            OnInitializeApplication(application);
 
             await application.InitializeAsync();
 
@@ -164,13 +164,13 @@ namespace UGF.Application.Runtime
         /// Invoked after resources preload and ready to create application.
         /// </summary>
         /// <param name="resources"></param>
-        protected abstract IApplication CreateApplication(IApplicationResources resources);
+        protected abstract IApplication OnCreateApplication(IApplicationResources resources);
 
         /// <summary>
         /// Invoked after application creation.
         /// </summary>
         /// <param name="application">The application.</param>
-        protected virtual void InitializeApplication(IApplication application)
+        protected virtual void OnInitializeApplication(IApplication application)
         {
             application.Initialize();
         }

@@ -11,6 +11,13 @@ namespace UGF.Application.Runtime
     /// </summary>
     public abstract class ApplicationBase : InitializeBase, IApplication, IEnumerable<IApplicationModule>, IApplicationLauncherEventHandler
     {
+        public IApplicationResources Resources { get; }
+
+        protected ApplicationBase(IApplicationResources resources)
+        {
+            Resources = resources ?? throw new ArgumentNullException(nameof(resources));
+        }
+
         public async Task InitializeAsync()
         {
             await OnInitializeAsync();
@@ -117,13 +124,6 @@ namespace UGF.Application.Runtime
             base.OnPreUninitialize();
 
             OnUninitializeModules();
-        }
-
-        protected override void OnPostUninitialize()
-        {
-            base.OnPostUninitialize();
-
-            ClearModules();
         }
 
         /// <summary>
