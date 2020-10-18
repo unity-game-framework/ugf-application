@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
+using UnityEngine;
 
 namespace UGF.Application.Runtime.Tests
 {
@@ -53,16 +54,24 @@ namespace UGF.Application.Runtime.Tests
             }
         }
 
-        private class ModuleInfo : IApplicationModuleInfo
+        private class ModuleAsset : ApplicationModuleAsset
         {
-            public Type RegisterType { get; }
-            public ApplicationModuleBuildHandler Builder { get; }
+            public override Type RegisterType { get { return Module.GetType(); } }
+            public IApplicationModule Module { get; set; }
 
-            public ModuleInfo(IApplicationModule module)
+            protected override IApplicationModule OnBuild(IApplication application)
             {
-                RegisterType = module.GetType();
-                Builder = application => module;
+                return Module;
             }
+        }
+
+        private static ModuleAsset Create<T>(T module) where T : class, IApplicationModule
+        {
+            var asset = ScriptableObject.CreateInstance<ModuleAsset>();
+
+            asset.Module = module;
+
+            return asset;
         }
 
         [Test]
@@ -72,8 +81,8 @@ namespace UGF.Application.Runtime.Tests
             {
                 Modules =
                 {
-                    new ModuleInfo(new ModuleA()),
-                    new ModuleInfo(new ModuleB())
+                    Create(new ModuleA()),
+                    Create(new ModuleB())
                 }
             };
 
@@ -99,8 +108,8 @@ namespace UGF.Application.Runtime.Tests
             {
                 Modules =
                 {
-                    new ModuleInfo(new ModuleA(() => order.Add("moduleA"))),
-                    new ModuleInfo(new ModuleB(() => order.Add("moduleB")))
+                    Create(new ModuleA(() => order.Add("moduleA"))),
+                    Create(new ModuleB(() => order.Add("moduleB")))
                 }
             };
 
@@ -122,8 +131,8 @@ namespace UGF.Application.Runtime.Tests
             {
                 Modules =
                 {
-                    new ModuleInfo(new ModuleA(() => order.Add("moduleA"))),
-                    new ModuleInfo(new ModuleB(() => order.Add("moduleB")))
+                    Create(new ModuleA(() => order.Add("moduleA"))),
+                    Create(new ModuleB(() => order.Add("moduleB")))
                 }
             };
 
@@ -147,8 +156,8 @@ namespace UGF.Application.Runtime.Tests
             {
                 Modules =
                 {
-                    new ModuleInfo(new ModuleA(uninit: () => order.Add("moduleA"))),
-                    new ModuleInfo(new ModuleB(uninit: () => order.Add("moduleB")))
+                    Create(new ModuleA(uninit: () => order.Add("moduleA"))),
+                    Create(new ModuleB(uninit: () => order.Add("moduleB")))
                 }
             };
 
@@ -171,8 +180,8 @@ namespace UGF.Application.Runtime.Tests
             {
                 Modules =
                 {
-                    new ModuleInfo(new ModuleA(uninit: () => order.Add("moduleA"))),
-                    new ModuleInfo(new ModuleB(uninit: () => order.Add("moduleB")))
+                    Create(new ModuleA(uninit: () => order.Add("moduleA"))),
+                    Create(new ModuleB(uninit: () => order.Add("moduleB")))
                 }
             };
 
