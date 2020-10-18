@@ -77,7 +77,7 @@ namespace UGF.Application.Runtime.Tests
                 }
             };
 
-            var application = new ApplicationConfigured(config);
+            var application = new ApplicationConfigured(new ApplicationResources { config });
 
             application.Initialize();
 
@@ -104,7 +104,7 @@ namespace UGF.Application.Runtime.Tests
                 }
             };
 
-            var application = new ApplicationConfigured(config);
+            var application = new ApplicationConfigured(new ApplicationResources { config });
 
             application.Initialize();
 
@@ -127,7 +127,7 @@ namespace UGF.Application.Runtime.Tests
                 }
             };
 
-            var application = new ApplicationConfigured(config);
+            var application = new ApplicationConfigured(new ApplicationResources { config });
 
             application.AddModule(new ModuleC(() => order.Add("moduleC")));
             application.Initialize();
@@ -152,7 +152,7 @@ namespace UGF.Application.Runtime.Tests
                 }
             };
 
-            var application = new ApplicationConfigured(config);
+            var application = new ApplicationConfigured(new ApplicationResources { config });
 
             application.Initialize();
             application.Uninitialize();
@@ -176,7 +176,7 @@ namespace UGF.Application.Runtime.Tests
                 }
             };
 
-            var application = new ApplicationConfigured(config);
+            var application = new ApplicationConfigured(new ApplicationResources { config });
 
             application.Initialize();
 
@@ -189,9 +189,9 @@ namespace UGF.Application.Runtime.Tests
             application.Uninitialize();
 
             Assert.AreEqual(3, order.Count);
-            Assert.AreEqual("moduleB", order[0]);
-            Assert.AreEqual("moduleA", order[1]);
-            Assert.AreEqual("moduleC", order[2]);
+            Assert.AreEqual("moduleC", order[0]);
+            Assert.AreEqual("moduleB", order[1]);
+            Assert.AreEqual("moduleA", order[2]);
         }
     }
 }

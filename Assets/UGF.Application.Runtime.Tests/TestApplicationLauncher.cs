@@ -22,7 +22,7 @@ namespace UGF.Application.Runtime.Tests
                 Assert.False(HasApplication);
             }
 
-            protected override IApplication CreateApplication(IApplicationResources resources)
+            protected override IApplication OnCreateApplication(IApplicationResources resources)
             {
                 Assert.True(IsLaunched);
                 Assert.False(HasApplication);
@@ -38,9 +38,9 @@ namespace UGF.Application.Runtime.Tests
                 return application;
             }
 
-            protected override void InitializeApplication(IApplication application)
+            protected override void OnInitializeApplication(IApplication application)
             {
-                base.InitializeApplication(application);
+                base.OnInitializeApplication(application);
 
                 Assert.True(IsLaunched);
                 Assert.False(HasApplication);
@@ -79,7 +79,7 @@ namespace UGF.Application.Runtime.Tests
 
         private class Application : ApplicationConfigured
         {
-            public Application() : base(new ApplicationConfig())
+            public Application() : base(new ApplicationResources { new ApplicationConfig() })
             {
             }
         }

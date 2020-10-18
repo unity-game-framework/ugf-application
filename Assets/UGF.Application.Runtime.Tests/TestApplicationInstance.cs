@@ -7,7 +7,7 @@ namespace UGF.Application.Runtime.Tests
     {
         private class Target : ApplicationConfigured
         {
-            public Target() : base(new ApplicationConfig())
+            public Target() : base(new ApplicationResources { new ApplicationConfig() })
             {
             }
         }
