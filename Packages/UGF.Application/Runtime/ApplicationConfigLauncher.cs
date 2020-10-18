@@ -4,7 +4,9 @@ namespace UGF.Application.Runtime
     {
         protected override IApplication CreateApplication(IApplicationResources resources)
         {
-            return new ApplicationConfigured(resources, ProvideStaticInstance);
+            var config = resources.Get<IApplicationConfig>();
+
+            return new ApplicationConfigured(config, ProvideStaticInstance);
         }
     }
 }

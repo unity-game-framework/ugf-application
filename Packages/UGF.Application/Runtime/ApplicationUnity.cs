@@ -3,9 +3,9 @@ using System;
 namespace UGF.Application.Runtime
 {
     /// <summary>
-    /// Represents an unity application implementation.
+    /// Represents an abstract Unity application implementation.
     /// </summary>
-    public class ApplicationUnity : ApplicationBase
+    public abstract class ApplicationUnity : ApplicationBase
     {
         /// <summary>
         /// Gets the value that determines whether application provide static instance via <see cref="ApplicationInstance"/>.
@@ -15,9 +15,8 @@ namespace UGF.Application.Runtime
         /// <summary>
         /// Creates application with specified arguments.
         /// </summary>
-        /// <param name="resources">The application resources.</param>
         /// <param name="provideStaticInstance">The value that determines whether to provide static instance via <see cref="ApplicationInstance"/>.</param>
-        public ApplicationUnity(IApplicationResources resources = null, bool provideStaticInstance = false) : base(resources)
+        protected ApplicationUnity(bool provideStaticInstance = false)
         {
             ProvideStaticInstance = provideStaticInstance;
         }
@@ -30,7 +29,7 @@ namespace UGF.Application.Runtime
             {
                 if (ApplicationInstance.HasApplication)
                 {
-                    throw new InvalidOperationException("The Application static instance already assigned.");
+                    throw new InvalidOperationException("Application static instance already assigned.");
                 }
 
                 ApplicationInstance.Application = this;
@@ -45,7 +44,7 @@ namespace UGF.Application.Runtime
             {
                 if (ApplicationInstance.Application != this)
                 {
-                    throw new InvalidOperationException("The Application static instance already assigned by another application.");
+                    throw new InvalidOperationException("Application static instance already assigned by another application.");
                 }
 
                 ApplicationInstance.Application = null;
