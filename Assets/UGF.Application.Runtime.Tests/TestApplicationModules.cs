@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace UGF.Application.Runtime.Tests
 {
-    public class TestKernelApplication
+    public class TestApplicationModules
     {
         private class ModuleA : ModuleBase
         {
@@ -77,8 +77,7 @@ namespace UGF.Application.Runtime.Tests
                 }
             };
 
-            var resources = new ApplicationResources { config };
-            var application = new ApplicationConfigured(resources, false);
+            var application = new ApplicationConfigured(config);
 
             application.Initialize();
 
@@ -105,8 +104,7 @@ namespace UGF.Application.Runtime.Tests
                 }
             };
 
-            var resources = new ApplicationResources { config };
-            var application = new ApplicationConfigured(resources, false);
+            var application = new ApplicationConfigured(config);
 
             application.Initialize();
 
@@ -129,8 +127,7 @@ namespace UGF.Application.Runtime.Tests
                 }
             };
 
-            var resources = new ApplicationResources { config };
-            var application = new ApplicationConfigured(resources, false);
+            var application = new ApplicationConfigured(config);
 
             application.AddModule(new ModuleC(() => order.Add("moduleC")));
             application.Initialize();
@@ -155,8 +152,7 @@ namespace UGF.Application.Runtime.Tests
                 }
             };
 
-            var resources = new ApplicationResources { config };
-            var application = new ApplicationConfigured(resources, false);
+            var application = new ApplicationConfigured(config);
 
             application.Initialize();
             application.Uninitialize();
@@ -180,8 +176,7 @@ namespace UGF.Application.Runtime.Tests
                 }
             };
 
-            var resources = new ApplicationResources { config };
-            var application = new ApplicationConfigured(resources, false);
+            var application = new ApplicationConfigured(config);
 
             application.Initialize();
 

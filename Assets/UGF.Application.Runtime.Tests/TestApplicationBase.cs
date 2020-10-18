@@ -1,14 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using NUnit.Framework;
 
 namespace UGF.Application.Runtime.Tests
 {
     public class TestApplicationBase
     {
-        private class Application : ApplicationBase
+        private class Application : ApplicationConfigured
         {
+            public Application() : base(new ApplicationConfig())
+            {
+            }
         }
 
         private interface IModule : IApplicationModule
@@ -27,9 +27,8 @@ namespace UGF.Application.Runtime.Tests
 
             application.AddModule<IModule>(module);
 
-            Assert.NotNull(application.Modules);
-            Assert.AreEqual(1, application.Modules.Count);
-            Assert.True(application.Modules.ContainsKey(typeof(IModule)));
+            Assert.AreEqual(1, application.Count);
+            Assert.True(application.HasModule(typeof(IModule)));
         }
 
         [Test]
@@ -69,12 +68,12 @@ namespace UGF.Application.Runtime.Tests
             var application = new Application();
             var module = new Module();
 
-            Assert.AreEqual(0, application.Modules.Count);
+            Assert.AreEqual(0, application.Count);
 
             application.AddModule<IModule>(module);
 
-            Assert.AreEqual(1, application.Modules.Count);
-            Assert.True(application.Modules.Values.Any(x => x == module));
+            Assert.AreEqual(1, application.Count);
+            Assert.True(application.HasModule(module));
         }
 
         [Test]
@@ -83,17 +82,17 @@ namespace UGF.Application.Runtime.Tests
             var application = new Application();
             var module = new Module();
 
-            Assert.AreEqual(0, application.Modules.Count);
+            Assert.AreEqual(0, application.Count);
 
             application.AddModule<IModule>(module);
 
-            Assert.AreEqual(1, application.Modules.Count);
-            Assert.True(application.Modules.Values.Any(x => x == module));
+            Assert.AreEqual(1, application.Count);
+            Assert.True(application.HasModule(module));
 
             application.RemoveModule<IModule>();
 
-            Assert.AreEqual(0, application.Modules.Count);
-            Assert.False(application.Modules.Values.Any(x => x == module));
+            Assert.AreEqual(0, application.Count);
+            Assert.False(application.HasModule(module));
         }
 
         [Test]
@@ -102,17 +101,17 @@ namespace UGF.Application.Runtime.Tests
             var application = new Application();
             var module = new Module();
 
-            Assert.AreEqual(0, application.Modules.Count);
+            Assert.AreEqual(0, application.Count);
 
             application.AddModule<IModule>(module);
 
-            Assert.AreEqual(1, application.Modules.Count);
-            Assert.True(application.Modules.Values.Any(x => x == module));
+            Assert.AreEqual(1, application.Count);
+            Assert.True(application.HasModule(module));
 
             application.ClearModules();
 
-            Assert.AreEqual(0, application.Modules.Count);
-            Assert.False(application.Modules.Values.Any(x => x == module));
+            Assert.AreEqual(0, application.Count);
+            Assert.False(application.HasModule(module));
         }
 
         [Test]
@@ -145,49 +144,6 @@ namespace UGF.Application.Runtime.Tests
             Assert.NotNull(module1);
             Assert.Null(module2);
             Assert.AreEqual(module0, module1);
-        }
-
-        [Test]
-        public void GetRegisterType()
-        {
-            var application = new Application();
-            var module = new Module();
-
-            application.AddModule<IModule>(module);
-
-            Type type = application.GetRegisterType(module);
-
-            Assert.NotNull(type);
-            Assert.AreEqual(typeof(IModule), type);
-        }
-
-        [Test]
-        public void TryGetRegisterType()
-        {
-            var application = new Application();
-            var module = new Module();
-
-            application.AddModule<IModule>(module);
-
-            bool result0 = application.TryGetRegisterType(module, out Type type0);
-            bool result1 = application.TryGetRegisterType(new Module(), out Type type1);
-
-            Assert.True(result0);
-            Assert.False(result1);
-            Assert.NotNull(type0);
-            Assert.Null(type1);
-            Assert.AreEqual(typeof(IModule), type0);
-        }
-
-        [Test]
-        public void GetEnumerator()
-        {
-            var application = new Application();
-
-            foreach (KeyValuePair<Type, IApplicationModule> pair in application)
-            {
-                Assert.NotNull(pair.Key);
-            }
         }
     }
 }
