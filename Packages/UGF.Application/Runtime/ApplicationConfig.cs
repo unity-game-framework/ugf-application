@@ -4,8 +4,8 @@ namespace UGF.Application.Runtime
 {
     public class ApplicationConfig : IApplicationConfig
     {
-        public List<IApplicationModuleInfo> Modules { get; } = new List<IApplicationModuleInfo>();
+        public List<IApplicationModuleAsset> Modules { get; } = new List<IApplicationModuleAsset>();
 
-        IReadOnlyList<IApplicationModuleInfo> IApplicationConfig.Modules { get { return Modules; } }
+        IReadOnlyList<IApplicationModuleAsset> IApplicationConfig.Modules { get { return Modules; } }
     }
 }

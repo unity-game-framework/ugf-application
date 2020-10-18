@@ -15,10 +15,10 @@ namespace UGF.Application.Runtime
         public class ModuleInfo
         {
             [SerializeField] private bool m_active = true;
-            [SerializeField] private ApplicationModuleInfoAsset m_info;
+            [SerializeField] private ApplicationModuleAsset m_module;
 
             public bool Active { get { return m_active; } set { m_active = value; } }
-            public ApplicationModuleInfoAsset Info { get { return m_info; } set { m_info = value; } }
+            public ApplicationModuleAsset Module { get { return m_module; } set { m_module = value; } }
         }
 
         public override IApplicationConfig GetConfig()
@@ -31,11 +31,9 @@ namespace UGF.Application.Runtime
 
                 if (module.Active)
                 {
-                    if (module.Info == null) throw new ArgumentNullException(nameof(module.Info), "Module info asset not specified.");
+                    if (module.Module == null) throw new ArgumentException("Module asset not specified.");
 
-                    IApplicationModuleInfo info = module.Info.GetInfo();
-
-                    config.Modules.Add(info);
+                    config.Modules.Add(module.Module);
                 }
             }
 

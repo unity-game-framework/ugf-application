@@ -15,10 +15,10 @@ namespace UGF.Application.Runtime
 
             for (int i = 0; i < Config.Modules.Count; i++)
             {
-                IApplicationModuleInfo info = Config.Modules[i];
-                IApplicationModule module = info.Builder.Invoke(this);
+                IApplicationModuleAsset asset = Config.Modules[i];
+                IApplicationModule module = asset.Build(this);
 
-                AddModule(info.RegisterType, module);
+                AddModule(asset.RegisterType, module);
             }
         }
     }
