@@ -1,8 +1,8 @@
 {
   "dependencies": {
-    "com.ugf.testing": "0.2.0-preview",
-    "com.unity.ide.rider": "1.1.4",
-    "com.unity.test-framework": "1.1.11"
+    "com.unity.ide.rider": "2.0.7",
+    "com.unity.test-framework": "1.1.18",
+    "com.ugf.testing": "0.2.0-preview"
   },
   "scopedRegistries": [
     {
