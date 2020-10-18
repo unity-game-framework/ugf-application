@@ -2,11 +2,24 @@
     "name": "com.ugf.application",
     "displayName": "UGF.Application",
     "version": "4.1.0-preview",
-    "unity": "2019.3",
-    "description": "The entry point of the application.",
+    "unity": "2020.2",
+    "apiCompatibility": ".NET Standard 2.0",
+    "description": "Provides an entry point of the application with modules initialization.",
     "author": {
         "name": "Unity Game Framework",
         "url": "https://github.com/unity-game-framework"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/unity-game-framework/ugf-application.git"
+    },
+    "changelogUrl": "https://github.com/unity-game-framework/ugf-application/blob/master/changelog.md",
+    "licensesUrl": "https://github.com/unity-game-framework/ugf-application/blob/master/license",
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com/@unity-game-framework"
+    },
+    "bintray": {
+        "registry": "https://api.bintray.com/content/unity-game-framework/public"
     },
     "dependencies": {
         "com.ugf.initialize": "2.1.0-preview",
