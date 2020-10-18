@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UGF.Application.Runtime;
-using UGF.CustomSettings.Editor;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
@@ -37,19 +36,13 @@ namespace UGF.Application.Editor
                 EditorGUILayout.PropertyField(m_propertyScript);
             }
 
-            using (new CustomSettingsInspectorScope())
-            {
-                m_list.DoLayoutList();
-            }
+            m_list.DoLayoutList();
 
             serializedObject.ApplyModifiedProperties();
 
             if (m_editors.Count > 0)
             {
-                using (new CustomSettingsInspectorScope())
-                {
-                    DrawEditors();
-                }
+                DrawEditors();
             }
             else
             {

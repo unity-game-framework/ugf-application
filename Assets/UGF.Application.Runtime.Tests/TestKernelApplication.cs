@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using UGF.Testing.Runtime.Tests;
 
 namespace UGF.Application.Runtime.Tests
 {
-    public class TestKernelApplication : TestNoLogs
+    public class TestKernelApplication
     {
         private class ModuleA : ModuleBase
         {
