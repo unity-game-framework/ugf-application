@@ -36,12 +36,7 @@ namespace UGF.Application.Runtime
 
         public object Get(Type type)
         {
-            if (!TryGet(type, out object resource))
-            {
-                throw new ArgumentException($"Resource by the specified type not found: '{type}'.");
-            }
-
-            return resource;
+            return TryGet(type, out object resource) ? resource : throw new ArgumentException($"Resources not found by the specified type: '{type}'.");
         }
 
         public bool TryGet<T>(out T resource)
