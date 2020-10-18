@@ -1,7 +1,6 @@
 ﻿using UGF.Application.Runtime;
+using UGF.EditorTools.Editor.IMGUI;
 using UnityEditor;
-using UnityEditorInternal;
-using UnityEngine;
 
 namespace UGF.Application.Editor
 {
@@ -9,7 +8,7 @@ namespace UGF.Application.Editor
     internal class ApplicationLauncherResourcesEditor : UnityEditor.Editor
     {
         private SerializedProperty m_propertyScript;
-        private ReorderableList m_list;
+        private ReorderableListDrawer m_list;
 
         private void OnEnable()
         {
@@ -17,10 +16,13 @@ namespace UGF.Application.Editor
 
             SerializedProperty propertyResources = serializedObject.FindProperty("m_resources");
 
-            m_list = new ReorderableList(serializedObject, propertyResources);
-            m_list.drawHeaderCallback = OnDrawHeader;
-            m_list.elementHeight = EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing * 2F;
-            m_list.drawElementCallback = OnDrawElement;
+            m_list = new ReorderableListDrawer(propertyResources);
+            m_list.Enable();
+        }
+
+        private void OnDisable()
+        {
+            m_list.Disable();
         }
 
         public override void OnInspectorGUI()
@@ -32,24 +34,9 @@ namespace UGF.Application.Editor
                 EditorGUILayout.PropertyField(m_propertyScript);
             }
 
-            m_list.DoLayoutList();
+            m_list.DrawGUILayout();
 
             serializedObject.ApplyModifiedProperties();
-        }
-
-        private void OnDrawHeader(Rect rect)
-        {
-            GUI.Label(rect, $"{m_list.serializedProperty.displayName} (Size: {m_list.serializedProperty.arraySize})", EditorStyles.boldLabel);
-        }
-
-        private void OnDrawElement(Rect rect, int index, bool isActive, bool isFocused)
-        {
-            SerializedProperty propertyElement = m_list.serializedProperty.GetArrayElementAtIndex(index);
-
-            rect.y += EditorGUIUtility.standardVerticalSpacing;
-            rect.height = EditorGUIUtility.singleLineHeight;
-
-            EditorGUI.PropertyField(rect, propertyElement, GUIContent.none);
         }
     }
 }

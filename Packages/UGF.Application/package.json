@@ -23,6 +23,7 @@
     },
     "dependencies": {
         "com.ugf.initialize": "2.4.0",
-        "com.ugf.customsettings": "3.0.1"
+        "com.ugf.customsettings": "3.0.1",
+        "com.ugf.editortools": "1.3.1"
     }
 }
