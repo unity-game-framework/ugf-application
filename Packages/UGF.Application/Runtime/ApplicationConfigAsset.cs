@@ -5,14 +5,14 @@ using UnityEngine;
 
 namespace UGF.Application.Runtime
 {
-    [CreateAssetMenu(menuName = "UGF/Application/ApplicationConfig", order = 2000)]
-    public class ApplicationConfigAsset : ApplicationConfigAssetBase
+    [CreateAssetMenu(menuName = "UGF/Application/Application Config", order = 2000)]
+    public class ApplicationConfigAsset : ApplicationResourceAsset
     {
         [SerializeField] private List<EnabledProperty<ApplicationModuleAsset>> m_modules = new List<EnabledProperty<ApplicationModuleAsset>>();
 
         public List<EnabledProperty<ApplicationModuleAsset>> Modules { get { return m_modules; } }
 
-        public override IApplicationConfig GetConfig()
+        public override object GetResource()
         {
             var config = new ApplicationConfig();
 

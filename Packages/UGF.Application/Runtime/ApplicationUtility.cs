@@ -7,7 +7,7 @@ namespace UGF.Application.Runtime
     {
         public static async Task AddResources(IApplicationResources resources, IEnumerable<object> resourcesToAdd)
         {
-            foreach (object element in resources)
+            foreach (object element in resourcesToAdd)
             {
                 switch (element)
                 {
