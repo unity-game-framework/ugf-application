@@ -14,7 +14,7 @@ namespace UGF.Application.Editor
 
         private class Styles
         {
-            public GUIContent ConfigLabel { get; } = new GUIContent("Project Config", "This is global project config used from Application Config Project asset " +
+            public GUIContent ConfigLabel { get; } = new GUIContent("Project Config", "This is global project config used from Application Project Config Resource asset " +
                                                                                       "which can be specified in Application Launcher Resources component to load config from project settings during initialization.");
         }
 
