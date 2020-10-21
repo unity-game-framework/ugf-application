@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace UGF.Application.Runtime
@@ -7,30 +8,19 @@ namespace UGF.Application.Runtime
     {
         public static async Task AddResources(IApplicationResources resources, IEnumerable<object> resourcesToAdd)
         {
+            if (resources == null) throw new ArgumentNullException(nameof(resources));
+            if (resourcesToAdd == null) throw new ArgumentNullException(nameof(resourcesToAdd));
+
             foreach (object element in resourcesToAdd)
             {
-                switch (element)
+                object resource = element switch
                 {
-                    case ApplicationResourceAsset asset:
-                    {
-                        object resource = asset.GetResource();
+                    ApplicationResourceAsset asset => asset.GetResource(),
+                    ApplicationResourceAsyncAsset assetAsync => await assetAsync.GetResourceAsync(),
+                    _ => element
+                } ?? throw new ArgumentException($"Resource not provided: '{element}'.");
 
-                        resources.Add(resource);
-                        break;
-                    }
-                    case ApplicationResourceAsyncAsset assetAsync:
-                    {
-                        object resource = await assetAsync.GetResourceAsync();
-
-                        resources.Add(resource);
-                        break;
-                    }
-                    default:
-                    {
-                        resources.Add(element);
-                        break;
-                    }
-                }
+                resources.Add(resource);
             }
         }
     }

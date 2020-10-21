@@ -85,9 +85,9 @@ namespace UGF.Application.Runtime
 
         public bool TryGetModule<T>(out T module) where T : class, IApplicationModule
         {
-            if (TryGetModule(typeof(T), out IApplicationModule value) && value is T result)
+            if (TryGetModule(typeof(T), out IApplicationModule value))
             {
-                module = result;
+                module = (T)value;
                 return true;
             }
 

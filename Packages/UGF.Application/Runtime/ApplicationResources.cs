@@ -12,6 +12,8 @@ namespace UGF.Application.Runtime
 
         public bool Contains(object resource)
         {
+            if (resource == null) throw new ArgumentNullException(nameof(resource));
+
             return m_resources.Contains(resource);
         }
 

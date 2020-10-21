@@ -2,7 +2,7 @@
 
 namespace UGF.Application.Runtime
 {
-    public sealed class ApplicationLauncherEvents : MonoBehaviour
+    public class ApplicationLauncherEvents : MonoBehaviour
     {
         [SerializeField] private ApplicationLauncher m_launcher;
         [SerializeField] private ApplicationHandlerEvent m_launchedEvent = new ApplicationHandlerEvent();
@@ -14,7 +14,7 @@ namespace UGF.Application.Runtime
         public ApplicationHandlerEvent StoppedEvent { get { return m_stoppedEvent; } }
         public ApplicationHandlerEvent QuittingEvent { get { return m_quittingEvent; } }
 
-        private void Awake()
+        private void Start()
         {
             if (m_launcher != null)
             {
