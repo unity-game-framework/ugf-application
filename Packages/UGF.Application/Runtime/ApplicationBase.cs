@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using UGF.Initialize.Runtime;
 
@@ -10,22 +9,102 @@ namespace UGF.Application.Runtime
     /// <summary>
     /// Represents an abstract implementation of the <see cref="IApplication"/>.
     /// </summary>
-    public abstract class ApplicationBase : InitializeBase, IApplication, IEnumerable<KeyValuePair<Type, IApplicationModule>>, IApplicationLauncherEventHandler
+    public abstract class ApplicationBase : InitializeBase, IApplication, IEnumerable<IApplicationModule>, IApplicationLauncherEventHandler
     {
         public IApplicationResources Resources { get; }
-        public IReadOnlyDictionary<Type, IApplicationModule> Modules { get; }
 
-        private readonly Dictionary<Type, IApplicationModule> m_modules = new Dictionary<Type, IApplicationModule>();
-
-        protected ApplicationBase(IApplicationResources resources = null)
+        protected ApplicationBase(IApplicationResources resources)
         {
-            Resources = resources ?? new ApplicationResources();
-            Modules = new ReadOnlyDictionary<Type, IApplicationModule>(m_modules);
+            Resources = resources ?? throw new ArgumentNullException(nameof(resources));
         }
 
         public async Task InitializeAsync()
         {
             await OnInitializeAsync();
+            await OnInitializeModulesAsync();
+        }
+
+        public bool HasModule<T>() where T : class, IApplicationModule
+        {
+            return HasModule(typeof(T));
+        }
+
+        public bool HasModule(Type registerType)
+        {
+            if (registerType == null) throw new ArgumentNullException(nameof(registerType));
+
+            return OnHasModule(registerType);
+        }
+
+        public bool HasModule(IApplicationModule module)
+        {
+            if (module == null) throw new ArgumentNullException(nameof(module));
+
+            return OnHasModule(module);
+        }
+
+        public void AddModule<T>(T module) where T : class, IApplicationModule
+        {
+            AddModule(typeof(T), module);
+        }
+
+        public void AddModule<T>(IApplicationModule module) where T : class, IApplicationModule
+        {
+            AddModule(typeof(T), module);
+        }
+
+        public void AddModule(Type registerType, IApplicationModule module)
+        {
+            if (registerType == null) throw new ArgumentNullException(nameof(registerType));
+            if (module == null) throw new ArgumentNullException(nameof(module));
+
+            OnAddModule(registerType, module);
+        }
+
+        public bool RemoveModule<T>() where T : class, IApplicationModule
+        {
+            return RemoveModule(typeof(T));
+        }
+
+        public bool RemoveModule(Type registerType)
+        {
+            if (registerType == null) throw new ArgumentNullException(nameof(registerType));
+
+            return OnRemoveModule(registerType);
+        }
+
+        public void ClearModules()
+        {
+            OnClearModules();
+        }
+
+        public T GetModule<T>() where T : class, IApplicationModule
+        {
+            return TryGetModule(out T module) ? module : throw new ArgumentException($"Module not found by the specified type: '{typeof(T)}'.");
+        }
+
+        public bool TryGetModule<T>(out T module) where T : class, IApplicationModule
+        {
+            if (TryGetModule(typeof(T), out IApplicationModule value))
+            {
+                module = (T)value;
+                return true;
+            }
+
+            module = default;
+            return false;
+        }
+
+        public bool TryGetModule(Type registerType, out IApplicationModule module)
+        {
+            if (registerType == null) throw new ArgumentNullException(nameof(registerType));
+
+            return OnTryGetModule(registerType, out module);
+        }
+
+        public IEnumerator<IApplicationModule> GetEnumerator()
+        {
+            return OnGetEnumerator();
         }
 
         protected override void OnPostInitialize()
@@ -35,6 +114,11 @@ namespace UGF.Application.Runtime
             OnInitializeModules();
         }
 
+        protected virtual Task OnInitializeAsync()
+        {
+            return Task.CompletedTask;
+        }
+
         protected override void OnPreUninitialize()
         {
             base.OnPreUninitialize();
@@ -42,165 +126,53 @@ namespace UGF.Application.Runtime
             OnUninitializeModules();
         }
 
-        protected virtual Task OnInitializeAsync()
-        {
-            return Task.CompletedTask;
-        }
-
         /// <summary>
         /// Invoked on modules initialization.
         /// </summary>
-        protected virtual void OnInitializeModules()
-        {
-            foreach (KeyValuePair<Type, IApplicationModule> pair in m_modules)
-            {
-                pair.Value.Initialize();
-            }
-        }
+        protected abstract void OnInitializeModules();
+
+        /// <summary>
+        /// Invoked after all modules created and initialized.
+        /// </summary>
+        protected abstract Task OnInitializeModulesAsync();
 
         /// <summary>
         /// Invoked on modules uninitialization.
         /// </summary>
-        protected virtual void OnUninitializeModules()
-        {
-            foreach (KeyValuePair<Type, IApplicationModule> pair in m_modules)
-            {
-                pair.Value.Uninitialize();
-            }
-        }
+        protected abstract void OnUninitializeModules();
 
+        protected abstract bool OnHasModule(Type registerType);
+        protected abstract bool OnHasModule(IApplicationModule module);
+        protected abstract void OnAddModule(Type registerType, IApplicationModule module);
+        protected abstract bool OnRemoveModule(Type registerType);
+        protected abstract void OnClearModules();
+        protected abstract bool OnTryGetModule(Type registerType, out IApplicationModule module);
+        protected abstract IEnumerator<IApplicationModule> OnGetEnumerator();
+
+        /// <summary>
+        /// Invoked after application creation and initialization.
+        /// </summary>
         protected virtual void OnLaunched()
         {
-            foreach (KeyValuePair<Type, IApplicationModule> pair in m_modules)
-            {
-                if (pair.Value is IApplicationLauncherEventHandler handler)
-                {
-                    handler.OnLaunched(this);
-                }
-            }
         }
 
+        /// <summary>
+        /// Invoked before uninitialize and destroy application.
+        /// </summary>
         protected virtual void OnStopped()
         {
-            foreach (KeyValuePair<Type, IApplicationModule> pair in m_modules)
-            {
-                if (pair.Value is IApplicationLauncherEventHandler handler)
-                {
-                    handler.OnStopped(this);
-                }
-            }
         }
 
+        /// <summary>
+        /// Invoked when Unity performs quitting and before active application stops.
+        /// </summary>
         protected virtual void OnQuitting()
         {
-            foreach (KeyValuePair<Type, IApplicationModule> pair in m_modules)
-            {
-                if (pair.Value is IApplicationLauncherEventHandler handler)
-                {
-                    handler.OnQuitting(this);
-                }
-            }
-        }
-
-        public void AddModule<T>(T module) where T : class, IApplicationModule
-        {
-            AddModule(typeof(T), module);
-        }
-
-        public void AddModule<T>(IApplicationModule module) where T : IApplicationModule
-        {
-            AddModule(typeof(T), module);
-        }
-
-        public void AddModule(Type registerType, IApplicationModule module)
-        {
-            if (module == null) throw new ArgumentNullException(nameof(module));
-            if (registerType == null) throw new ArgumentNullException(nameof(registerType));
-
-            m_modules.Add(registerType, module);
-        }
-
-        public bool RemoveModule<T>() where T : IApplicationModule
-        {
-            return RemoveModule(typeof(T));
-        }
-
-        public bool RemoveModule(Type registerType)
-        {
-            if (registerType == null) throw new ArgumentNullException(nameof(registerType));
-
-            return m_modules.Remove(registerType);
-        }
-
-        public void ClearModules()
-        {
-            m_modules.Clear();
-        }
-
-        public T GetModule<T>() where T : IApplicationModule
-        {
-            if (!TryGetModule(out T module))
-            {
-                throw new ArgumentException($"No module found by the specified type: '{typeof(T)}'.");
-            }
-
-            return module;
-        }
-
-        public bool TryGetModule<T>(out T module) where T : IApplicationModule
-        {
-            if (m_modules.TryGetValue(typeof(T), out IApplicationModule result) && result is T cast)
-            {
-                module = cast;
-                return true;
-            }
-
-            module = default;
-            return false;
-        }
-
-        public Type GetRegisterType(IApplicationModule module)
-        {
-            if (module == null) throw new ArgumentNullException(nameof(module));
-
-            if (!TryGetRegisterType(module, out Type type))
-            {
-                throw new ArgumentException($"The register type not found for specified module: '{module}'.", nameof(module));
-            }
-
-            return type;
-        }
-
-        public bool TryGetRegisterType(IApplicationModule module, out Type registerType)
-        {
-            if (module == null) throw new ArgumentNullException(nameof(module));
-
-            foreach (KeyValuePair<Type, IApplicationModule> pair in m_modules)
-            {
-                if (pair.Value == module)
-                {
-                    registerType = pair.Key;
-                    return true;
-                }
-            }
-
-            registerType = null;
-            return false;
-        }
-
-        public Dictionary<Type, IApplicationModule>.Enumerator GetEnumerator()
-        {
-            return m_modules.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return m_modules.GetEnumerator();
-        }
-
-        IEnumerator<KeyValuePair<Type, IApplicationModule>> IEnumerable<KeyValuePair<Type, IApplicationModule>>.GetEnumerator()
-        {
-            return m_modules.GetEnumerator();
+            return GetEnumerator();
         }
 
         void IApplicationLauncherEventHandler.OnLaunched(IApplication application)

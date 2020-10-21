@@ -2,7 +2,7 @@
 
 namespace UGF.Application.Runtime
 {
-    public interface IApplicationModuleAsync
+    public interface IApplicationModuleAsync : IApplicationModule
     {
         Task InitializeAsync();
     }

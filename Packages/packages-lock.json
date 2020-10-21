@@ -1,0 +1,76 @@
+{
+  "dependencies": {
+    "com.ugf.application": {
+      "version": "file:UGF.Application",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.ugf.initialize": "2.4.0",
+        "com.ugf.customsettings": "3.0.1",
+        "com.ugf.editortools": "1.4.1"
+      }
+    },
+    "com.ugf.customsettings": {
+      "version": "3.0.1",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.ugf.editortools": "1.1.0"
+      },
+      "url": "https://api.bintray.com/npm/unity-game-framework/public"
+    },
+    "com.ugf.editortools": {
+      "version": "1.4.1",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://api.bintray.com/npm/unity-game-framework/public"
+    },
+    "com.ugf.initialize": {
+      "version": "2.4.0",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://api.bintray.com/npm/unity-game-framework/public"
+    },
+    "com.unity.ext.nunit": {
+      "version": "1.0.0",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.ide.rider": {
+      "version": "2.0.7",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.test-framework": "1.1.1"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.test-framework": {
+      "version": "1.1.18",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.ext.nunit": "1.0.0",
+        "com.unity.modules.imgui": "1.0.0",
+        "com.unity.modules.jsonserialize": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.modules.imgui": {
+      "version": "1.0.0",
+      "depth": 1,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.jsonserialize": {
+      "version": "1.0.0",
+      "depth": 1,
+      "source": "builtin",
+      "dependencies": {}
+    }
+  }
+}
