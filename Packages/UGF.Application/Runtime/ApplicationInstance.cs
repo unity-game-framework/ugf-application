@@ -10,19 +10,7 @@ namespace UGF.Application.Runtime
         /// <summary>
         /// Gets or sets an instance of the application.
         /// </summary>
-        public static IApplication Application
-        {
-            get
-            {
-                if (m_application == null)
-                {
-                    throw new InvalidOperationException("The application is not assigned.");
-                }
-
-                return m_application;
-            }
-            set { m_application = value; }
-        }
+        public static IApplication Application { get { return m_application ?? throw new InvalidOperationException("Application is not assigned."); } set { m_application = value; } }
 
         /// <summary>
         /// Gets the value that determines whether instance of the application is specified.

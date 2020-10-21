@@ -6,7 +6,7 @@ using UnityEngine;
 namespace UGF.Application.Runtime
 {
     /// <summary>
-    /// Represents a <see cref="MonoBehaviour"/> that create and initialize application.
+    /// Represents component which load, create and initialize application.
     /// </summary>
     public abstract class ApplicationLauncher : MonoBehaviour
     {
@@ -122,9 +122,9 @@ namespace UGF.Application.Runtime
                 resources = new ApplicationResources();
             }
 
-            IApplication application = CreateApplication(resources) ?? throw new ArgumentNullException(nameof(application), "Application not created.");
+            IApplication application = OnCreateApplication(resources) ?? throw new ArgumentNullException(nameof(application), "Application not created.");
 
-            InitializeApplication(application);
+            OnInitializeApplication(application);
 
             await application.InitializeAsync();
 
@@ -164,13 +164,13 @@ namespace UGF.Application.Runtime
         /// Invoked after resources preload and ready to create application.
         /// </summary>
         /// <param name="resources"></param>
-        protected abstract IApplication CreateApplication(IApplicationResources resources);
+        protected abstract IApplication OnCreateApplication(IApplicationResources resources);
 
         /// <summary>
         /// Invoked after application creation.
         /// </summary>
         /// <param name="application">The application.</param>
-        protected virtual void InitializeApplication(IApplication application)
+        protected virtual void OnInitializeApplication(IApplication application)
         {
             application.Initialize();
         }
@@ -185,9 +185,9 @@ namespace UGF.Application.Runtime
         }
 
         /// <summary>
-        /// Invoked after all launch completed and application becomes available.
+        /// Invoked after application creation and initialization.
         /// </summary>
-        /// <param name="application">The application.</param>
+        /// <param name="application">The active and initialized application.</param>
         protected virtual void OnLaunched(IApplication application)
         {
             if (application is IApplicationLauncherEventHandler handler)
@@ -197,9 +197,9 @@ namespace UGF.Application.Runtime
         }
 
         /// <summary>
-        /// Invoked right at the start of stopping launcher.
+        /// Invoked before uninitialize and destroy application.
         /// </summary>
-        /// <param name="application">The application.</param>
+        /// <param name="application">The active and initialized application.</param>
         protected virtual void OnStopped(IApplication application)
         {
             if (application is IApplicationLauncherEventHandler handler)
@@ -209,8 +209,9 @@ namespace UGF.Application.Runtime
         }
 
         /// <summary>
-        /// Invoked when Unity application performs quitting, only if application has been created.
+        /// Invoked when Unity performs quitting and before active application stops.
         /// </summary>
+        /// <param name="application">The active and initialized application.</param>
         protected virtual void OnQuitting(IApplication application)
         {
             if (application is IApplicationLauncherEventHandler handler)

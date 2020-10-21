@@ -11,30 +11,13 @@ namespace UGF.Application.Runtime
 
         public List<Object> Resources { get { return m_resources; } }
 
-        public override Task<IApplicationResources> LoadAsync()
+        public override async Task<IApplicationResources> LoadAsync()
         {
             var resources = new ApplicationResources();
 
-            AddResources(resources);
+            await ApplicationUtility.AddResources(resources, m_resources);
 
-            return Task.FromResult((IApplicationResources)resources);
-        }
-
-        protected void AddResources(IApplicationResources resources)
-        {
-            for (int i = 0; i < m_resources.Count; i++)
-            {
-                Object resource = m_resources[i];
-
-                if (resource is ApplicationResourceAsset resourceAsset)
-                {
-                    resources.Add(resourceAsset.GetResource());
-                }
-                else
-                {
-                    resources.Add(resource);
-                }
-            }
+            return resources;
         }
     }
 }

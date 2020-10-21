@@ -5,8 +5,11 @@ namespace UGF.Application.Runtime.Tests
 {
     public class TestApplicationInstance
     {
-        private class Target : ApplicationBase
+        private class Target : ApplicationConfigured
         {
+            public Target() : base(new ApplicationResources { new ApplicationConfig() })
+            {
+            }
         }
 
         [Test]

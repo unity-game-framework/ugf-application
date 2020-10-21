@@ -1,18 +1,21 @@
-using System.Collections.Generic;
 using UGF.Application.Runtime;
-using UGF.CustomSettings.Editor;
+using UGF.EditorTools.Editor.IMGUI;
+using UGF.EditorTools.Editor.IMGUI.EnabledProperty;
 using UnityEditor;
 using UnityEditorInternal;
-using UnityEngine;
 
 namespace UGF.Application.Editor
 {
     [CustomEditor(typeof(ApplicationConfigAsset), true)]
     internal class ApplicationConfigAssetEditor : UnityEditor.Editor
     {
-        private readonly Dictionary<SerializedProperty, UnityEditor.Editor> m_editors = new Dictionary<SerializedProperty, UnityEditor.Editor>();
+        private readonly EditorDrawer m_drawer = new EditorDrawer
+        {
+            DisplayTitlebar = true
+        };
+
         private SerializedProperty m_propertyScript;
-        private ReorderableList m_list;
+        private EnabledPropertyListDrawer m_list;
 
         private void OnEnable()
         {
@@ -20,12 +23,17 @@ namespace UGF.Application.Editor
 
             SerializedProperty propertyModules = serializedObject.FindProperty("m_modules");
 
-            m_list = new ReorderableList(serializedObject, propertyModules);
-            m_list.drawHeaderCallback = OnDrawHeader;
-            m_list.drawElementCallback = OnDrawElement;
-            m_list.elementHeightCallback = OnElementHeight;
-            m_list.onAddCallback = OnAdd;
-            m_list.onSelectCallback = OnSelect;
+            m_list = new EnabledPropertyListDrawer(propertyModules);
+            m_list.List.onSelectCallback = OnSelect;
+
+            m_list.Enable();
+            m_drawer.Disable();
+        }
+
+        private void OnDisable()
+        {
+            m_list.Disable();
+            m_drawer.Disable();
         }
 
         public override void OnInspectorGUI()
@@ -37,121 +45,40 @@ namespace UGF.Application.Editor
                 EditorGUILayout.PropertyField(m_propertyScript);
             }
 
-            using (new CustomSettingsInspectorScope())
-            {
-                m_list.DoLayoutList();
-            }
+            m_list.DrawGUILayout();
 
             serializedObject.ApplyModifiedProperties();
 
-            if (m_editors.Count > 0)
+            if (m_drawer.HasEditor)
             {
-                using (new CustomSettingsInspectorScope())
-                {
-                    DrawEditors();
-                }
+                m_drawer.DrawGUILayout();
             }
             else
             {
-                EditorGUILayout.HelpBox("Select any module to display settings.", MessageType.Info);
+                EditorGUILayout.HelpBox("Select any module to display.", MessageType.Info);
             }
-        }
-
-        private void OnDrawHeader(Rect rect)
-        {
-            string label = $"Modules (Size: {m_list.count})";
-
-            GUI.Label(rect, label, EditorStyles.boldLabel);
-        }
-
-        private void OnDrawElement(Rect rect, int index, bool isActive, bool isFocused)
-        {
-            SerializedProperty propertyElement = m_list.serializedProperty.GetArrayElementAtIndex(index);
-            SerializedProperty propertyActive = propertyElement.FindPropertyRelative("m_active");
-            SerializedProperty propertyInfo = propertyElement.FindPropertyRelative("m_info");
-
-            float spacing = EditorGUIUtility.standardVerticalSpacing;
-            float heightActive = EditorGUI.GetPropertyHeight(propertyActive);
-            float heightInfo = EditorGUI.GetPropertyHeight(propertyInfo);
-
-            rect.y += spacing;
-
-            var rectActive = new Rect(rect.x, rect.y, 15F, heightActive);
-            var rectBuilder = new Rect(rectActive.xMax + spacing, rect.y, rect.width - rectActive.width - spacing, heightInfo);
-
-            propertyActive.boolValue = GUI.Toggle(rectActive, propertyActive.boolValue, GUIContent.none);
-
-            EditorGUI.PropertyField(rectBuilder, propertyInfo, GUIContent.none);
-        }
-
-        private float OnElementHeight(int index)
-        {
-            float spacing = EditorGUIUtility.standardVerticalSpacing;
-            float height = EditorGUIUtility.singleLineHeight;
-
-            return height + spacing * 2F;
-        }
-
-        private void OnAdd(ReorderableList list)
-        {
-            SerializedProperty propertyModules = list.serializedProperty;
-
-            propertyModules.InsertArrayElementAtIndex(propertyModules.arraySize);
-
-            SerializedProperty propertyElement = propertyModules.GetArrayElementAtIndex(propertyModules.arraySize - 1);
-            SerializedProperty propertyActive = propertyElement.FindPropertyRelative("m_active");
-            SerializedProperty propertyInfo = propertyElement.FindPropertyRelative("m_info");
-
-            propertyActive.boolValue = true;
-            propertyInfo.objectReferenceValue = null;
-
-            serializedObject.ApplyModifiedProperties();
         }
 
         private void OnSelect(ReorderableList list)
         {
-            SerializedProperty propertyElement = list.serializedProperty.GetArrayElementAtIndex(list.index);
-
-            ClearEditors();
-            CreateEditors(propertyElement);
-        }
-
-        private void DrawEditors()
-        {
-            foreach (KeyValuePair<SerializedProperty, UnityEditor.Editor> pair in m_editors)
+            if (list.index >= 0 && list.index < list.count)
             {
-                SerializedProperty serializedProperty = pair.Key;
-                UnityEditor.Editor editor = pair.Value;
+                SerializedProperty propertyElement = m_list.SerializedProperty.GetArrayElementAtIndex(list.index);
+                SerializedProperty propertyModule = propertyElement.FindPropertyRelative("m_value");
 
-                serializedProperty.isExpanded = EditorGUILayout.InspectorTitlebar(serializedProperty.isExpanded, editor);
-
-                if (serializedProperty.isExpanded)
+                if (propertyModule.objectReferenceValue != null)
                 {
-                    editor.OnInspectorGUI();
+                    m_drawer.Set(propertyModule.objectReferenceValue);
+                }
+                else
+                {
+                    m_drawer.Clear();
                 }
             }
-        }
-
-        private void CreateEditors(SerializedProperty propertyElement)
-        {
-            SerializedProperty propertyInfo = propertyElement.FindPropertyRelative("m_info");
-
-            if (propertyInfo.objectReferenceValue != null)
+            else
             {
-                UnityEditor.Editor editor = CreateEditor(propertyInfo.objectReferenceValue);
-
-                m_editors.Add(propertyElement, editor);
+                m_drawer.Clear();
             }
-        }
-
-        private void ClearEditors()
-        {
-            foreach (KeyValuePair<SerializedProperty, UnityEditor.Editor> pair in m_editors)
-            {
-                DestroyImmediate(pair.Value);
-            }
-
-            m_editors.Clear();
         }
     }
 }

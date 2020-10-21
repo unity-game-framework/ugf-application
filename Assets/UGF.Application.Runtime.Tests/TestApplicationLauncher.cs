@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using UnityEngine;
@@ -24,7 +22,7 @@ namespace UGF.Application.Runtime.Tests
                 Assert.False(HasApplication);
             }
 
-            protected override IApplication CreateApplication(IApplicationResources resources)
+            protected override IApplication OnCreateApplication(IApplicationResources resources)
             {
                 Assert.True(IsLaunched);
                 Assert.False(HasApplication);
@@ -40,9 +38,9 @@ namespace UGF.Application.Runtime.Tests
                 return application;
             }
 
-            protected override void InitializeApplication(IApplication application)
+            protected override void OnInitializeApplication(IApplication application)
             {
-                base.InitializeApplication(application);
+                base.OnInitializeApplication(application);
 
                 Assert.True(IsLaunched);
                 Assert.False(HasApplication);
@@ -79,17 +77,10 @@ namespace UGF.Application.Runtime.Tests
             }
         }
 
-        private class Application : ApplicationBase
+        private class Application : ApplicationConfigured
         {
-            protected override async Task OnInitializeAsync()
+            public Application() : base(new ApplicationResources { new ApplicationConfig() })
             {
-                foreach (KeyValuePair<Type, IApplicationModule> pair in Modules)
-                {
-                    if (pair.Value is IApplicationModuleAsync module)
-                    {
-                        await module.InitializeAsync();
-                    }
-                }
             }
         }
 

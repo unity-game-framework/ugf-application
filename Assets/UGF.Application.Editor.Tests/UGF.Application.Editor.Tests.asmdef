@@ -1,8 +1,10 @@
 {
     "name": "UGF.Application.Editor.Tests",
+    "rootNamespace": "",
     "references": [
         "GUID:a4312e46e9f64bb4aa011ac96ffd2a61",
-        "GUID:0a8cfea8c226a8041bc7a5979811d462"
+        "GUID:0a8cfea8c226a8041bc7a5979811d462",
+        "GUID:d067af32d09350a4bb33960432735e4d"
     ],
     "includePlatforms": [
         "Editor"

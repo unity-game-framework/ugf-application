@@ -4,6 +4,6 @@ namespace UGF.Application.Runtime
 {
     public interface IApplicationConfig
     {
-        IReadOnlyList<IApplicationModuleInfo> Modules { get; }
+        IReadOnlyList<IApplicationModuleAsset> Modules { get; }
     }
 }

@@ -1,41 +1,30 @@
 using System;
 using System.Collections.Generic;
+using UGF.EditorTools.Runtime.IMGUI.EnabledProperty;
 using UnityEngine;
 
 namespace UGF.Application.Runtime
 {
-    [CreateAssetMenu(menuName = "UGF/Application/ApplicationConfig", order = 2000)]
-    public class ApplicationConfigAsset : ApplicationConfigAssetBase
+    [CreateAssetMenu(menuName = "UGF/Application/Application Config", order = 2000)]
+    public class ApplicationConfigAsset : ApplicationResourceAsset
     {
-        [SerializeField] private List<ModuleInfo> m_modules = new List<ModuleInfo>();
+        [SerializeField] private List<EnabledProperty<ApplicationModuleAsset>> m_modules = new List<EnabledProperty<ApplicationModuleAsset>>();
 
-        public List<ModuleInfo> Modules { get { return m_modules; } }
+        public List<EnabledProperty<ApplicationModuleAsset>> Modules { get { return m_modules; } }
 
-        [Serializable]
-        public class ModuleInfo
-        {
-            [SerializeField] private bool m_active = true;
-            [SerializeField] private ApplicationModuleInfoAsset m_info;
-
-            public bool Active { get { return m_active; } set { m_active = value; } }
-            public ApplicationModuleInfoAsset Info { get { return m_info; } set { m_info = value; } }
-        }
-
-        public override IApplicationConfig GetConfig()
+        public override object GetResource()
         {
             var config = new ApplicationConfig();
 
             for (int i = 0; i < m_modules.Count; i++)
             {
-                ModuleInfo module = m_modules[i];
+                EnabledProperty<ApplicationModuleAsset> module = m_modules[i];
 
-                if (module.Active)
+                if (module.Enabled)
                 {
-                    if (module.Info == null) throw new ArgumentNullException(nameof(module.Info), "A module info asset not specified.");
+                    if (module.Value == null) throw new ArgumentException("Module asset not specified.");
 
-                    IApplicationModuleInfo info = module.Info.GetInfo();
-
-                    config.Modules.Add(info);
+                    config.Modules.Add(module.Value);
                 }
             }
 
