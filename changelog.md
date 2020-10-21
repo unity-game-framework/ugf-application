@@ -1,32 +1,40 @@
 # Changelog
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased - 2020-01-01
-- [Commits](https://github.com/unity-game-framework/ugf-application/compare/0.0.0...0.0.0)
-- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/0?closed=1)
+## [5.0.0](https://github.com/unity-game-framework/ugf-application/releases/tag/5.0.0) - 2020-10-21  
 
-### Added
-- Nothing.
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/12?closed=1)  
+    
 
 ### Changed
-- Nothing.
 
-### Deprecated
-- Nothing.
+- Rework application and module info assets ([#28](https://github.com/unity-game-framework/ugf-application/pull/28))  
+    - Update dependencies to use latest packages from `public` bintray repository.
+    - Add `ApplicationOrdered` as default implementation of `Application` with ordered modules.
+    - Add `ApplicationSingleton` used to support global application instance definition with `ApplicationInstance` access.
+    - Add `ApplicationOrderedLauncher` component to create and initialize `ApplicationOrdered` application.
+    - Add `ApplicationConfiguredLauncher` component to create and initialize `ApplicationConfigured` application.
+    - Add `ApplicationSingletonLauncher` component to create and initialize `ApplicationSingleton` application.
+    - Add `ApplicationConfigProjectAsset` which used to load project config during application initialization.
+    - Add `ApplicationLauncherResources` async resources support.
+    - Add `ApplicationResourceAsyncAsset` used to implement async resource loading with `ApplicationLauncherResources` component.
+    - Add `ApplicationModuleAsset` and `ApplicationModuleAsset<T>` scriptableobject asset as default abstract implementation of `IApplicationModuleAsset` interface.
+    - Add `ApplicationSettings` static class to access to project settings config at runtime.
+    - Rework `ApplicationBase` to exclude modules storage implementation and provides abstract methods to implement.
+    - Rework `ApplicationConfigured` to inherit from `ApplicationOrdered` and initialize modules from config.
+    - Rework `ApplicationConfigAsset` to support `IApplicationModuleAsset`.
+    - Replace `IApplicationModuleInfo` by `IApplicationModuleAsset`, and remove related classes.
+    - Remove `ApplicationConfigAssetBase` class, use `ApplicationResourceAsset` instead.
+- Update to Unity 2020.2 ([#27](https://github.com/unity-game-framework/ugf-application/pull/27))
 
-### Removed
-- Nothing.
+## [4.1.0-preview](https://github.com/unity-game-framework/ugf-application/releases/tag/4.1.0-preview) - 2020-02-15  
 
-### Fixed
-- Nothing.
-
-### Security
-- Nothing.
-
-## 4.1.0-preview - 2020-02-15
 - [Commits](https://github.com/unity-game-framework/ugf-application/compare/4.0.0-preview...4.1.0-preview)
 - [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/11?closed=1)
 
@@ -34,7 +42,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Package dependencies:
     - `com.ugf.initialize`: from `2.0.0-preview` to `2.1.0-preview`.
 
-## 4.0.0-preview - 2020-01-26
+## [4.0.0-preview](https://github.com/unity-game-framework/ugf-application/releases/tag/4.0.0-preview) - 2020-01-26  
+
 - [Commits](https://github.com/unity-game-framework/ugf-application/compare/3.2.0-preview...4.0.0-preview)
 - [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/10?closed=1)
 
@@ -57,16 +66,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - `ApplicationModuleInfoAssetEditor` register type display in inspector.
 
-## 3.2.0-preview - 2020-01-13
+## [3.2.0-preview](https://github.com/unity-game-framework/ugf-application/releases/tag/3.2.0-preview) - 2020-01-13  
+
 - [Commits](https://github.com/unity-game-framework/ugf-application/compare/3.1.0-preview...3.2.0-preview)
 - [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/9?closed=1)
 
 ### Added
 - `ApplicationLauncher`: `Launched`, `Stopped` and `Quttings` events.
-- `ApplicationLauncher.UninitializeApplication` method which invoked after launcher is stopped.
+- `ApplicationLauncher.UninitializeApplication` method wich invoked after launcher is stopped.
 - `ApplicationLauncherEvents` component with `Launched`, `Stopped` and `Quttings` Unity events.
 
-## 3.1.0-preview - 2020-01-11
+## [3.1.0-preview](https://github.com/unity-game-framework/ugf-application/releases/tag/3.1.0-preview) - 2020-01-11  
+
 - [Commits](https://github.com/unity-game-framework/ugf-application/compare/3.0.0-preview...3.1.0-preview)
 - [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/8?closed=1)
 
@@ -74,7 +85,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Package dependencies:
     - `com.ugf.customsettings`: from `1.0.0` to `2.0.0`.
 
-## 3.0.0-preview - 2019-12-09
+## [3.0.0-preview](https://github.com/unity-game-framework/ugf-application/releases/tag/3.0.0-preview) - 2019-12-09  
+
 - [Commits](https://github.com/unity-game-framework/ugf-application/compare/2.0.0-preview...3.0.0-preview)
 - [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/7?closed=1)
 
@@ -83,7 +95,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - `com.ugf.customsettings`: `1.0.0`.
 - `ApplicationConfigLauncher` to create configurable application with specified modules.
 
-## 2.0.0-preview - 2019-11-18
+## [2.0.0-preview](https://github.com/unity-game-framework/ugf-application/releases/tag/2.0.0-preview) - 2019-11-18  
+
 - [Commits](https://github.com/unity-game-framework/ugf-application/compare/1.2.0...2.0.0-preview)
 - [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/6?closed=1)
 
@@ -96,7 +109,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - `ApplicationUnity` deprecated code.
 
-## 1.2.0 - 2019-09-08
+## [1.2.0](https://github.com/unity-game-framework/ugf-application/releases/tag/1.2.0) - 2019-09-08  
+
 - [Commits](https://github.com/unity-game-framework/ugf-application/compare/1.1.0...1.2.0)
 - [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/5?closed=1)
 
@@ -108,7 +122,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - `com.ugf.initialize`: from `1.1.0` to `1.2.0`.
 - `ApplicationLauncher.Stop`: application uninitialize behaviour.
 
-## 1.1.0 - 2019-09-04
+## [1.1.0](https://github.com/unity-game-framework/ugf-application/releases/tag/1.1.0) - 2019-09-03  
+
 - [Commits](https://github.com/unity-game-framework/ugf-application/compare/1.0.0...1.1.0)
 - [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/4?closed=1)
 
@@ -126,7 +141,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Deprecated
 - `ApplicationUnity.UninitializeOnUnityQuitting` functionality and replaced by `ApplicationLauncher.StopOnQuit` behaviour.
 
-## 1.0.0 - 2019-08-29
+## [1.0.0](https://github.com/unity-game-framework/ugf-application/releases/tag/1.0.0) - 2019-08-29  
+
 - [Commits](https://github.com/unity-game-framework/ugf-application/compare/1.0.0-preview.1...1.0.0)
 - [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/3?closed=1)
 
@@ -139,19 +155,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Package dependencies:
     - `com.ugf.initialize`: from `1.0.0-preview` to `1.0.0`.
 
-## 1.0.0-preview.1 - 2019-07-21
+## [1.0.0-preview.1](https://github.com/unity-game-framework/ugf-application/releases/tag/1.0.0-preview.1) - 2019-07-21  
+
 - [Commits](https://github.com/unity-game-framework/ugf-application/compare/1.0.0-preview...1.0.0-preview.1)
 - [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/2?closed=1)
 
 ### Changed
 - `ApplicationInstance`: throws exception if an application not specified.
 
-## 1.0.0-preview - 2019-07-18
+## [1.0.0-preview](https://github.com/unity-game-framework/ugf-application/releases/tag/1.0.0-preview) - 2019-07-18  
+
 - [Commits](https://github.com/unity-game-framework/ugf-application/compare/9022819...1.0.0-preview)
 - [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/1?closed=1)
 
 ### Added
 - This is a initial release.
 
----
-> Unity Game Framework | Copyright 2019
+
