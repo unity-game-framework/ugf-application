@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.1.0](https://github.com/unity-game-framework/ugf-application/releases/tag/5.1.0) - 2020-10-22  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/13?closed=1)  
+    
+
+### Added
+
+- Add module with description builder ([#31](https://github.com/unity-game-framework/ugf-application/pull/31))  
+    - Add `ApplicationModuleDescribed<T>` an application module default implementation with typed description.
+    - Add `ApplicationModuleDescribedAsset` scriptableobject asset to define module creation with description.
+    - Add `IApplicationModule.Application` property to access to application.
+    - Add `IApplicationModuleDescribed`, `IApplicationModuleDescription`, `IApplicationModuleDescriptionAsset` to implement custom described application module.
+    - Change `ApplicationModuleBase` to always have `Application` from creation.
+    - Update package dependencies: `com.ugf.editortools` to `1.5.1`.
+
 ## [5.0.0](https://github.com/unity-game-framework/ugf-application/releases/tag/5.0.0) - 2020-10-21  
 
 ### Release Notes

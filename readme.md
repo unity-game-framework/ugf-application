@@ -4,7 +4,7 @@ UGF.Application
 
 ## Info
 
-- **Version**: `5.0.0`
+- **Version**: `5.1.0`
 - **Unity**: `2020.2`
 - **API Compatibility Level**: `.NET Standard 2.0`
 
@@ -12,7 +12,7 @@ UGF.Application
 
 - `com.ugf.initialize`: `2.4.0`
 - `com.ugf.customsettings`: `3.0.1`
-- `com.ugf.editortools`: `1.4.1`
+- `com.ugf.editortools`: `1.5.1`
 
 
 ### Description
