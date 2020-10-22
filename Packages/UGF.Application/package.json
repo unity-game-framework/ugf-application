@@ -24,6 +24,6 @@
     "dependencies": {
         "com.ugf.initialize": "2.4.0",
         "com.ugf.customsettings": "3.0.1",
-        "com.ugf.editortools": "1.4.1"
+        "com.ugf.editortools": "1.5.1"
     }
 }
