@@ -12,7 +12,7 @@ namespace UGF.Application.Editor.Tests
 
         protected override TestModule OnBuildTyped(IApplication application)
         {
-            return new TestModule();
+            return new TestModule(application);
         }
     }
 }

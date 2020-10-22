@@ -27,10 +27,10 @@ namespace UGF.Application.Runtime.Tests
                 Assert.True(IsLaunched);
                 Assert.False(HasApplication);
 
-                m_module = new Module();
-                m_moduleAsync = new ModuleAsync();
-
                 var application = new Application();
+
+                m_module = new Module(application);
+                m_moduleAsync = new ModuleAsync(application);
 
                 application.AddModule(m_module);
                 application.AddModule(m_moduleAsync);
@@ -88,6 +88,10 @@ namespace UGF.Application.Runtime.Tests
         {
             public bool IsInit { get; private set; }
 
+            public Module(IApplication application) : base(application)
+            {
+            }
+
             protected override void OnInitialize()
             {
                 base.OnInitialize();
@@ -106,6 +110,10 @@ namespace UGF.Application.Runtime.Tests
         private class ModuleAsync : ApplicationModuleBase, IApplicationModuleAsync
         {
             public bool IsInit { get; private set; }
+
+            public ModuleAsync(IApplication application) : base(application)
+            {
+            }
 
             public async Task InitializeAsync()
             {
