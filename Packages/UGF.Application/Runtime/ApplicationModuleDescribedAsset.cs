@@ -3,7 +3,7 @@
 namespace UGF.Application.Runtime
 {
     public abstract class ApplicationModuleDescribedAsset<TModule, TDescription> : ApplicationModuleAsset<TModule>, IApplicationModuleDescriptionAsset
-        where TModule : class, IApplicationModule
+        where TModule : class, IApplicationModuleDescribed
         where TDescription : class, IApplicationModuleDescription
     {
         public T GetGetDescription<T>(IApplication application) where T : class, IApplicationModuleDescription
