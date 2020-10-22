@@ -9,21 +9,21 @@ namespace UGF.Application.Runtime.Tests
     {
         private class ModuleA : ModuleBase
         {
-            public ModuleA(Action init = null, Action uninit = null) : base(init, uninit)
+            public ModuleA(IApplication application, Action init = null, Action uninit = null) : base(application, init, uninit)
             {
             }
         }
 
         private class ModuleB : ModuleBase
         {
-            public ModuleB(Action init = null, Action uninit = null) : base(init, uninit)
+            public ModuleB(IApplication application, Action init = null, Action uninit = null) : base(application, init, uninit)
             {
             }
         }
 
         private class ModuleC : ModuleBase
         {
-            public ModuleC(Action init = null, Action uninit = null) : base(init, uninit)
+            public ModuleC(IApplication application, Action init = null, Action uninit = null) : base(application, init, uninit)
             {
             }
         }
@@ -33,7 +33,7 @@ namespace UGF.Application.Runtime.Tests
             private readonly Action m_init;
             private readonly Action m_uninit;
 
-            protected ModuleBase(Action init = null, Action uninit = null)
+            protected ModuleBase(IApplication application, Action init = null, Action uninit = null) : base(application)
             {
                 m_init = init;
                 m_uninit = uninit;
@@ -56,20 +56,22 @@ namespace UGF.Application.Runtime.Tests
 
         private class ModuleAsset : ApplicationModuleAsset
         {
-            public override Type RegisterType { get { return Module.GetType(); } }
-            public IApplicationModule Module { get; set; }
+            public override Type RegisterType { get { return Type; } }
+            public Type Type { get; set; }
+            public Func<IApplication, IApplicationModule> Func { get; set; }
 
             protected override IApplicationModule OnBuild(IApplication application)
             {
-                return Module;
+                return Func(application);
             }
         }
 
-        private static ModuleAsset Create<T>(T module) where T : class, IApplicationModule
+        private static ModuleAsset Create<T>(Func<IApplication, IApplicationModule> func) where T : class, IApplicationModule
         {
             var asset = ScriptableObject.CreateInstance<ModuleAsset>();
 
-            asset.Module = module;
+            asset.Type = typeof(T);
+            asset.Func = func;
 
             return asset;
         }
@@ -81,8 +83,8 @@ namespace UGF.Application.Runtime.Tests
             {
                 Modules =
                 {
-                    Create(new ModuleA()),
-                    Create(new ModuleB())
+                    Create<ModuleA>(application1 => new ModuleA(application1)),
+                    Create<ModuleB>(application1 => new ModuleB(application1))
                 }
             };
 
@@ -108,8 +110,8 @@ namespace UGF.Application.Runtime.Tests
             {
                 Modules =
                 {
-                    Create(new ModuleA(() => order.Add("moduleA"))),
-                    Create(new ModuleB(() => order.Add("moduleB")))
+                    Create<ModuleA>(application1 => new ModuleA(application1, () => order.Add("moduleA"))),
+                    Create<ModuleB>(application1 => new ModuleB(application1, () => order.Add("moduleB")))
                 }
             };
 
@@ -131,14 +133,14 @@ namespace UGF.Application.Runtime.Tests
             {
                 Modules =
                 {
-                    Create(new ModuleA(() => order.Add("moduleA"))),
-                    Create(new ModuleB(() => order.Add("moduleB")))
+                    Create<ModuleA>(application1 => new ModuleA(application1, () => order.Add("moduleA"))),
+                    Create<ModuleB>(application1 => new ModuleB(application1, () => order.Add("moduleB")))
                 }
             };
 
             var application = new ApplicationConfigured(new ApplicationResources { config });
 
-            application.AddModule(new ModuleC(() => order.Add("moduleC")));
+            application.AddModule(new ModuleC(application, () => order.Add("moduleC")));
             application.Initialize();
 
             Assert.AreEqual(3, order.Count);
@@ -156,8 +158,8 @@ namespace UGF.Application.Runtime.Tests
             {
                 Modules =
                 {
-                    Create(new ModuleA(uninit: () => order.Add("moduleA"))),
-                    Create(new ModuleB(uninit: () => order.Add("moduleB")))
+                    Create<ModuleA>(application1 => new ModuleA(application1, uninit: () => order.Add("moduleA"))),
+                    Create<ModuleB>(application1 => new ModuleB(application1, uninit: () => order.Add("moduleB")))
                 }
             };
 
@@ -180,8 +182,8 @@ namespace UGF.Application.Runtime.Tests
             {
                 Modules =
                 {
-                    Create(new ModuleA(uninit: () => order.Add("moduleA"))),
-                    Create(new ModuleB(uninit: () => order.Add("moduleB")))
+                    Create<ModuleA>(application1 => new ModuleA(application1, uninit: () => order.Add("moduleA"))),
+                    Create<ModuleB>(application1 => new ModuleB(application1, uninit: () => order.Add("moduleB")))
                 }
             };
 
@@ -189,7 +191,7 @@ namespace UGF.Application.Runtime.Tests
 
             application.Initialize();
 
-            var moduleC = new ModuleC(uninit: () => order.Add("moduleC"));
+            var moduleC = new ModuleC(application, uninit: () => order.Add("moduleC"));
 
             moduleC.Initialize();
 

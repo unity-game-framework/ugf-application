@@ -17,13 +17,16 @@ namespace UGF.Application.Runtime.Tests
 
         private class Module : ApplicationModuleBase, IModule
         {
+            public Module(IApplication application) : base(application)
+            {
+            }
         }
 
         [Test]
         public void Modules()
         {
             var application = new Application();
-            var module = new Module();
+            var module = new Module(application);
 
             application.AddModule<IModule>(module);
 
@@ -35,8 +38,8 @@ namespace UGF.Application.Runtime.Tests
         public void OnInitialize()
         {
             var application = new Application();
-            var module0 = new Module();
-            var module1 = new Module();
+            var module0 = new Module(application);
+            var module1 = new Module(application);
 
             application.AddModule<IModule>(module0);
             application.AddModule<IApplicationModule>(module1);
@@ -50,8 +53,8 @@ namespace UGF.Application.Runtime.Tests
         public void OnUninitialize()
         {
             var application = new Application();
-            var module0 = new Module();
-            var module1 = new Module();
+            var module0 = new Module(application);
+            var module1 = new Module(application);
 
             application.AddModule<IModule>(module0);
             application.AddModule<IApplicationModule>(module1);
@@ -66,7 +69,7 @@ namespace UGF.Application.Runtime.Tests
         public void AddModule()
         {
             var application = new Application();
-            var module = new Module();
+            var module = new Module(application);
 
             Assert.AreEqual(0, application.Count);
 
@@ -80,7 +83,7 @@ namespace UGF.Application.Runtime.Tests
         public void RemoveModule()
         {
             var application = new Application();
-            var module = new Module();
+            var module = new Module(application);
 
             Assert.AreEqual(0, application.Count);
 
@@ -99,7 +102,7 @@ namespace UGF.Application.Runtime.Tests
         public void ClearModules()
         {
             var application = new Application();
-            var module = new Module();
+            var module = new Module(application);
 
             Assert.AreEqual(0, application.Count);
 
@@ -118,7 +121,7 @@ namespace UGF.Application.Runtime.Tests
         public void GetModule()
         {
             var application = new Application();
-            var module0 = new Module();
+            var module0 = new Module(application);
 
             application.AddModule<IModule>(module0);
 
@@ -132,7 +135,7 @@ namespace UGF.Application.Runtime.Tests
         public void TryGetModule()
         {
             var application = new Application();
-            var module0 = new Module();
+            var module0 = new Module(application);
 
             application.AddModule<IModule>(module0);
 
