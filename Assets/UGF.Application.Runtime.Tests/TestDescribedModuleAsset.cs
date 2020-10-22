@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace UGF.Application.Runtime.Tests
 {
@@ -13,17 +12,14 @@ namespace UGF.Application.Runtime.Tests
 
         protected override TestDescribedModule OnBuild(IApplication application, TestModuleDescription description)
         {
-            return new TestDescribedModule(description);
+            return new TestDescribedModule(application, description);
         }
     }
 
-    public class TestDescribedModule : ApplicationModuleBase
+    public class TestDescribedModule : ApplicationModuleDescribed<TestModuleDescription>
     {
-        public TestModuleDescription Description { get; }
-
-        public TestDescribedModule(TestModuleDescription description)
+        public TestDescribedModule(IApplication application, TestModuleDescription description) : base(application, description)
         {
-            Description = description ?? throw new ArgumentNullException(nameof(description));
         }
     }
 
