@@ -57,6 +57,7 @@ namespace UGF.Application.Runtime
         {
             if (registerType == null) throw new ArgumentNullException(nameof(registerType));
             if (module == null) throw new ArgumentNullException(nameof(module));
+            if (module.Application != this) throw new ArgumentException($"Can not add module from another application: '{module.Application}'.");
 
             OnAddModule(registerType, module);
         }

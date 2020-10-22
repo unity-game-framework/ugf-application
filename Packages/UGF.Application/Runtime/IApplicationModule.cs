@@ -7,5 +7,6 @@ namespace UGF.Application.Runtime
     /// </summary>
     public interface IApplicationModule : IInitialize
     {
+        IApplication Application { get; }
     }
 }
