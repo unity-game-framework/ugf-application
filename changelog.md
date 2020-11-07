@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.2.0](https://github.com/unity-game-framework/ugf-application/releases/tag/5.2.0) - 2020-11-07  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/14?closed=1)  
+    
+
+### Added
+
+- Add generic IApplicationModuleDescribed interface ([#34](https://github.com/unity-game-framework/ugf-application/pull/34))  
+    - Add `IApplicationModuleDescribed<TDescription>` interface.
+    - Change `ApplicationModuleDescribed<TDescription>` class to implement `IApplicationModuleDescribed<TDescription>` interface.
+
 ## [5.1.0](https://github.com/unity-game-framework/ugf-application/releases/tag/5.1.0) - 2020-10-22  
 
 ### Release Notes
