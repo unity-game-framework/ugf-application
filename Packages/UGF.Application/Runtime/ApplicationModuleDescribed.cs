@@ -2,7 +2,7 @@
 
 namespace UGF.Application.Runtime
 {
-    public class ApplicationModuleDescribed<TDescription> : ApplicationModuleBase, IApplicationModuleDescribed where TDescription : class, IApplicationModuleDescription
+    public class ApplicationModuleDescribed<TDescription> : ApplicationModuleBase, IApplicationModuleDescribed<TDescription> where TDescription : class, IApplicationModuleDescription
     {
         public TDescription Description { get; }
 
