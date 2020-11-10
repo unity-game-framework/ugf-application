@@ -4,7 +4,7 @@ UGF.Application
 
 ## Info
 
-- **Version**: `5.2.1`
+- **Version**: `5.3.0`
 - **Unity**: `2020.2`
 - **API Compatibility Level**: `.NET Standard 2.0`
 
