@@ -1,7 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using UGF.CustomSettings.Runtime;
-
-[assembly: InternalsVisibleTo("UGF.Application.Editor")]
+﻿using UGF.CustomSettings.Runtime;
 
 namespace UGF.Application.Runtime
 {
@@ -9,17 +6,15 @@ namespace UGF.Application.Runtime
     {
         public static ApplicationResourceAsset Config
         {
-            get { return m_settings.Data.Config; }
+            get { return Settings.Data.Config; }
             set
             {
-                m_settings.Data.Config = value;
-                m_settings.SaveSettings();
+                Settings.Data.Config = value;
+                Settings.SaveSettings();
             }
         }
 
-        internal static CustomSettingsPackage<ApplicationSettingsAsset> Settings { get { return m_settings; } }
-
-        private static readonly CustomSettingsPackage<ApplicationSettingsAsset> m_settings = new CustomSettingsPackage<ApplicationSettingsAsset>
+        public static CustomSettingsPackage<ApplicationSettingsAsset> Settings { get; } = new CustomSettingsPackage<ApplicationSettingsAsset>
         (
             "UGF.Application",
             "ApplicationSettings"
