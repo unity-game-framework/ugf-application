@@ -72,9 +72,9 @@ jobs:
               input: ${{ env.packagePath }}
               path: changelogUrl
               value: https://github.com/${{ env.repositoryName }}/blob/master/changelog.md
-            licenseUrl:
+            licensesUrl:
               input: ${{ env.packagePath }}
-              path: licenseUrl
+              path: licensesUrl
               value: https://github.com/${{ env.repositoryName }}/blob/master/license
             repositoryUrl:
               input: ${{ env.packagePath }}
