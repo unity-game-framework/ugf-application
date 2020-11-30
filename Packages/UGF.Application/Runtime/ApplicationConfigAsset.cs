@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UGF.EditorTools.Runtime.IMGUI.EnabledProperty;
 using UnityEngine;
 
@@ -12,7 +13,7 @@ namespace UGF.Application.Runtime
 
         public List<EnabledProperty<IApplicationModuleBuilder>> Modules { get { return m_modules; } }
 
-        public override object GetResource()
+        protected override Task<object> OnBuildAsync()
         {
             var config = new ApplicationConfig();
 
@@ -28,7 +29,7 @@ namespace UGF.Application.Runtime
                 }
             }
 
-            return config;
+            return Task.FromResult<object>(config);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace UGF.Application.Runtime
@@ -6,12 +7,11 @@ namespace UGF.Application.Runtime
     [CreateAssetMenu(menuName = "UGF/Application/Application Config Project", order = 2000)]
     public class ApplicationConfigProjectAsset : ApplicationResourceAsset
     {
-        public override object GetResource()
+        protected override Task<object> OnBuildAsync()
         {
             ApplicationResourceAsset asset = ApplicationSettings.Config ? ApplicationSettings.Config : throw new ArgumentException("Application config not specified in project settings.");
-            object resource = asset.GetResource();
 
-            return resource;
+            return asset.BuildAsync();
         }
     }
 }

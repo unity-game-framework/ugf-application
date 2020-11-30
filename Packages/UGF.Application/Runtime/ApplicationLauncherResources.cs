@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -15,7 +16,23 @@ namespace UGF.Application.Runtime
         {
             var resources = new ApplicationResources();
 
-            await ApplicationUtility.AddResources(resources, m_resources);
+            for (int i = 0; i < m_resources.Count; i++)
+            {
+                Object resource = m_resources[i];
+
+                if (resource == null) throw new ArgumentNullException(nameof(resource), $"Resource not specified at index of the list: '{i}'.");
+
+                if (resource is ApplicationResourceAsset asset)
+                {
+                    object result = await asset.BuildAsync();
+
+                    resources.Add(result);
+                }
+                else
+                {
+                    resources.Add(resource);
+                }
+            }
 
             return resources;
         }
