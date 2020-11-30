@@ -1,6 +1,10 @@
-﻿namespace UGF.Application.Runtime
+﻿using System;
+using UGF.Description.Runtime;
+
+namespace UGF.Application.Runtime
 {
-    public interface IApplicationModuleDescription
+    public interface IApplicationModuleDescription : IDescription
     {
+        Type RegisterType { get; }
     }
 }

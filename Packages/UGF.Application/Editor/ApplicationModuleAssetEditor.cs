@@ -3,7 +3,7 @@ using UnityEditor;
 
 namespace UGF.Application.Editor
 {
-    [CustomEditor(typeof(ApplicationModuleAsset), true)]
+    [CustomEditor(typeof(ApplicationModuleAsset<>), true)]
     public class ApplicationModuleAssetEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
@@ -20,10 +20,8 @@ namespace UGF.Application.Editor
 
         protected void DrawModuleRegisterTypeInfo()
         {
-            var asset = (ApplicationModuleAsset)target;
-
             EditorGUILayout.Space();
-            EditorGUILayout.HelpBox($"Register Type: '{asset.RegisterType}'.", MessageType.Info);
+            EditorGUILayout.HelpBox($"Register Type: 'Unknown'.", MessageType.Info);
         }
     }
 }

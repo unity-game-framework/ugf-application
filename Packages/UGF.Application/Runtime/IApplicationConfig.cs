@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using UGF.Description.Runtime;
 
 namespace UGF.Application.Runtime
 {
-    public interface IApplicationConfig
+    public interface IApplicationConfig : IDescription
     {
-        IReadOnlyList<IApplicationModuleAsset> Modules { get; }
+        IReadOnlyList<IApplicationModuleBuilder> Modules { get; }
     }
 }

@@ -2,9 +2,9 @@
 
 namespace UGF.Application.Editor.Tests
 {
-    public class TestModule : ApplicationModuleBase
+    public class TestModule : ApplicationModule<ApplicationModuleDescription>
     {
-        public TestModule(IApplication application) : base(application)
+        public TestModule(ApplicationModuleDescription description, IApplication application) : base(description, application)
         {
         }
     }

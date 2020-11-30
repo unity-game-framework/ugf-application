@@ -1,16 +1,13 @@
 ﻿using System;
+using UGF.Description.Runtime;
 
 namespace UGF.Application.Runtime
 {
-    public abstract class ApplicationModuleAsset<TModule> : ApplicationModuleAsset where TModule : class, IApplicationModule
+    public abstract class ApplicationModuleAsset<TModule> : ApplicationModuleAsset<TModule, ApplicationModuleDescription> where TModule : class, IApplicationModule, IDescribed<ApplicationModuleDescription>
     {
-        public override Type RegisterType { get; } = typeof(TModule);
-
-        protected override IApplicationModule OnBuild(IApplication application)
+        protected override ApplicationModuleDescription OnBuildDescription()
         {
-            return OnBuildTyped(application);
+            return new ApplicationModuleDescription(typeof(TModule));
         }
-
-        protected abstract TModule OnBuildTyped(IApplication application);
     }
 }

@@ -8,9 +8,9 @@ namespace UGF.Application.Runtime
     [CreateAssetMenu(menuName = "UGF/Application/Application Config", order = 2000)]
     public class ApplicationConfigAsset : ApplicationResourceAsset
     {
-        [SerializeField] private List<EnabledProperty<ApplicationModuleAsset>> m_modules = new List<EnabledProperty<ApplicationModuleAsset>>();
+        [SerializeField] private List<EnabledProperty<IApplicationModuleBuilder>> m_modules = new List<EnabledProperty<IApplicationModuleBuilder>>();
 
-        public List<EnabledProperty<ApplicationModuleAsset>> Modules { get { return m_modules; } }
+        public List<EnabledProperty<IApplicationModuleBuilder>> Modules { get { return m_modules; } }
 
         public override object GetResource()
         {
@@ -18,7 +18,7 @@ namespace UGF.Application.Runtime
 
             for (int i = 0; i < m_modules.Count; i++)
             {
-                EnabledProperty<ApplicationModuleAsset> module = m_modules[i];
+                EnabledProperty<IApplicationModuleBuilder> module = m_modules[i];
 
                 if (module.Enabled)
                 {

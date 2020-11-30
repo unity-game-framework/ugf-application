@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
+using UGF.Description.Runtime;
 using UnityEngine;
 
 namespace UGF.Application.Runtime.Tests
@@ -9,31 +10,31 @@ namespace UGF.Application.Runtime.Tests
     {
         private class ModuleA : ModuleBase
         {
-            public ModuleA(IApplication application, Action init = null, Action uninit = null) : base(application, init, uninit)
+            public ModuleA(IApplication application, Action init = null, Action uninit = null) : base(typeof(ModuleA), application, init, uninit)
             {
             }
         }
 
         private class ModuleB : ModuleBase
         {
-            public ModuleB(IApplication application, Action init = null, Action uninit = null) : base(application, init, uninit)
+            public ModuleB(IApplication application, Action init = null, Action uninit = null) : base(typeof(ModuleB), application, init, uninit)
             {
             }
         }
 
         private class ModuleC : ModuleBase
         {
-            public ModuleC(IApplication application, Action init = null, Action uninit = null) : base(application, init, uninit)
+            public ModuleC(IApplication application, Action init = null, Action uninit = null) : base(typeof(ModuleC), application, init, uninit)
             {
             }
         }
 
-        private abstract class ModuleBase : ApplicationModuleBase
+        private abstract class ModuleBase : ApplicationModule<ApplicationModuleDescription>
         {
             private readonly Action m_init;
             private readonly Action m_uninit;
 
-            protected ModuleBase(IApplication application, Action init = null, Action uninit = null) : base(application)
+            protected ModuleBase(Type type, IApplication application, Action init = null, Action uninit = null) : base(new ApplicationModuleDescription(type), application)
             {
                 m_init = init;
                 m_uninit = uninit;
@@ -54,23 +55,20 @@ namespace UGF.Application.Runtime.Tests
             }
         }
 
-        private class ModuleAsset : ApplicationModuleAsset
+        private class ModuleAsset<TModule> : ApplicationModuleAsset<TModule> where TModule : class, IApplicationModule, IDescribed<ApplicationModuleDescription>
         {
-            public override Type RegisterType { get { return Type; } }
-            public Type Type { get; set; }
             public Func<IApplication, IApplicationModule> Func { get; set; }
 
-            protected override IApplicationModule OnBuild(IApplication application)
+            protected override TModule OnBuild(ApplicationModuleDescription description, IApplication application)
             {
-                return Func(application);
+                return (TModule)Func(application);
             }
         }
 
-        private static ModuleAsset Create<T>(Func<IApplication, IApplicationModule> func) where T : class, IApplicationModule
+        private static ModuleAsset<T> Create<T>(Func<IApplication, IApplicationModule> func) where T : class, IApplicationModule, IDescribed<ApplicationModuleDescription>
         {
-            var asset = ScriptableObject.CreateInstance<ModuleAsset>();
+            var asset = ScriptableObject.CreateInstance<ModuleAsset<T>>();
 
-            asset.Type = typeof(T);
             asset.Func = func;
 
             return asset;
