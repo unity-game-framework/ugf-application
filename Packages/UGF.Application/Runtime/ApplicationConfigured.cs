@@ -18,7 +18,7 @@ namespace UGF.Application.Runtime
                 IApplicationModuleBuilder builder = Config.Modules[i];
                 IApplicationModule module = builder.Build(this);
 
-                // AddModule(module.Description.RegisterType, module);
+                AddModule(module.Description.RegisterType, module);
             }
         }
     }

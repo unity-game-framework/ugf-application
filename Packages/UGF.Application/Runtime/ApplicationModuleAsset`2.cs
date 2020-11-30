@@ -4,7 +4,7 @@ using UGF.Description.Runtime;
 namespace UGF.Application.Runtime
 {
     public abstract class ApplicationModuleAsset<TModule, TDescription> : DescribedWithDescriptionBuilderAsset<IApplication, TModule, TDescription>, IApplicationModuleBuilder
-        where TModule : class, IApplicationModule, IDescribed<TDescription>
+        where TModule : class, IApplicationModule
         where TDescription : class, IApplicationModuleDescription
     {
         protected override TModule OnBuild(IApplication arguments, TDescription description)

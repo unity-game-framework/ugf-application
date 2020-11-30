@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using UGF.Description.Runtime;
 using UnityEngine;
 
 namespace UGF.Application.Runtime.Tests
@@ -55,7 +54,7 @@ namespace UGF.Application.Runtime.Tests
             }
         }
 
-        private class ModuleAsset<TModule> : ApplicationModuleAsset<TModule> where TModule : class, IApplicationModule, IDescribed<ApplicationModuleDescription>
+        private class ModuleAsset<TModule> : ApplicationModuleAsset<TModule> where TModule : class, IApplicationModule
         {
             public Func<IApplication, IApplicationModule> Func { get; set; }
 
@@ -65,7 +64,7 @@ namespace UGF.Application.Runtime.Tests
             }
         }
 
-        private static ModuleAsset<T> Create<T>(Func<IApplication, IApplicationModule> func) where T : class, IApplicationModule, IDescribed<ApplicationModuleDescription>
+        private static ModuleAsset<T> Create<T>(Func<IApplication, IApplicationModule> func) where T : class, IApplicationModule
         {
             var asset = ScriptableObject.CreateInstance<ModuleAsset<T>>();
 
