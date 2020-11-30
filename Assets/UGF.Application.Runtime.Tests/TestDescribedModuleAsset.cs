@@ -6,7 +6,7 @@ namespace UGF.Application.Runtime.Tests
     [CreateAssetMenu(menuName = "Tests/TestDescribedModuleAsset")]
     public class TestDescribedModuleAsset : ApplicationModuleAsset<TestDescribedModule, TestModuleDescription>
     {
-        protected override TestModuleDescription OnBuildDescription()
+        protected override IApplicationModuleDescription OnBuildDescription()
         {
             return new TestModuleDescription(typeof(TestDescribedModule));
         }

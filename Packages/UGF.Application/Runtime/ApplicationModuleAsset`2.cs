@@ -1,27 +1,14 @@
-﻿using UGF.Builder.Runtime;
-using UGF.Description.Runtime;
-
-namespace UGF.Application.Runtime
+﻿namespace UGF.Application.Runtime
 {
-    public abstract class ApplicationModuleAsset<TModule, TDescription> : DescribedWithDescriptionBuilderAsset<IApplication, TModule, TDescription>, IApplicationModuleBuilder
+    public abstract class ApplicationModuleAsset<TModule, TDescription> : ApplicationModuleAsset
         where TModule : class, IApplicationModule
         where TDescription : class, IApplicationModuleDescription
     {
-        protected override TModule OnBuild(IApplication arguments, TDescription description)
+        protected override IApplicationModule OnBuild(IApplication arguments, IApplicationModuleDescription description)
         {
-            return OnBuild(description, arguments);
+            return OnBuild((TDescription)description, arguments);
         }
 
         protected abstract TModule OnBuild(TDescription description, IApplication application);
-
-        T IBuilder<IApplication, IApplicationModule>.Build<T>(IApplication arguments)
-        {
-            return (T)(object)Build(arguments);
-        }
-
-        IApplicationModule IBuilder<IApplication, IApplicationModule>.Build(IApplication arguments)
-        {
-            return Build(arguments);
-        }
     }
 }
