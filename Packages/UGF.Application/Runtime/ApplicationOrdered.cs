@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using UGF.Initialize.Runtime;
 
 namespace UGF.Application.Runtime
 {
@@ -11,31 +12,31 @@ namespace UGF.Application.Runtime
         /// <summary>
         /// Gets or sets value that determines whether to use reverse order when uninitialize modules.
         /// </summary>
-        public bool UseReverseModulesUninitialization { get; }
+        public bool UseReverseModulesUninitialization { get { return m_initialize.ReverseUninitializationOrder; } }
 
         private readonly Dictionary<Type, IApplicationModule> m_modules = new Dictionary<Type, IApplicationModule>();
-        private readonly List<IApplicationModule> m_order = new List<IApplicationModule>();
+        private readonly InitializeCollection<IApplicationModule> m_initialize;
 
         public ApplicationOrdered(IApplicationResources resources, bool useReverseModulesUninitialization = true) : base(resources)
         {
-            UseReverseModulesUninitialization = useReverseModulesUninitialization;
+            m_initialize = new InitializeCollection<IApplicationModule>(useReverseModulesUninitialization);
+        }
+
+        public new List<IApplicationModule>.Enumerator GetEnumerator()
+        {
+            return m_initialize.GetEnumerator();
         }
 
         protected override void OnInitializeModules()
         {
-            for (int i = 0; i < m_order.Count; i++)
-            {
-                IApplicationModule module = m_order[i];
-
-                module.Initialize();
-            }
+            m_initialize.Initialize();
         }
 
         protected override async Task OnInitializeModulesAsync()
         {
-            for (int i = 0; i < m_order.Count; i++)
+            for (int i = 0; i < m_initialize.Count; i++)
             {
-                IApplicationModule module = m_order[i];
+                IApplicationModule module = m_initialize[i];
 
                 if (module is IApplicationModuleAsync moduleAsync)
                 {
@@ -46,24 +47,7 @@ namespace UGF.Application.Runtime
 
         protected override void OnUninitializeModules()
         {
-            if (UseReverseModulesUninitialization)
-            {
-                for (int i = m_order.Count - 1; i >= 0; i--)
-                {
-                    IApplicationModule module = m_order[i];
-
-                    module.Uninitialize();
-                }
-            }
-            else
-            {
-                for (int i = 0; i < m_order.Count; i++)
-                {
-                    IApplicationModule module = m_order[i];
-
-                    module.Uninitialize();
-                }
-            }
+            m_initialize.Uninitialize();
         }
 
         protected override bool OnHasModule(Type registerType)
@@ -73,13 +57,13 @@ namespace UGF.Application.Runtime
 
         protected override bool OnHasModule(IApplicationModule module)
         {
-            return m_order.Contains(module);
+            return m_initialize.Contains(module);
         }
 
         protected override void OnAddModule(Type registerType, IApplicationModule module)
         {
             m_modules.Add(registerType, module);
-            m_order.Add(module);
+            m_initialize.Add(module);
         }
 
         protected override bool OnRemoveModule(Type registerType)
@@ -87,7 +71,7 @@ namespace UGF.Application.Runtime
             if (m_modules.TryGetValue(registerType, out IApplicationModule module))
             {
                 m_modules.Remove(registerType);
-                m_order.Remove(module);
+                m_initialize.Remove(module);
                 return true;
             }
 
@@ -97,7 +81,7 @@ namespace UGF.Application.Runtime
         protected override void OnClearModules()
         {
             m_modules.Clear();
-            m_order.Clear();
+            m_initialize.Clear();
         }
 
         protected override bool OnTryGetModule(Type registerType, out IApplicationModule module)
@@ -107,7 +91,7 @@ namespace UGF.Application.Runtime
 
         protected override IEnumerator<IApplicationModule> OnGetEnumerator()
         {
-            return m_order.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }
