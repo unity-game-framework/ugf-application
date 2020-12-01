@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using UnityEngine;
+using UGF.Builder.Runtime;
 
 namespace UGF.Application.Runtime.Tests
 {
@@ -54,23 +54,24 @@ namespace UGF.Application.Runtime.Tests
             }
         }
 
-        private class ModuleAsset<TModule> : ApplicationModuleAsset<TModule> where TModule : class, IApplicationModule
+        private class ModuleBuilder : Builder<IApplication, IApplicationModule>, IApplicationModuleBuilder
         {
             public Func<IApplication, IApplicationModule> Func { get; set; }
 
-            protected override TModule OnBuild(ApplicationModuleDescription description, IApplication application)
+            public ModuleBuilder(Func<IApplication, IApplicationModule> func)
             {
-                return (TModule)Func(application);
+                Func = func ?? throw new ArgumentNullException(nameof(func));
+            }
+
+            protected override IApplicationModule OnBuild(IApplication arguments)
+            {
+                return Func(arguments);
             }
         }
 
-        private static ModuleAsset<T> Create<T>(Func<IApplication, IApplicationModule> func) where T : class, IApplicationModule
+        private static IApplicationModuleBuilder Create<T>(Func<IApplication, IApplicationModule> func) where T : class, IApplicationModule
         {
-            var asset = ScriptableObject.CreateInstance<ModuleAsset<T>>();
-
-            asset.Func = func;
-
-            return asset;
+            return new ModuleBuilder(func);
         }
 
         [Test]
