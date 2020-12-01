@@ -9,13 +9,22 @@ namespace UGF.Application.Runtime
         public TDescription Description { get; }
         public IApplication Application { get; }
 
-        IDescription IDescribed.Description { get { return Description; } }
         IApplicationModuleDescription IDescribed<IApplicationModuleDescription>.Description { get { return Description; } }
 
         protected ApplicationModule(TDescription description, IApplication application)
         {
             Description = description ?? throw new ArgumentNullException(nameof(description));
             Application = application ?? throw new ArgumentNullException(nameof(application));
+        }
+
+        public T GetDescription<T>() where T : class, IDescription
+        {
+            return (T)GetDescription();
+        }
+
+        public IDescription GetDescription()
+        {
+            return Description;
         }
     }
 }
