@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace UGF.Application.Runtime
 {
-    [CreateAssetMenu(menuName = "UGF/Application/Application Config", order = 2000)]
+    [CreateAssetMenu(menuName = "Unity Game Framework/Application/Application Config", order = 2000)]
     public class ApplicationConfigAsset : ApplicationResourceAsset
     {
         [SerializeField] private List<EnabledProperty<ApplicationModuleAsset>> m_modules = new List<EnabledProperty<ApplicationModuleAsset>>();

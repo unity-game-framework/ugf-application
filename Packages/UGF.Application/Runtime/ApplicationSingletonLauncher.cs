@@ -2,6 +2,7 @@
 
 namespace UGF.Application.Runtime
 {
+    [AddComponentMenu("Unity Game Framework/Application/Application Singleton Launcher", 2000)]
     public class ApplicationSingletonLauncher : ApplicationConfiguredLauncher
     {
         [SerializeField] private bool m_provideStaticInstance = true;

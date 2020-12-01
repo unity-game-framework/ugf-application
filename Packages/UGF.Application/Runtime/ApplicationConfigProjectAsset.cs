@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace UGF.Application.Runtime
 {
-    [CreateAssetMenu(menuName = "UGF/Application/Application Config Project", order = 2000)]
+    [CreateAssetMenu(menuName = "Unity Game Framework/Application/Application Config Project", order = 2000)]
     public class ApplicationConfigProjectAsset : ApplicationResourceAsset
     {
         protected override Task<object> OnBuildAsync()
