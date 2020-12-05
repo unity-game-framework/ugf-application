@@ -7,8 +7,7 @@
       "dependencies": {
         "com.ugf.initialize": "2.6.0",
         "com.ugf.description": "2.0.0",
-        "com.ugf.customsettings": "3.4.0",
-        "com.ugf.editortools": "1.7.0"
+        "com.ugf.customsettings": "3.4.0"
       }
     },
     "com.ugf.builder": {
@@ -38,7 +37,7 @@
     },
     "com.ugf.editortools": {
       "version": "1.7.0",
-      "depth": 1,
+      "depth": 2,
       "source": "registry",
       "dependencies": {},
       "url": "https://api.bintray.com/npm/unity-game-framework/public"
