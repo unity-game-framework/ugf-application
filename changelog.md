@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.0.0](https://github.com/unity-game-framework/ugf-application/releases/tag/6.0.0) - 2020-12-05  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/17?closed=1)  
+    
+
+### Changed
+
+- Change descriptions and assets to use things from new packages ([#43](https://github.com/unity-game-framework/ugf-application/pull/43))  
+    - Rework all assets to work using `UGF.Builder` package, and descriptions and modules to use `UGF.Description` package.
+    - Add dependencies: `com.ugf.description` and `com.ugf.builder`.
+    - Add register all components under the `Unity Game Framework` add component menu.
+    - Change dependencies of `com.ugf.customsettings` and `com.ugf.initialize`.
+    - Change `ApplicationConfig` to be description, and replace `IApplicationModuleAsset` by `IApplicationModuleBuilder` builder interface.
+    - Change `ApplicationResourceAsset` and other assets to be async builder assets.
+    - Change `IApplicationModule` to be described object with module description and application.
+    - Change `IApplicationModuleDescription` to contains module register type.
+    - Change `ApplicationModuleAsset` to be builder asset of described object and description.
+    - Change `ApplicationModuleAsset<TModule>` to be builder with default module description.
+    - Change name of the root of create asset menu, from `UGF` to `Unity Game Framework`.
+    - Remove `ApplicationModuleBase` and `ApplicationModuleDescribed<TDescription>`, use `ApplicationModule<TDescription>` instead, now module always described.
+    - Remove `ApplicationModuleDescriptionBase`, use `ApplicationModuleDescription` instead.
+    - Remove `ApplicationModuleDescribedAsset`, use `ApplicationModuleAsset` instead.
+    - Remove `RegisterType` property from `ApplicationModuleAsset`, now `ApplicationModuleDescription` contains this information.
+    - Remove `ApplicationResourceAsyncAsset`, now `ApplicationResourceAsset` always asynchronously loading resources.
+    - Remove `ApplicationUtility`, all logic has been moved to `ApplicationResourceAsset`.
+
 ## [5.3.0](https://github.com/unity-game-framework/ugf-application/releases/tag/5.3.0) - 2020-11-10  
 
 ### Release Notes

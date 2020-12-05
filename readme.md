@@ -4,15 +4,15 @@ UGF.Application
 
 ## Info
 
-- **Version**: `5.3.0`
+- **Version**: `6.0.0`
 - **Unity**: `2020.2`
 - **API Compatibility Level**: `.NET Standard 2.0`
 
 ### Dependencies
 
-- `com.ugf.initialize`: `2.4.0`
-- `com.ugf.customsettings`: `3.0.1`
-- `com.ugf.editortools`: `1.5.1`
+- `com.ugf.initialize`: `2.6.0`
+- `com.ugf.description`: `2.0.0`
+- `com.ugf.customsettings`: `3.4.0`
 
 
 ### Description
