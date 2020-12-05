@@ -10,9 +10,9 @@ namespace UGF.Application.Editor.Tests
 
         public string Value { get { return m_value; } set { m_value = value; } }
 
-        protected override TestModule OnBuildTyped(IApplication application)
+        protected override TestModule OnBuild(ApplicationModuleDescription description, IApplication application)
         {
-            return new TestModule(application);
+            return new TestModule(description, application);
         }
     }
 }

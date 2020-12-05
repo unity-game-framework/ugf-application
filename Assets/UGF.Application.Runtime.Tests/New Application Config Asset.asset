@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 587cac8e3ee0c6c4e917315c85b9bee8, type: 3}
   m_Name: New Application Config Asset
   m_EditorClassIdentifier: 
-  m_modules: []
+  m_modules:
+  - m_enabled: 1
+    m_value: {fileID: 11400000, guid: b01d40a7ee390814c865fd62969e3987, type: 2}

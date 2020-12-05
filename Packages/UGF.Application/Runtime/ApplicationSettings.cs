@@ -6,10 +6,10 @@ namespace UGF.Application.Runtime
     {
         public static ApplicationResourceAsset Config
         {
-            get { return Settings.Data.Config; }
+            get { return Settings.GetData().Config; }
             set
             {
-                Settings.Data.Config = value;
+                Settings.GetData().Config = value;
                 Settings.SaveSettings();
             }
         }

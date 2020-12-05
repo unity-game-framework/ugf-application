@@ -2,6 +2,7 @@
 
 namespace UGF.Application.Runtime
 {
+    [AddComponentMenu("Unity Game Framework/Application/Application Launcher Events", 2000)]
     public class ApplicationLauncherEvents : MonoBehaviour
     {
         [SerializeField] private ApplicationLauncher m_launcher;

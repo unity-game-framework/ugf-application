@@ -1,18 +1,19 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UGF.EditorTools.Runtime.IMGUI.EnabledProperty;
 using UnityEngine;
 
 namespace UGF.Application.Runtime
 {
-    [CreateAssetMenu(menuName = "UGF/Application/Application Config", order = 2000)]
+    [CreateAssetMenu(menuName = "Unity Game Framework/Application/Application Config", order = 2000)]
     public class ApplicationConfigAsset : ApplicationResourceAsset
     {
         [SerializeField] private List<EnabledProperty<ApplicationModuleAsset>> m_modules = new List<EnabledProperty<ApplicationModuleAsset>>();
 
         public List<EnabledProperty<ApplicationModuleAsset>> Modules { get { return m_modules; } }
 
-        public override object GetResource()
+        protected override Task<object> OnBuildAsync()
         {
             var config = new ApplicationConfig();
 
@@ -28,7 +29,7 @@ namespace UGF.Application.Runtime
                 }
             }
 
-            return config;
+            return Task.FromResult<object>(config);
         }
     }
 }
