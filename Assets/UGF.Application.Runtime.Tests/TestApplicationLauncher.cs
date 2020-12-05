@@ -84,11 +84,11 @@ namespace UGF.Application.Runtime.Tests
             }
         }
 
-        private class Module : ApplicationModuleBase
+        private class Module : ApplicationModule<ApplicationModuleDescription>
         {
             public bool IsInit { get; private set; }
 
-            public Module(IApplication application) : base(application)
+            public Module(IApplication application) : base(new ApplicationModuleDescription(typeof(Module)),  application)
             {
             }
 
@@ -107,11 +107,11 @@ namespace UGF.Application.Runtime.Tests
             }
         }
 
-        private class ModuleAsync : ApplicationModuleBase, IApplicationModuleAsync
+        private class ModuleAsync : ApplicationModule<ApplicationModuleDescription>, IApplicationModuleAsync
         {
             public bool IsInit { get; private set; }
 
-            public ModuleAsync(IApplication application) : base(application)
+            public ModuleAsync(IApplication application) : base(new ApplicationModuleDescription(typeof(ModuleAsync)),  application)
             {
             }
 

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using UnityEngine;
+using UGF.Builder.Runtime;
 
 namespace UGF.Application.Runtime.Tests
 {
@@ -9,31 +9,31 @@ namespace UGF.Application.Runtime.Tests
     {
         private class ModuleA : ModuleBase
         {
-            public ModuleA(IApplication application, Action init = null, Action uninit = null) : base(application, init, uninit)
+            public ModuleA(IApplication application, Action init = null, Action uninit = null) : base(typeof(ModuleA), application, init, uninit)
             {
             }
         }
 
         private class ModuleB : ModuleBase
         {
-            public ModuleB(IApplication application, Action init = null, Action uninit = null) : base(application, init, uninit)
+            public ModuleB(IApplication application, Action init = null, Action uninit = null) : base(typeof(ModuleB), application, init, uninit)
             {
             }
         }
 
         private class ModuleC : ModuleBase
         {
-            public ModuleC(IApplication application, Action init = null, Action uninit = null) : base(application, init, uninit)
+            public ModuleC(IApplication application, Action init = null, Action uninit = null) : base(typeof(ModuleC), application, init, uninit)
             {
             }
         }
 
-        private abstract class ModuleBase : ApplicationModuleBase
+        private abstract class ModuleBase : ApplicationModule<ApplicationModuleDescription>
         {
             private readonly Action m_init;
             private readonly Action m_uninit;
 
-            protected ModuleBase(IApplication application, Action init = null, Action uninit = null) : base(application)
+            protected ModuleBase(Type type, IApplication application, Action init = null, Action uninit = null) : base(new ApplicationModuleDescription(type), application)
             {
                 m_init = init;
                 m_uninit = uninit;
@@ -54,26 +54,24 @@ namespace UGF.Application.Runtime.Tests
             }
         }
 
-        private class ModuleAsset : ApplicationModuleAsset
+        private class ModuleBuilder : Builder<IApplication, IApplicationModule>, IApplicationModuleBuilder
         {
-            public override Type RegisterType { get { return Type; } }
-            public Type Type { get; set; }
             public Func<IApplication, IApplicationModule> Func { get; set; }
 
-            protected override IApplicationModule OnBuild(IApplication application)
+            public ModuleBuilder(Func<IApplication, IApplicationModule> func)
             {
-                return Func(application);
+                Func = func ?? throw new ArgumentNullException(nameof(func));
+            }
+
+            protected override IApplicationModule OnBuild(IApplication arguments)
+            {
+                return Func(arguments);
             }
         }
 
-        private static ModuleAsset Create<T>(Func<IApplication, IApplicationModule> func) where T : class, IApplicationModule
+        private static IApplicationModuleBuilder Create<T>(Func<IApplication, IApplicationModule> func) where T : class, IApplicationModule
         {
-            var asset = ScriptableObject.CreateInstance<ModuleAsset>();
-
-            asset.Type = typeof(T);
-            asset.Func = func;
-
-            return asset;
+            return new ModuleBuilder(func);
         }
 
         [Test]

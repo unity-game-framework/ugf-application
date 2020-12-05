@@ -1,9 +1,8 @@
-﻿using UnityEngine;
+﻿using UGF.Builder.Runtime;
 
 namespace UGF.Application.Runtime
 {
-    public abstract class ApplicationResourceAsset : ScriptableObject
+    public abstract class ApplicationResourceAsset : BuilderAsyncAsset<object>
     {
-        public abstract object GetResource();
     }
 }

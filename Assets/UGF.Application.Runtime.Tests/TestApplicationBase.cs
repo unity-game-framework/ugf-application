@@ -15,9 +15,9 @@ namespace UGF.Application.Runtime.Tests
         {
         }
 
-        private class Module : ApplicationModuleBase, IModule
+        private class Module : ApplicationModule<ApplicationModuleDescription>, IModule
         {
-            public Module(IApplication application) : base(application)
+            public Module(IApplication application) : base(new ApplicationModuleDescription(typeof(IModule)), application)
             {
             }
         }

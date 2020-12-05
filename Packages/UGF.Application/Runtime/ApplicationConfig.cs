@@ -1,11 +1,12 @@
 using System.Collections.Generic;
+using UGF.Description.Runtime;
 
 namespace UGF.Application.Runtime
 {
-    public class ApplicationConfig : IApplicationConfig
+    public class ApplicationConfig : DescriptionBase, IApplicationConfig
     {
-        public List<IApplicationModuleAsset> Modules { get; } = new List<IApplicationModuleAsset>();
+        public List<IApplicationModuleBuilder> Modules { get; } = new List<IApplicationModuleBuilder>();
 
-        IReadOnlyList<IApplicationModuleAsset> IApplicationConfig.Modules { get { return Modules; } }
+        IReadOnlyList<IApplicationModuleBuilder> IApplicationConfig.Modules { get { return Modules; } }
     }
 }

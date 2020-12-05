@@ -2,6 +2,7 @@
 
 namespace UGF.Application.Runtime
 {
+    [AddComponentMenu("Unity Game Framework/Application/Application Ordered Launcher", 2000)]
     public class ApplicationOrderedLauncher : ApplicationLauncher
     {
         [SerializeField] private bool m_useReverseModulesUninitialization = true;
