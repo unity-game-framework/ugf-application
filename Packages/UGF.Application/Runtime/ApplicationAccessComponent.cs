@@ -2,7 +2,7 @@
 
 namespace UGF.Application.Runtime
 {
-    public abstract class ApplicationAccess : MonoBehaviour
+    public abstract class ApplicationAccessComponent : MonoBehaviour
     {
         public T GetApplication<T>() where T : class, IApplication
         {

@@ -3,7 +3,7 @@
 namespace UGF.Application.Runtime.Scenes
 {
     [AddComponentMenu("Unity Game Framework/Application/Application Scene Access", 2000)]
-    public class ApplicationSceneAccess : ApplicationAccess
+    public class ApplicationSceneAccessComponent : ApplicationAccessComponent
     {
         protected override IApplication OnGetApplication()
         {
