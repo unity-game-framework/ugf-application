@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using UGF.Application.Runtime.Scenes;
 using UGF.Initialize.Runtime;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace UGF.Application.Runtime
         [SerializeField] private ApplicationLauncherResourceLoader m_resourceLoader;
         [SerializeField] private bool m_launchOnStart = true;
         [SerializeField] private bool m_stopOnQuit = true;
+        [SerializeField] private bool m_sceneAccess = true;
 
         public ApplicationLauncherResourceLoader ResourceLoader { get { return m_resourceLoader; } set { m_resourceLoader = value; } }
 
@@ -25,6 +27,11 @@ namespace UGF.Application.Runtime
         /// Gets or sets value that determines whether to stop application on Unity Application quit.
         /// </summary>
         public bool StopOnQuit { get { return m_stopOnQuit; } set { m_stopOnQuit = value; } }
+
+        /// <summary>
+        /// Gets or sets value that determines whether to provide access to created application using Launcher scene.
+        /// </summary>
+        public bool SceneAccess { get { return m_sceneAccess; } set { m_sceneAccess = value; } }
 
         /// <summary>
         /// Gets value that determines whether launcher started already.
@@ -130,6 +137,11 @@ namespace UGF.Application.Runtime
 
             m_application = application;
 
+            if (m_sceneAccess)
+            {
+                OnRegisterAtScene(application);
+            }
+
             OnLaunched(application);
 
             Launched?.Invoke(application);
@@ -143,6 +155,11 @@ namespace UGF.Application.Runtime
             m_state = m_state.Uninitialize();
 
             IApplication application = Application;
+
+            if (m_sceneAccess)
+            {
+                OnUnregisterAtScene(application);
+            }
 
             OnStopped(application);
 
@@ -163,7 +180,7 @@ namespace UGF.Application.Runtime
         /// <summary>
         /// Invoked after resources preload and ready to create application.
         /// </summary>
-        /// <param name="resources"></param>
+        /// <param name="resources">The application resources.</param>
         protected abstract IApplication OnCreateApplication(IApplicationResources resources);
 
         /// <summary>
@@ -182,6 +199,16 @@ namespace UGF.Application.Runtime
         protected virtual void UninitializeApplication(IApplication application)
         {
             application.Uninitialize();
+        }
+
+        protected virtual void OnRegisterAtScene(IApplication application)
+        {
+            ApplicationSceneProviderInstance.Provider.Add(gameObject.scene, application);
+        }
+
+        protected virtual void OnUnregisterAtScene(IApplication application)
+        {
+            ApplicationSceneProviderInstance.Provider.Remove(gameObject.scene);
         }
 
         /// <summary>
