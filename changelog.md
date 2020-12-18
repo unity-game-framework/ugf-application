@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.1.0](https://github.com/unity-game-framework/ugf-application/releases/tag/6.1.0) - 2020-12-18  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/18?closed=1)  
+    
+
+### Added
+
+- Add application component access ([#48](https://github.com/unity-game-framework/ugf-application/pull/48))  
+    - Add `ApplicationAccessComponent` an abstract class to implement `IApplication` access component.
+    - Add `ApplicationLauncher.SceneAccess` property to determine whether to register created application to `Launcher` scene.
+    - Add `ApplicationLauncher.OnRegisterAtScene` and `OnUnregisterAtScene` methods to override application to scene register behaviour.
+    - Add `ApplicationSceneAccessComponent` as default implementation of `ApplicationAccessComponent` to provide access using `ApplicationSceneProviderInstance` static class.
+    - Add `GetApplication` and `TryGetApplication` extension methods for `Scene`, to access registered application.
+    - Add `ApplicationSceneProvider` and `ApplicationSceneProviderInstance` to manage applications for specific scenes.
+
 ## [6.0.0](https://github.com/unity-game-framework/ugf-application/releases/tag/6.0.0) - 2020-12-05  
 
 ### Release Notes
