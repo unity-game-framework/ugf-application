@@ -13,11 +13,5 @@
         /// </summary>
         /// <param name="application">The active and initialized application.</param>
         void OnStopped(IApplication application);
-
-        /// <summary>
-        /// Invoked when Unity performs quitting and before active application stops.
-        /// </summary>
-        /// <param name="application">The active and initialized application.</param>
-        void OnQuitting(IApplication application);
     }
 }

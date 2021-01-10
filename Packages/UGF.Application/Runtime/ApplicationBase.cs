@@ -164,13 +164,6 @@ namespace UGF.Application.Runtime
         {
         }
 
-        /// <summary>
-        /// Invoked when Unity performs quitting and before active application stops.
-        /// </summary>
-        protected virtual void OnQuitting()
-        {
-        }
-
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
@@ -188,13 +181,6 @@ namespace UGF.Application.Runtime
             if (application != this) throw new ArgumentException("Application launcher event handler process another application.");
 
             OnStopped();
-        }
-
-        void IApplicationLauncherEventHandler.OnQuitting(IApplication application)
-        {
-            if (application != this) throw new ArgumentException("Application launcher event handler process another application.");
-
-            OnQuitting();
         }
     }
 }
