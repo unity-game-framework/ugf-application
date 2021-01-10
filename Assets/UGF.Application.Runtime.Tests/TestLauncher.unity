@@ -208,6 +208,7 @@ MonoBehaviour:
   m_resourceLoader: {fileID: 751223702}
   m_launchOnStart: 1
   m_stopOnQuit: 1
+  m_sceneAccess: 1
   m_useReverseModulesUninitialization: 1
   m_provideStaticInstance: 1
 --- !u!114 &751223704

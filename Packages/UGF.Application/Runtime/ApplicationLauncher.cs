@@ -9,7 +9,7 @@ namespace UGF.Application.Runtime
     /// <summary>
     /// Represents component which load, create and initialize application.
     /// </summary>
-    public abstract class ApplicationLauncher : MonoBehaviour
+    public abstract class ApplicationLauncher : MonoBehaviour, IApplicationLauncher
     {
         [SerializeField] private ApplicationLauncherResourceLoader m_resourceLoader;
         [SerializeField] private bool m_launchOnStart = true;
@@ -57,6 +57,8 @@ namespace UGF.Application.Runtime
         /// By itself application created during launch, but becomes available only after launch complete.
         /// </remarks>
         public bool HasApplication { get { return m_application != null; } }
+
+        IApplicationLauncherResourceLoader IApplicationLauncher.ResourceLoader { get { return m_resourceLoader; } }
 
         /// <summary>
         /// Triggered after all launch completed and application becomes available.

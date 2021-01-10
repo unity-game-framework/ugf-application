@@ -14,9 +14,14 @@ namespace UGF.Application.Runtime
 
         protected abstract TModule OnBuild(TDescription description, IApplication application);
 
+        T IBuilder<IApplication, IApplicationModule>.Build<T>(IApplication arguments)
+        {
+            return (T)(object)Build(arguments);
+        }
+
         IApplicationModule IBuilder<IApplication, IApplicationModule>.Build(IApplication arguments)
         {
-            return OnBuild(arguments);
+            return Build(arguments);
         }
     }
 }
