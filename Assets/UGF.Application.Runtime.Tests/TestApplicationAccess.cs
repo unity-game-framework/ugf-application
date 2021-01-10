@@ -8,9 +8,9 @@ namespace UGF.Application.Runtime.Tests
 {
     public class TestApplicationAccess
     {
-        private class Launcher : ApplicationLauncher
+        private class Builder : ApplicationBuilderComponent
         {
-            protected override IApplication OnCreateApplication(IApplicationResources resources)
+            protected override IApplication OnBuild(IApplicationResources arguments)
             {
                 return new Application();
             }
@@ -26,7 +26,11 @@ namespace UGF.Application.Runtime.Tests
         [UnityTest]
         public IEnumerator Access()
         {
-            var launcher = new GameObject("launcher").AddComponent<Launcher>();
+            var gameObject = new GameObject("launcher");
+            var launcher = gameObject.AddComponent<ApplicationLauncherComponent>();
+
+            launcher.Builder = gameObject.AddComponent<Builder>();
+            launcher.ResourceLoader = gameObject.AddComponent<ApplicationLauncherResources>();
 
             yield return null;
             yield return null;

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading.Tasks;
+using UGF.Application.Runtime.Scenes;
 using UnityEngine;
 
 namespace UGF.Application.Runtime
@@ -20,47 +22,35 @@ namespace UGF.Application.Runtime
         public IApplicationLauncher Launcher { get { return m_launcher ?? throw new InvalidOperationException("Application Launcher not exists."); } }
         public bool HasLauncher { get { return m_launcher != null; } }
 
-        public event ApplicationHandler Quitting;
+        public event ApplicationHandler Launched;
+        public event ApplicationHandler Stopped;
 
         private IApplicationLauncher m_launcher;
 
-        private void Awake()
+        public async void Launch()
         {
-            if (m_builder == null) throw new ArgumentNullException(nameof(m_builder), "Value can not be null.");
-            if (m_resourceLoader == null) throw new ArgumentNullException(nameof(m_builder), "Value can not be null.");
-
-            m_launcher = OnCreateLauncher(m_builder, m_resourceLoader);
+            await LaunchAsync();
         }
 
-        private async void Start()
+        public async Task LaunchAsync()
         {
-            if (m_launchOnStart)
+            await Launcher.Launch();
+
+            if (SceneAccess)
             {
-                await Launcher.Launch();
+                OnRegisterAtScene(Launcher.Application);
             }
         }
 
-        private void OnDestroy()
+        public void Stop()
         {
             if (Launcher.IsLaunched)
             {
-                Launcher.Stop();
-            }
-        }
+                if (SceneAccess)
+                {
+                    OnUnregisterAtScene(Launcher.Application);
+                }
 
-        private void OnApplicationQuit()
-        {
-            if (Launcher.HasApplication)
-            {
-                IApplication application = Launcher.Application;
-
-                OnQuitting(application);
-
-                Quitting?.Invoke(application);
-            }
-
-            if (m_stopOnQuit && Launcher.IsLaunched)
-            {
                 Launcher.Stop();
             }
         }
@@ -70,11 +60,41 @@ namespace UGF.Application.Runtime
             return new ApplicationLauncherDefault(builder, resourceLoader);
         }
 
-        protected virtual void OnQuitting(IApplication application)
+        protected virtual void OnRegisterAtScene(IApplication application)
         {
-            if (application is IApplicationLauncherEventHandler handler)
+            ApplicationSceneProviderInstance.Provider.Add(gameObject.scene, application);
+        }
+
+        protected virtual void OnUnregisterAtScene(IApplication application)
+        {
+            ApplicationSceneProviderInstance.Provider.Remove(gameObject.scene);
+        }
+
+        private void Start()
+        {
+            if (m_builder == null) throw new ArgumentNullException(nameof(m_builder), "Value can not be null.");
+            if (m_resourceLoader == null) throw new ArgumentNullException(nameof(m_builder), "Value can not be null.");
+
+            m_launcher = OnCreateLauncher(m_builder, m_resourceLoader);
+            m_launcher.Launched += Launched;
+            m_launcher.Stopped += Stopped;
+
+            if (m_launchOnStart)
             {
-                handler.OnQuitting(application);
+                Launch();
+            }
+        }
+
+        private void OnDestroy()
+        {
+            Stop();
+        }
+
+        private void OnApplicationQuit()
+        {
+            if (m_stopOnQuit)
+            {
+                Stop();
             }
         }
     }
