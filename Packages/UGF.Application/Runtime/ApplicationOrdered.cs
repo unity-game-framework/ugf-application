@@ -93,5 +93,31 @@ namespace UGF.Application.Runtime
         {
             return GetEnumerator();
         }
+
+        protected override void OnLaunched()
+        {
+            base.OnLaunched();
+
+            foreach (IApplicationModule module in m_initialize)
+            {
+                if (module is IApplicationLauncherEventHandler handler)
+                {
+                    handler.OnLaunched(this);
+                }
+            }
+        }
+
+        protected override void OnStopped()
+        {
+            base.OnStopped();
+
+            foreach (IApplicationModule module in m_initialize)
+            {
+                if (module is IApplicationLauncherEventHandler handler)
+                {
+                    handler.OnStopped(this);
+                }
+            }
+        }
     }
 }
