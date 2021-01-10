@@ -57,7 +57,7 @@ namespace UGF.Application.Runtime
 
         protected virtual IApplicationLauncher OnCreateLauncher(IApplicationBuilder builder, IApplicationLauncherResourceLoader resourceLoader)
         {
-            return new ApplicationLauncherDefault(builder, resourceLoader);
+            return new ApplicationLauncher(builder, resourceLoader);
         }
 
         protected virtual void OnRegisterAtScene(IApplication application)
@@ -78,6 +78,7 @@ namespace UGF.Application.Runtime
             m_launcher = OnCreateLauncher(m_builder, m_resourceLoader);
             m_launcher.Launched += Launched;
             m_launcher.Stopped += Stopped;
+            m_launcher.Initialize();
 
             if (m_launchOnStart)
             {
@@ -88,6 +89,8 @@ namespace UGF.Application.Runtime
         private void OnDestroy()
         {
             Stop();
+
+            m_launcher.Uninitialize();
         }
 
         private void OnApplicationQuit()

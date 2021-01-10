@@ -4,7 +4,7 @@ using UGF.Initialize.Runtime;
 
 namespace UGF.Application.Runtime
 {
-    public class ApplicationLauncherDefault : InitializeBase, IApplicationLauncher
+    public class ApplicationLauncher : InitializeBase, IApplicationLauncher
     {
         public IApplicationBuilder Builder { get; }
         public IApplicationLauncherResourceLoader ResourceLoader { get; }
@@ -18,7 +18,7 @@ namespace UGF.Application.Runtime
         private InitializeState m_state;
         private IApplication m_application;
 
-        public ApplicationLauncherDefault(IApplicationBuilder builder, IApplicationLauncherResourceLoader resourceLoader)
+        public ApplicationLauncher(IApplicationBuilder builder, IApplicationLauncherResourceLoader resourceLoader)
         {
             Builder = builder ?? throw new ArgumentNullException(nameof(builder));
             ResourceLoader = resourceLoader ?? throw new ArgumentNullException(nameof(resourceLoader));
