@@ -132,6 +132,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 751223700}
+  - component: {fileID: 751223705}
   - component: {fileID: 751223703}
   - component: {fileID: 751223702}
   - component: {fileID: 751223701}
@@ -169,14 +170,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1749bf167fd44ba6a6a2ba08b6700416, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_launcher: {fileID: 751223703}
+  m_launcher: {fileID: 751223705}
   m_launchedEvent:
     m_PersistentCalls:
       m_Calls: []
   m_stoppedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_quittingEvent:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &751223702
@@ -202,13 +200,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 751223699}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 405f91ce92a6464b885e6bbc3ce62627, type: 3}
+  m_Script: {fileID: 11500000, guid: 668ff42ef33b4dea9eba1f6d5c16bcc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_resourceLoader: {fileID: 751223702}
-  m_launchOnStart: 1
-  m_stopOnQuit: 1
-  m_sceneAccess: 1
   m_useReverseModulesUninitialization: 1
   m_provideStaticInstance: 1
 --- !u!114 &751223704
@@ -223,3 +217,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d5b9d595f1346d3bca72005df2ce423, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &751223705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 751223699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fe62d66d7b2471486cb6b94f22fb807, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_builder: {fileID: 751223703}
+  m_resourceLoader: {fileID: 751223702}
+  m_launchOnStart: 1
+  m_stopOnQuit: 1
+  m_sceneAccess: 1
