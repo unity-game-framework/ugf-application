@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.0.0](https://github.com/unity-game-framework/ugf-application/releases/tag/7.0.0) - 2021-01-10  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/20?closed=1)  
+    
+
+### Changed
+
+- Add application and module builders ([#54](https://github.com/unity-game-framework/ugf-application/pull/54))  
+    - Add `ApplicationBuilder`, `ApplicationBuilderComponent` and `ApplicationModuleBuilder` builder classes.
+    - Add `ApplicationConfiguredBuilder` and `ApplicationConfiguredBuilderComponent` builder classes for `ApplicationConfigured` application.
+    - Add `ApplicationOrderedBuilder` and `ApplicationOrderedBuilderComponent` builder classes for `ApplicationOrdered` application.
+    - Add `ApplicationSingletonBuilder` and `ApplicationSingletonBuilderComponent` builder classes for `ApplicationSingleton` application.
+    - Add `ApplicationLauncherComponent` as replacement of old `ApplicationLauncher` component, used to create and launch `IApplicationLauncher` instance.
+    - Add `IApplicationLauncherResourceLoader` interface and implementation for `ApplicationLauncherResourceLoader` component.
+    - Add `Launched` and `Quitting` events handling for `ApplicationOrdered` application.
+    - Rework `ApplicationLauncher` to be initializable instance instead of component, used with `ApplicationBuilderComponent` builder and `ApplicationLauncherResourceLoader` resource loader components.
+    - Change `ApplicationLauncherEvents` to  work with `ApplicationLauncherComponent` instead of old `ApplicationLauncher` component.
+    - Remove `Quitting` event from `ApplicationLauncherEvents` component and `IApplicationLauncherEventHandler` interface.
+    - Remove quitting event from application and launcher.
+    - Remove `ApplicationConfiguredLauncher`, `ApplicationOrderedLauncher` and `ApplicationSingletonLauncher` launchers.
+
 ## [6.1.1](https://github.com/unity-game-framework/ugf-application/releases/tag/6.1.1) - 2021-01-09  
 
 ### Release Notes
