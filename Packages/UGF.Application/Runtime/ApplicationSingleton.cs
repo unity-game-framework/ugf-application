@@ -1,4 +1,5 @@
 ﻿using System;
+using UGF.Logs.Runtime;
 
 namespace UGF.Application.Runtime
 {
@@ -23,6 +24,11 @@ namespace UGF.Application.Runtime
                 if (ApplicationInstance.HasApplication) throw new InvalidOperationException("Application static instance already assigned.");
 
                 ApplicationInstance.Application = this;
+
+                Log.Debug("Singleton application provide static instance", new
+                {
+                    application = this
+                });
             }
         }
 
@@ -35,6 +41,11 @@ namespace UGF.Application.Runtime
                 if (ApplicationInstance.Application != this) throw new InvalidOperationException("Application static instance already assigned by another application.");
 
                 ApplicationInstance.Application = null;
+
+                Log.Debug("Singleton application clear static instance", new
+                {
+                    application = this
+                });
             }
         }
     }

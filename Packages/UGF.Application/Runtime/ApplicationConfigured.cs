@@ -1,4 +1,5 @@
 using System;
+using UGF.Logs.Runtime;
 
 namespace UGF.Application.Runtime
 {
@@ -12,6 +13,11 @@ namespace UGF.Application.Runtime
         public ApplicationConfigured(IApplicationResources resources, bool useReverseModulesUninitialization = true) : base(resources, useReverseModulesUninitialization)
         {
             Config = resources.Get<IApplicationConfig>() ?? throw new ArgumentException($"Config not found in specified resources: '{resources}'.");
+        }
+
+        protected override void OnInitialize()
+        {
+            base.OnInitialize();
 
             for (int i = 0; i < Config.Modules.Count; i++)
             {
@@ -20,6 +26,23 @@ namespace UGF.Application.Runtime
 
                 AddModule(module.Description.RegisterType, module);
             }
+
+            Log.Debug("Configured application initialized", new
+            {
+                modulesCount = Count
+            });
+        }
+
+        protected override void OnUninitialize()
+        {
+            base.OnUninitialize();
+
+            Log.Debug("Configured application uninitialized", new
+            {
+                modulesCount = Count
+            });
+
+            ClearModules();
         }
     }
 }

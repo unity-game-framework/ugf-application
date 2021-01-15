@@ -17,7 +17,7 @@ namespace UGF.Application.Runtime.Tests
 
         private class Module : ApplicationModule<ApplicationModuleDescription>, IModule
         {
-            public Module(IApplication application) : base(new ApplicationModuleDescription(typeof(IModule)), application)
+            public Module(IApplication application) : base(new ApplicationModuleDescription { RegisterType = typeof(IModule) }, application)
             {
             }
         }

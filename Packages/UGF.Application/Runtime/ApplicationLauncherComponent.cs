@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
 using UGF.Application.Runtime.Scenes;
+using UGF.Initialize.Runtime;
+using UGF.Logs.Runtime;
 using UnityEngine;
 
 namespace UGF.Application.Runtime
 {
     [AddComponentMenu("Unity Game Framework/Application/Application Launcher", 2000)]
-    public class ApplicationLauncherComponent : MonoBehaviour
+    public class ApplicationLauncherComponent : MonoBehaviour, IInitialize
     {
         [SerializeField] private ApplicationBuilderComponent m_builder;
         [SerializeField] private ApplicationLauncherResourceLoader m_resourceLoader;
@@ -21,11 +23,54 @@ namespace UGF.Application.Runtime
         public bool SceneAccess { get { return m_sceneAccess; } set { m_sceneAccess = value; } }
         public IApplicationLauncher Launcher { get { return m_launcher ?? throw new InvalidOperationException("Application Launcher not exists."); } }
         public bool HasLauncher { get { return m_launcher != null; } }
+        public bool IsInitialized { get { return m_state; } }
 
+        public event InitializeHandler Initialized;
+        public event InitializeHandler Uninitialized;
         public event ApplicationHandler Launched;
         public event ApplicationHandler Stopped;
 
+        private InitializeState m_state;
         private IApplicationLauncher m_launcher;
+
+        public void Initialize()
+        {
+            Log.Debug("Launcher initialization", new
+            {
+                launcher = this,
+                scene = gameObject.scene.name,
+                LaunchOnStart,
+                StopOnQuit,
+                SceneAccess
+            });
+
+            m_state = m_state.Initialize();
+
+            m_launcher = OnCreateLauncher(m_builder, m_resourceLoader);
+            m_launcher.Initialize();
+
+            Initialized?.Invoke(this);
+        }
+
+        public void Uninitialize()
+        {
+            m_state = m_state.Uninitialize();
+
+            if (Launcher.IsLaunched)
+            {
+                Stop();
+            }
+
+            m_launcher.Uninitialize();
+
+            Uninitialized?.Invoke(this);
+
+            Log.Debug("Launcher uninitialized", new
+            {
+                launcher = this,
+                scene = gameObject.scene.name,
+            });
+        }
 
         public async void Launch()
         {
@@ -44,60 +89,79 @@ namespace UGF.Application.Runtime
 
         public void Stop()
         {
-            if (Launcher.IsLaunched)
+            if (SceneAccess)
             {
-                if (SceneAccess)
-                {
-                    OnUnregisterAtScene(Launcher.Application);
-                }
-
-                Launcher.Stop();
+                OnUnregisterAtScene(Launcher.Application);
             }
+
+            Launcher.Stop();
         }
 
         protected virtual IApplicationLauncher OnCreateLauncher(IApplicationBuilder builder, IApplicationLauncherResourceLoader resourceLoader)
         {
-            return new ApplicationLauncher(builder, resourceLoader);
+            var launcher = new ApplicationLauncher(builder, resourceLoader);
+
+            launcher.Launched += Launched;
+            launcher.Stopped += Stopped;
+
+            return launcher;
         }
 
         protected virtual void OnRegisterAtScene(IApplication application)
         {
             ApplicationSceneProviderInstance.Provider.Add(gameObject.scene, application);
+
+            Log.Debug("Launcher register application at scene", new
+            {
+                application,
+                launcher = this,
+                scene = gameObject.scene.name,
+            });
         }
 
         protected virtual void OnUnregisterAtScene(IApplication application)
         {
             ApplicationSceneProviderInstance.Provider.Remove(gameObject.scene);
+
+            Log.Debug("Launcher unregister application at scene", new
+            {
+                application,
+                launcher = this,
+                scene = gameObject.scene.name,
+            });
         }
 
         private void Start()
         {
-            if (m_builder == null) throw new ArgumentNullException(nameof(m_builder), "Value can not be null.");
-            if (m_resourceLoader == null) throw new ArgumentNullException(nameof(m_builder), "Value can not be null.");
-
-            m_launcher = OnCreateLauncher(m_builder, m_resourceLoader);
-            m_launcher.Launched += Launched;
-            m_launcher.Stopped += Stopped;
-            m_launcher.Initialize();
-
             if (m_launchOnStart)
             {
+                Initialize();
                 Launch();
             }
         }
 
         private void OnDestroy()
         {
-            Stop();
-
-            m_launcher.Uninitialize();
+            if (IsInitialized)
+            {
+                Uninitialize();
+            }
         }
 
         private void OnApplicationQuit()
         {
             if (m_stopOnQuit)
             {
-                Stop();
+                Log.Debug("Launcher stop on application quit", new
+                {
+                    launcher = this,
+                    scene = gameObject.scene.name,
+                });
+
+                if (IsInitialized)
+                {
+                    Uninitialize();
+                }
             }
         }
     }
