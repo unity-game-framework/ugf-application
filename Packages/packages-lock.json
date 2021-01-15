@@ -8,7 +8,7 @@
         "com.ugf.initialize": "2.6.0",
         "com.ugf.description": "2.0.0",
         "com.ugf.customsettings": "3.4.0",
-        "com.ugf.logs": "5.0.0"
+        "com.ugf.logs": "5.1.0"
       }
     },
     "com.ugf.builder": {
@@ -60,7 +60,7 @@
       "url": "https://api.bintray.com/npm/unity-game-framework/public"
     },
     "com.ugf.logs": {
-      "version": "5.0.0",
+      "version": "5.1.0",
       "depth": 1,
       "source": "registry",
       "dependencies": {
