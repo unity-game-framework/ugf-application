@@ -4,7 +4,10 @@
     {
         protected override IApplicationModuleDescription OnBuildDescription()
         {
-            return new ApplicationModuleDescription(typeof(TModule));
+            return new ApplicationModuleDescription
+            {
+                RegisterType = typeof(TModule)
+            };
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace UGF.Application.Runtime.Tests
 {
@@ -8,7 +7,10 @@ namespace UGF.Application.Runtime.Tests
     {
         protected override IApplicationModuleDescription OnBuildDescription()
         {
-            return new TestModuleDescription(typeof(TestDescribedModule));
+            return new TestModuleDescription
+            {
+                RegisterType = typeof(TestDescribedModule)
+            };
         }
 
         protected override TestDescribedModule OnBuild(TestModuleDescription description, IApplication application)
@@ -26,8 +28,5 @@ namespace UGF.Application.Runtime.Tests
 
     public class TestModuleDescription : ApplicationModuleDescription
     {
-        public TestModuleDescription(Type registerType) : base(registerType)
-        {
-        }
     }
 }
