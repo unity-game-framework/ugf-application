@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using UGF.Initialize.Runtime;
+using UGF.Logs.Runtime;
 
 namespace UGF.Application.Runtime
 {
@@ -35,7 +36,7 @@ namespace UGF.Application.Runtime
 
             OnInitializeApplication(application);
 
-            await application.InitializeAsync();
+            await OnInitializeApplicationAsync(application);
 
             m_application = application;
 
@@ -61,6 +62,7 @@ namespace UGF.Application.Runtime
 
         protected virtual void OnLaunch()
         {
+            Log.Debug("Application launching.");
         }
 
         protected virtual IApplication OnCreateApplication(IApplicationResources resources)
@@ -70,11 +72,31 @@ namespace UGF.Application.Runtime
 
         protected virtual void OnInitializeApplication(IApplication application)
         {
+            Log.Debug("Application initialization", new
+            {
+                application
+            });
+
             application.Initialize();
+        }
+
+        protected virtual Task OnInitializeApplicationAsync(IApplication application)
+        {
+            Log.Debug("Application async initialization", new
+            {
+                application
+            });
+
+            return application.InitializeAsync();
         }
 
         protected virtual void UninitializeApplication(IApplication application)
         {
+            Log.Debug("Application uninitialize", new
+            {
+                application
+            });
+
             application.Uninitialize();
         }
 
@@ -84,6 +106,11 @@ namespace UGF.Application.Runtime
             {
                 handler.OnLaunched(application);
             }
+
+            Log.Debug("Application launched", new
+            {
+                application
+            });
         }
 
         protected virtual void OnStopped(IApplication application)
@@ -92,6 +119,11 @@ namespace UGF.Application.Runtime
             {
                 handler.OnStopped(application);
             }
+
+            Log.Debug("Application stopped", new
+            {
+                application
+            });
         }
     }
 }

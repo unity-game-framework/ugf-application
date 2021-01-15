@@ -142,9 +142,9 @@ namespace UGF.Application.Runtime.Tests
             application.Initialize();
 
             Assert.AreEqual(3, order.Count);
-            Assert.AreEqual("moduleA", order[0]);
-            Assert.AreEqual("moduleB", order[1]);
-            Assert.AreEqual("moduleC", order[2]);
+            Assert.AreEqual("moduleC", order[0]);
+            Assert.AreEqual("moduleA", order[1]);
+            Assert.AreEqual("moduleB", order[2]);
         }
 
         [Test]
