@@ -37,8 +37,8 @@ namespace UGF.Application.Runtime
         {
             Log.Debug("Launcher initialization", new
             {
-                gameObject,
-                gameObject.scene,
+                launcher = this,
+                scene = gameObject.scene.name,
                 LaunchOnStart,
                 StopOnQuit,
                 SceneAccess
@@ -67,8 +67,8 @@ namespace UGF.Application.Runtime
 
             Log.Debug("Launcher uninitialized", new
             {
-                gameObject,
-                gameObject.scene
+                launcher = this,
+                scene = gameObject.scene.name,
             });
         }
 
@@ -114,8 +114,8 @@ namespace UGF.Application.Runtime
             Log.Debug("Launcher register application at scene", new
             {
                 application,
-                gameObject,
-                gameObject.scene
+                launcher = this,
+                scene = gameObject.scene.name,
             });
         }
 
@@ -126,8 +126,8 @@ namespace UGF.Application.Runtime
             Log.Debug("Launcher unregister application at scene", new
             {
                 application,
-                gameObject,
-                gameObject.scene
+                launcher = this,
+                scene = gameObject.scene.name,
             });
         }
 
@@ -154,8 +154,8 @@ namespace UGF.Application.Runtime
             {
                 Log.Debug("Launcher stop on application quit", new
                 {
-                    gameObject,
-                    gameObject.scene
+                    launcher = this,
+                    scene = gameObject.scene.name,
                 });
 
                 if (IsInitialized)
