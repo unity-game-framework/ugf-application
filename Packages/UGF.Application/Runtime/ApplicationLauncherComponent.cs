@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using UGF.Application.Runtime.Scenes;
 using UGF.Initialize.Runtime;
+using UGF.Logs.Runtime;
 using UnityEngine;
 
 namespace UGF.Application.Runtime
@@ -34,6 +35,15 @@ namespace UGF.Application.Runtime
 
         public void Initialize()
         {
+            Log.Debug("Launcher initialization", new
+            {
+                gameObject,
+                gameObject.scene,
+                LaunchOnStart,
+                StopOnQuit,
+                SceneAccess
+            });
+
             m_state = m_state.Initialize();
 
             m_launcher = OnCreateLauncher(m_builder, m_resourceLoader);
@@ -54,6 +64,12 @@ namespace UGF.Application.Runtime
             m_launcher.Uninitialize();
 
             Uninitialized?.Invoke(this);
+
+            Log.Debug("Launcher uninitialized", new
+            {
+                gameObject,
+                gameObject.scene
+            });
         }
 
         public async void Launch()
@@ -94,11 +110,25 @@ namespace UGF.Application.Runtime
         protected virtual void OnRegisterAtScene(IApplication application)
         {
             ApplicationSceneProviderInstance.Provider.Add(gameObject.scene, application);
+
+            Log.Debug("Launcher register application at scene", new
+            {
+                application,
+                gameObject,
+                gameObject.scene
+            });
         }
 
         protected virtual void OnUnregisterAtScene(IApplication application)
         {
             ApplicationSceneProviderInstance.Provider.Remove(gameObject.scene);
+
+            Log.Debug("Launcher unregister application at scene", new
+            {
+                application,
+                gameObject,
+                gameObject.scene
+            });
         }
 
         private void Start()
@@ -112,14 +142,26 @@ namespace UGF.Application.Runtime
 
         private void OnDestroy()
         {
-            Uninitialize();
+            if (IsInitialized)
+            {
+                Uninitialize();
+            }
         }
 
         private void OnApplicationQuit()
         {
             if (m_stopOnQuit)
             {
-                Stop();
+                Log.Debug("Launcher stop on application quit", new
+                {
+                    gameObject,
+                    gameObject.scene
+                });
+
+                if (IsInitialized)
+                {
+                    Uninitialize();
+                }
             }
         }
     }
