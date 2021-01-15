@@ -33,7 +33,7 @@ namespace UGF.Application.Runtime.Tests
             private readonly Action m_init;
             private readonly Action m_uninit;
 
-            protected ModuleBase(Type type, IApplication application, Action init = null, Action uninit = null) : base(new ApplicationModuleDescription(type), application)
+            protected ModuleBase(Type type, IApplication application, Action init = null, Action uninit = null) : base(new ApplicationModuleDescription { RegisterType = type }, application)
             {
                 m_init = init;
                 m_uninit = uninit;
