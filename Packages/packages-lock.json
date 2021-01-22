@@ -8,6 +8,7 @@
         "com.ugf.initialize": "2.6.0",
         "com.ugf.description": "2.0.0",
         "com.ugf.customsettings": "3.4.0",
+        "com.ugf.runtimetools": "1.2.0",
         "com.ugf.logs": "5.1.0"
       }
     },
@@ -66,6 +67,13 @@
       "dependencies": {
         "com.ugf.defines": "2.1.0"
       },
+      "url": "https://api.bintray.com/npm/unity-game-framework/public"
+    },
+    "com.ugf.runtimetools": {
+      "version": "1.2.0",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
       "url": "https://api.bintray.com/npm/unity-game-framework/public"
     },
     "com.unity.ext.nunit": {
