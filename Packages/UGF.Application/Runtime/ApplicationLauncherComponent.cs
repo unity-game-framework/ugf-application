@@ -3,7 +3,9 @@ using System.Threading.Tasks;
 using UGF.Application.Runtime.Scenes;
 using UGF.Initialize.Runtime;
 using UGF.Logs.Runtime;
+using UGF.RuntimeTools.Runtime.Providers;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace UGF.Application.Runtime
 {
@@ -109,26 +111,32 @@ namespace UGF.Application.Runtime
 
         protected virtual void OnRegisterAtScene(IApplication application)
         {
-            ApplicationSceneProviderInstance.Provider.Add(gameObject.scene, application);
-
-            Log.Debug("Launcher register application at scene", new
+            if (ProviderInstance.TryGet(out IProvider<Scene, IApplication> provider))
             {
-                application,
-                launcher = this,
-                scene = gameObject.scene.name,
-            });
+                provider.Add(gameObject.scene, application);
+
+                Log.Debug("Launcher register application at scene", new
+                {
+                    application,
+                    launcher = this,
+                    scene = gameObject.scene.name,
+                });
+            }
         }
 
         protected virtual void OnUnregisterAtScene(IApplication application)
         {
-            ApplicationSceneProviderInstance.Provider.Remove(gameObject.scene);
-
-            Log.Debug("Launcher unregister application at scene", new
+            if (ProviderInstance.TryGet(out IProvider<Scene, IApplication> provider))
             {
-                application,
-                launcher = this,
-                scene = gameObject.scene.name,
-            });
+                provider.Remove(gameObject.scene);
+
+                Log.Debug("Launcher unregister application at scene", new
+                {
+                    application,
+                    launcher = this,
+                    scene = gameObject.scene.name,
+                });
+            }
         }
 
         private void Start()

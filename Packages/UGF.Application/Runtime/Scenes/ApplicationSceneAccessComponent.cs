@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using UGF.RuntimeTools.Runtime.Providers;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace UGF.Application.Runtime.Scenes
 {
@@ -7,7 +9,7 @@ namespace UGF.Application.Runtime.Scenes
     {
         protected override IApplication OnGetApplication()
         {
-            IApplicationSceneProvider provider = ApplicationSceneProviderInstance.Provider;
+            var provider = ProviderInstance.Get<IProvider<Scene, IApplication>>();
             IApplication application = provider.Get(gameObject.scene);
 
             return application;
