@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.0.0-preview](https://github.com/unity-game-framework/ugf-application/releases/tag/8.0.0-preview) - 2021-01-23  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/22?closed=1)  
+    
+
+### Changed
+
+- Rework scene providers ([#65](https://github.com/unity-game-framework/ugf-application/pull/65))  
+    - Add dependencies: `com.ugf.runtimetools` of `2.0.0` version.
+    - Add `ApplicationSceneProviderInstanceComponent` component to create and register provider to store application by scenes.
+    - Change `ApplicationLauncherComponent` and `ApplicationSceneAccessComponent` to work with provider system.
+    - Remove `ApplicationSceneProvider`, `ApplicationSceneProviderInstance` classes and replace with provider system.
+
+### Removed
+
+- Remove ApplicationModuleDescription constructor ([#67](https://github.com/unity-game-framework/ugf-application/pull/67))  
+    - Remove `ApplicationModuleDescription` constructor with `registerType` argument.
+
 ## [5.0.0](https://github.com/unity-game-framework/ugf-application/releases/tag/5.0.0) - 2020-10-21  
 
 ### Release Notes
