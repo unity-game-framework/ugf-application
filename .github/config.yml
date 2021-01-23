@@ -179,6 +179,9 @@ labels:
 - name: Bug
   description: An issue describes an unexpected problem or unintended behavior.
   color: f9d0c4
+- name: Develop
+  description: An issue relevant only for develop branch.
+  color: ffffff
 - name: Change
   description: Mentioned in changelog under the Changed section.
   color: c5def5
