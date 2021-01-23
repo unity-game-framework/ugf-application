@@ -25,6 +25,7 @@
     "com.ugf.initialize": "2.6.0",
     "com.ugf.description": "2.0.0",
     "com.ugf.customsettings": "3.4.0",
+    "com.ugf.runtimetools": "1.2.0",
     "com.ugf.logs": "5.1.0"
   }
 }
