@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "com.ugf.runtimetools": "file:../../ugf-runtimetools/Packages/UGF.RuntimeTools",
     "com.unity.ide.rider": "3.0.3",
     "com.unity.test-framework": "1.1.22"
   },
