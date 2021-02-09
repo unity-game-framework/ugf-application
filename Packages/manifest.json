@@ -6,7 +6,7 @@
   "scopedRegistries": [
     {
       "name": "Unity Game Framework",
-      "url": "https://api.bintray.com/npm/unity-game-framework/public",
+      "url": "https://unitygameframework.jfrog.io/artifactory/api/npm/default",
       "scopes": [
         "com.ugf"
       ]
