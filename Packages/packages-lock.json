@@ -16,7 +16,7 @@
       "depth": 2,
       "source": "registry",
       "dependencies": {},
-      "url": "https://api.bintray.com/npm/unity-game-framework/public"
+      "url": "https://unitygameframework.jfrog.io/artifactory/api/npm/default"
     },
     "com.ugf.customsettings": {
       "version": "3.4.0",
@@ -25,7 +25,7 @@
       "dependencies": {
         "com.ugf.editortools": "1.7.0"
       },
-      "url": "https://api.bintray.com/npm/unity-game-framework/public"
+      "url": "https://unitygameframework.jfrog.io/artifactory/api/npm/default"
     },
     "com.ugf.defines": {
       "version": "2.1.2",
@@ -35,7 +35,7 @@
         "com.ugf.customsettings": "3.4.0",
         "com.ugf.editortools": "1.10.0"
       },
-      "url": "https://api.bintray.com/npm/unity-game-framework/public"
+      "url": "https://unitygameframework.jfrog.io/artifactory/api/npm/default"
     },
     "com.ugf.description": {
       "version": "2.0.0",
@@ -44,21 +44,21 @@
       "dependencies": {
         "com.ugf.builder": "2.0.0"
       },
-      "url": "https://api.bintray.com/npm/unity-game-framework/public"
+      "url": "https://unitygameframework.jfrog.io/artifactory/api/npm/default"
     },
     "com.ugf.editortools": {
       "version": "1.10.0",
       "depth": 3,
       "source": "registry",
       "dependencies": {},
-      "url": "https://api.bintray.com/npm/unity-game-framework/public"
+      "url": "https://unitygameframework.jfrog.io/artifactory/api/npm/default"
     },
     "com.ugf.initialize": {
       "version": "2.6.0",
       "depth": 1,
       "source": "registry",
       "dependencies": {},
-      "url": "https://api.bintray.com/npm/unity-game-framework/public"
+      "url": "https://unitygameframework.jfrog.io/artifactory/api/npm/default"
     },
     "com.ugf.logs": {
       "version": "5.1.3",
@@ -67,14 +67,14 @@
       "dependencies": {
         "com.ugf.defines": "2.1.2"
       },
-      "url": "https://api.bintray.com/npm/unity-game-framework/public"
+      "url": "https://unitygameframework.jfrog.io/artifactory/api/npm/default"
     },
     "com.ugf.runtimetools": {
       "version": "2.0.0",
       "depth": 1,
       "source": "registry",
       "dependencies": {},
-      "url": "https://api.bintray.com/npm/unity-game-framework/public"
+      "url": "https://unitygameframework.jfrog.io/artifactory/api/npm/default"
     },
     "com.unity.ext.nunit": {
       "version": "1.0.6",
@@ -84,7 +84,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.rider": {
-      "version": "3.0.3",
+      "version": "3.0.4",
       "depth": 0,
       "source": "registry",
       "dependencies": {
