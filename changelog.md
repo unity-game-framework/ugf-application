@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.0.0-preview.4](https://github.com/unity-game-framework/ugf-application/releases/tag/8.0.0-preview.4) - 2021-02-09  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/26?closed=1)  
+    
+
+### Changed
+
+- Update project registry ([#77](https://github.com/unity-game-framework/ugf-application/pull/77))  
+    - Update package publish registry.
+- Update to Unity 2021.1 ([#76](https://github.com/unity-game-framework/ugf-application/pull/76))
+
 ## [8.0.0-preview.3](https://github.com/unity-game-framework/ugf-application/releases/tag/8.0.0-preview.3) - 2021-01-24  
 
 ### Release Notes

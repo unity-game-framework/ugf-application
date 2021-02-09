@@ -4,8 +4,8 @@ UGF.Application
 
 ## Info
 
-- **Version**: `8.0.0-preview.3`
-- **Unity**: `2020.2`
+- **Version**: `8.0.0-preview.4`
+- **Unity**: `2021.1`
 - **API Compatibility Level**: `.NET Standard 2.0`
 
 ### Dependencies
@@ -25,8 +25,6 @@ Provides an entry point of the application with modules initialization.
 - [Full changelog](changelog.md)
 
 ### Registry
-
-- [Public](https://bintray.com/unity-game-framework/public)
 
 Read about where packages stored: [Registry](https://github.com/unity-game-framework/organization/blob/master/docs/registry.md).
 
