@@ -16,7 +16,10 @@
   "changelogUrl": "https://github.com/unity-game-framework/ugf-application/blob/master/changelog.md",
   "licensesUrl": "https://github.com/unity-game-framework/ugf-application/blob/master/license",
   "publishConfig": {
-    "registry": "https://unitygameframework.jfrog.io/artifactory/api/npm/default"
+    "registry": "https://npm.pkg.github.com/@unity-game-framework"
+  },
+  "bintray": {
+    "registry": "https://api.bintray.com/content/unity-game-framework/public"
   },
   "dependencies": {
     "com.ugf.initialize": "2.6.0",
