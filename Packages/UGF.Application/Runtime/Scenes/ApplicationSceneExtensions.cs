@@ -1,4 +1,5 @@
-﻿using UnityEngine.SceneManagement;
+﻿using UGF.RuntimeTools.Runtime.Providers;
+using UnityEngine.SceneManagement;
 
 namespace UGF.Application.Runtime.Scenes
 {
@@ -6,12 +7,12 @@ namespace UGF.Application.Runtime.Scenes
     {
         public static IApplication GetApplication(this Scene scene)
         {
-            return ApplicationSceneProviderInstance.Provider.Get(scene);
+            return ProviderInstance.Get<IProvider<Scene, IApplication>>().Get(scene);
         }
 
         public static bool TryGetApplication(this Scene scene, out IApplication application)
         {
-            return ApplicationSceneProviderInstance.Provider.TryGet(scene, out application);
+            return ProviderInstance.Get<IProvider<Scene, IApplication>>().TryGet(scene, out application);
         }
     }
 }

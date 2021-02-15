@@ -5,165 +5,74 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.1.0](https://github.com/unity-game-framework/ugf-application/releases/tag/7.1.0) - 2021-01-15  
+## [8.0.0-preview.4](https://github.com/unity-game-framework/ugf-application/releases/tag/8.0.0-preview.4) - 2021-02-09  
 
 ### Release Notes
 
-- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/21?closed=1)  
-    
-
-### Added
-
-- Add application logging ([#61](https://github.com/unity-game-framework/ugf-application/pull/61))  
-    - Add dependency: `com.ugf.logs` of `5.1.0` version.
-    - Add logging for `ApplicationConfigured`, `ApplicationLauncher`, `ApplicationSingleton` and `ApplicationLauncherComponent` classes.
-    - Add overridable `OnInitializeApplicationAsync` method for `ApplicationLauncher` class.
-    - Change `ApplicationConfigured` modules creation workflow, now modules created at `OnInitialize` and removed on `OnUninitialize` method.
-- Add initialize methods for ApplicationLauncherComponent ([#60](https://github.com/unity-game-framework/ugf-application/pull/60))  
-    - Add implementation of `IInitialize` interface for `ApplicationLauncherComponent` class.
-
-### Deprecated
-
-- Add obsolete attribute for ApplicationModuleDescription constructor with register type ([#58](https://github.com/unity-game-framework/ugf-application/pull/58))  
-    - Deprecate `ApplicationModuleDescription` constructor with `registerType` argument, use default constructor and property initialization to specify register type.
-
-## [7.0.0](https://github.com/unity-game-framework/ugf-application/releases/tag/7.0.0) - 2021-01-10  
-
-### Release Notes
-
-- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/20?closed=1)  
+- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/26?closed=1)  
     
 
 ### Changed
 
-- Add application and module builders ([#54](https://github.com/unity-game-framework/ugf-application/pull/54))  
-    - Add `ApplicationBuilder`, `ApplicationBuilderComponent` and `ApplicationModuleBuilder` builder classes.
-    - Add `ApplicationConfiguredBuilder` and `ApplicationConfiguredBuilderComponent` builder classes for `ApplicationConfigured` application.
-    - Add `ApplicationOrderedBuilder` and `ApplicationOrderedBuilderComponent` builder classes for `ApplicationOrdered` application.
-    - Add `ApplicationSingletonBuilder` and `ApplicationSingletonBuilderComponent` builder classes for `ApplicationSingleton` application.
-    - Add `ApplicationLauncherComponent` as replacement of old `ApplicationLauncher` component, used to create and launch `IApplicationLauncher` instance.
-    - Add `IApplicationLauncherResourceLoader` interface and implementation for `ApplicationLauncherResourceLoader` component.
-    - Add `Launched` and `Quitting` events handling for `ApplicationOrdered` application.
-    - Rework `ApplicationLauncher` to be initializable instance instead of component, used with `ApplicationBuilderComponent` builder and `ApplicationLauncherResourceLoader` resource loader components.
-    - Change `ApplicationLauncherEvents` to  work with `ApplicationLauncherComponent` instead of old `ApplicationLauncher` component.
-    - Remove `Quitting` event from `ApplicationLauncherEvents` component and `IApplicationLauncherEventHandler` interface.
-    - Remove quitting event from application and launcher.
-    - Remove `ApplicationConfiguredLauncher`, `ApplicationOrderedLauncher` and `ApplicationSingletonLauncher` launchers.
+- Update project registry ([#77](https://github.com/unity-game-framework/ugf-application/pull/77))  
+    - Update package publish registry.
+- Update to Unity 2021.1 ([#76](https://github.com/unity-game-framework/ugf-application/pull/76))
 
-## [6.1.1](https://github.com/unity-game-framework/ugf-application/releases/tag/6.1.1) - 2021-01-09  
+## [8.0.0-preview.3](https://github.com/unity-game-framework/ugf-application/releases/tag/8.0.0-preview.3) - 2021-01-24  
 
 ### Release Notes
 
-- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/19?closed=1)  
+- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/25?closed=1)  
     
 
 ### Changed
 
-- Change ApplicationModuleDescription constructor ([#51](https://github.com/unity-game-framework/ugf-application/pull/51))  
-    - Add default constructor for `ApplicationModuleDescription` class, and constructor with `registerType` argument not recommended to use.
-    - Change `RegisterType` property to be read and write.
+- Update logs package ([#73](https://github.com/unity-game-framework/ugf-application/pull/73))  
+    - Update dependencies: `com.ugf.logs` to `5.1.3` version.
 
-## [6.1.0](https://github.com/unity-game-framework/ugf-application/releases/tag/6.1.0) - 2020-12-18  
-
-### Release Notes
-
-- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/18?closed=1)  
-    
-
-### Added
-
-- Add application component access ([#48](https://github.com/unity-game-framework/ugf-application/pull/48))  
-    - Add `ApplicationAccessComponent` an abstract class to implement `IApplication` access component.
-    - Add `ApplicationLauncher.SceneAccess` property to determine whether to register created application to `Launcher` scene.
-    - Add `ApplicationLauncher.OnRegisterAtScene` and `OnUnregisterAtScene` methods to override application to scene register behaviour.
-    - Add `ApplicationSceneAccessComponent` as default implementation of `ApplicationAccessComponent` to provide access using `ApplicationSceneProviderInstance` static class.
-    - Add `GetApplication` and `TryGetApplication` extension methods for `Scene`, to access registered application.
-    - Add `ApplicationSceneProvider` and `ApplicationSceneProviderInstance` to manage applications for specific scenes.
-
-## [6.0.0](https://github.com/unity-game-framework/ugf-application/releases/tag/6.0.0) - 2020-12-05  
+## [8.0.0-preview.2](https://github.com/unity-game-framework/ugf-application/releases/tag/8.0.0-preview.2) - 2021-01-24  
 
 ### Release Notes
 
-- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/17?closed=1)  
+- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/24?closed=1)  
     
 
 ### Changed
 
-- Change descriptions and assets to use things from new packages ([#43](https://github.com/unity-game-framework/ugf-application/pull/43))  
-    - Rework all assets to work using `UGF.Builder` package, and descriptions and modules to use `UGF.Description` package.
-    - Add dependencies: `com.ugf.description` and `com.ugf.builder`.
-    - Add register all components under the `Unity Game Framework` add component menu.
-    - Change dependencies of `com.ugf.customsettings` and `com.ugf.initialize`.
-    - Change `ApplicationConfig` to be description, and replace `IApplicationModuleAsset` by `IApplicationModuleBuilder` builder interface.
-    - Change `ApplicationResourceAsset` and other assets to be async builder assets.
-    - Change `IApplicationModule` to be described object with module description and application.
-    - Change `IApplicationModuleDescription` to contains module register type.
-    - Change `ApplicationModuleAsset` to be builder asset of described object and description.
-    - Change `ApplicationModuleAsset<TModule>` to be builder with default module description.
-    - Change name of the root of create asset menu, from `UGF` to `Unity Game Framework`.
-    - Remove `ApplicationModuleBase` and `ApplicationModuleDescribed<TDescription>`, use `ApplicationModule<TDescription>` instead, now module always described.
-    - Remove `ApplicationModuleDescriptionBase`, use `ApplicationModuleDescription` instead.
-    - Remove `ApplicationModuleDescribedAsset`, use `ApplicationModuleAsset` instead.
-    - Remove `RegisterType` property from `ApplicationModuleAsset`, now `ApplicationModuleDescription` contains this information.
-    - Remove `ApplicationResourceAsyncAsset`, now `ApplicationResourceAsset` always asynchronously loading resources.
-    - Remove `ApplicationUtility`, all logic has been moved to `ApplicationResourceAsset`.
+- Update logs and defines packages ([#71](https://github.com/unity-game-framework/ugf-application/pull/71))  
+    - Update dependencies: `com.ugf.logs` to `5.1.2` version and `com.ugf.defines` to version `2.1.1`.
 
-## [5.3.0](https://github.com/unity-game-framework/ugf-application/releases/tag/5.3.0) - 2020-11-10  
+## [8.0.0-preview.1](https://github.com/unity-game-framework/ugf-application/releases/tag/8.0.0-preview.1) - 2021-01-23  
 
 ### Release Notes
 
-- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/16?closed=1)  
+- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/23?closed=1)  
+    
+
+### Fixed
+
+- Fix dependencies ([#69](https://github.com/unity-game-framework/ugf-application/pull/69))  
+    - Fix dependencies: `com.ugf.runtimetools` to `2.0.0` version.
+
+## [8.0.0-preview](https://github.com/unity-game-framework/ugf-application/releases/tag/8.0.0-preview) - 2021-01-23  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/22?closed=1)  
     
 
 ### Changed
 
-- Update dependencies ([#40](https://github.com/unity-game-framework/ugf-application/pull/40))  
-    - Update `com.ugf.initialize` to `2.5.0` version.
-    - Update `com.ugf.customsettings` to `3.1.0` version.
-    - Update `com.ugf.editortools` to `1.6.0` version.
+- Rework scene providers ([#65](https://github.com/unity-game-framework/ugf-application/pull/65))  
+    - Add dependencies: `com.ugf.runtimetools` of `2.0.0` version.
+    - Add `ApplicationSceneProviderInstanceComponent` component to create and register provider to store application by scenes.
+    - Change `ApplicationLauncherComponent` and `ApplicationSceneAccessComponent` to work with provider system.
+    - Remove `ApplicationSceneProvider`, `ApplicationSceneProviderInstance` classes and replace with provider system.
 
-## [5.2.1](https://github.com/unity-game-framework/ugf-application/releases/tag/5.2.1) - 2020-11-10  
+### Removed
 
-### Release Notes
-
-- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/15?closed=1)  
-    
-
-### Changed
-
-- Remove internals visible to attribute ([#37](https://github.com/unity-game-framework/ugf-application/pull/37))  
-    - Remove `InternalsVisibleTo` attribute from runtime assembly.
-    - Change `ApplicationSettings.Settings` to be public.
-
-## [5.2.0](https://github.com/unity-game-framework/ugf-application/releases/tag/5.2.0) - 2020-11-07  
-
-### Release Notes
-
-- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/14?closed=1)  
-    
-
-### Added
-
-- Add generic IApplicationModuleDescribed interface ([#34](https://github.com/unity-game-framework/ugf-application/pull/34))  
-    - Add `IApplicationModuleDescribed<TDescription>` interface.
-    - Change `ApplicationModuleDescribed<TDescription>` class to implement `IApplicationModuleDescribed<TDescription>` interface.
-
-## [5.1.0](https://github.com/unity-game-framework/ugf-application/releases/tag/5.1.0) - 2020-10-22  
-
-### Release Notes
-
-- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/13?closed=1)  
-    
-
-### Added
-
-- Add module with description builder ([#31](https://github.com/unity-game-framework/ugf-application/pull/31))  
-    - Add `ApplicationModuleDescribed<T>` an application module default implementation with typed description.
-    - Add `ApplicationModuleDescribedAsset` scriptableobject asset to define module creation with description.
-    - Add `IApplicationModule.Application` property to access to application.
-    - Add `IApplicationModuleDescribed`, `IApplicationModuleDescription`, `IApplicationModuleDescriptionAsset` to implement custom described application module.
-    - Change `ApplicationModuleBase` to always have `Application` from creation.
-    - Update package dependencies: `com.ugf.editortools` to `1.5.1`.
+- Remove ApplicationModuleDescription constructor ([#67](https://github.com/unity-game-framework/ugf-application/pull/67))  
+    - Remove `ApplicationModuleDescription` constructor with `registerType` argument.
 
 ## [5.0.0](https://github.com/unity-game-framework/ugf-application/releases/tag/5.0.0) - 2020-10-21  
 
