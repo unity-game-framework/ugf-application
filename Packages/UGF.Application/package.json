@@ -13,8 +13,8 @@
     "type": "git",
     "url": "git://github.com/unity-game-framework/ugf-application.git"
   },
-  "changelogUrl": "https://github.com/unity-game-framework/ugf-application/blob/master/changelog.md",
-  "licensesUrl": "https://github.com/unity-game-framework/ugf-application/blob/master/license",
+  "changelogUrl": "https://github.com/unity-game-framework/ugf-application/blob/main/changelog.md",
+  "licensesUrl": "https://github.com/unity-game-framework/ugf-application/blob/main/license",
   "publishConfig": {
     "registry": "https://unitygameframework.jfrog.io/artifactory/api/npm/default"
   },
