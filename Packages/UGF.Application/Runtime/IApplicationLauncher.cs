@@ -13,7 +13,7 @@ namespace UGF.Application.Runtime
         event ApplicationHandler Launched;
         event ApplicationHandler Stopped;
 
-        Task Launch();
+        Task LaunchAsync();
         void Stop();
     }
 }
