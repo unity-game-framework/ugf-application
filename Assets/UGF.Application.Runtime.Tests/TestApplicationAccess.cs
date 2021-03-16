@@ -27,10 +27,13 @@ namespace UGF.Application.Runtime.Tests
         public IEnumerator Access()
         {
             var gameObject = new GameObject("launcher");
+
+            gameObject.AddComponent<ApplicationSceneProviderInstanceComponent>();
+
             var launcher = gameObject.AddComponent<ApplicationLauncherComponent>();
 
             launcher.Builder = gameObject.AddComponent<Builder>();
-            launcher.ResourceLoader = gameObject.AddComponent<ApplicationLauncherResources>();
+            launcher.ResourceLoader = gameObject.AddComponent<ApplicationLauncherResourcesComponent>();
 
             yield return null;
             yield return null;
