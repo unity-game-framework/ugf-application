@@ -80,7 +80,7 @@ namespace UGF.Application.Runtime
 
         public async Task LaunchAsync()
         {
-            await Launcher.Launch();
+            await Launcher.LaunchAsync();
 
             if (m_sceneAccess)
             {

@@ -25,7 +25,7 @@ namespace UGF.Application.Runtime
             ResourceLoader = resourceLoader ?? throw new ArgumentNullException(nameof(resourceLoader));
         }
 
-        public async Task Launch()
+        public async Task LaunchAsync()
         {
             m_state = m_state.Initialize();
 
