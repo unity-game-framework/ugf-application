@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using UGF.Application.Runtime.Scenes;
 using UGF.Initialize.Runtime;
 using UGF.Logs.Runtime;
 using UGF.RuntimeTools.Runtime.Providers;
@@ -13,13 +12,13 @@ namespace UGF.Application.Runtime
     public class ApplicationLauncherComponent : MonoBehaviour, IInitialize
     {
         [SerializeField] private ApplicationBuilderComponent m_builder;
-        [SerializeField] private ApplicationLauncherResourceLoader m_resourceLoader;
+        [SerializeField] private ApplicationLauncherResourceLoaderComponent m_resourceLoader;
         [SerializeField] private bool m_launchOnStart = true;
         [SerializeField] private bool m_stopOnQuit = true;
         [SerializeField] private bool m_sceneAccess = true;
 
         public ApplicationBuilderComponent Builder { get { return m_builder; } set { m_builder = value; } }
-        public ApplicationLauncherResourceLoader ResourceLoader { get { return m_resourceLoader; } set { m_resourceLoader = value; } }
+        public ApplicationLauncherResourceLoaderComponent ResourceLoader { get { return m_resourceLoader; } set { m_resourceLoader = value; } }
         public bool LaunchOnStart { get { return m_launchOnStart; } set { m_launchOnStart = value; } }
         public bool StopOnQuit { get { return m_stopOnQuit; } set { m_stopOnQuit = value; } }
         public bool SceneAccess { get { return m_sceneAccess; } set { m_sceneAccess = value; } }
@@ -83,7 +82,7 @@ namespace UGF.Application.Runtime
         {
             await Launcher.Launch();
 
-            if (SceneAccess)
+            if (m_sceneAccess)
             {
                 OnRegisterAtScene(Launcher.Application);
             }
@@ -91,7 +90,7 @@ namespace UGF.Application.Runtime
 
         public void Stop()
         {
-            if (SceneAccess)
+            if (m_sceneAccess)
             {
                 OnUnregisterAtScene(Launcher.Application);
             }
