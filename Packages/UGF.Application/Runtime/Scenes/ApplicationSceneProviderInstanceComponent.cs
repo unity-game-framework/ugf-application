@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 namespace UGF.Application.Runtime.Scenes
 {
+    [DefaultExecutionOrder(int.MinValue)]
     [AddComponentMenu("Unity Game Framework/Application/Application Scene Provider Instance", 2000)]
     public class ApplicationSceneProviderInstanceComponent : ProviderInstanceComponent<IProvider<Scene, IApplication>>
     {
