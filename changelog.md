@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.0.0-preview.6](https://github.com/unity-game-framework/ugf-application/releases/tag/8.0.0-preview.6) - 2021-04-09  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/28?closed=1)  
+    
+
+### Added
+
+- Add higher execute priority for ApplicationSceneProviderInstanceComponent ([#84](https://github.com/unity-game-framework/ugf-application/pull/84))  
+    - Add `DefaultExecutionOrder` attribute for `ApplicationSceneProviderInstanceComponent` component with highest priority.
+
 ## [8.0.0-preview.5](https://github.com/unity-game-framework/ugf-application/releases/tag/8.0.0-preview.5) - 2021-03-16  
 
 ### Release Notes
