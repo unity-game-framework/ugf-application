@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.0.0-preview.7](https://github.com/unity-game-framework/ugf-application/releases/tag/8.0.0-preview.7) - 2021-05-25  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/29?closed=1)  
+    
+
+### Changed
+
+- Change project settings root name ([#86](https://github.com/unity-game-framework/ugf-application/pull/86))  
+    - Update dependencies: `com.ugf.logs` to `5.1.4` version.
+    - Change project settings root name to `Unity Game Framework`.
+
 ## [8.0.0-preview.6](https://github.com/unity-game-framework/ugf-application/releases/tag/8.0.0-preview.6) - 2021-04-09  
 
 ### Release Notes

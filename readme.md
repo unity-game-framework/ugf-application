@@ -4,7 +4,7 @@ UGF.Application
 
 ## Info
 
-- **Version**: `8.0.0-preview.6`
+- **Version**: `8.0.0-preview.7`
 - **Unity**: `2021.1`
 - **API Compatibility Level**: `.NET Standard 2.0`
 
@@ -13,7 +13,7 @@ UGF.Application
 - `com.ugf.initialize`: `2.6.0`
 - `com.ugf.description`: `2.0.0`
 - `com.ugf.runtimetools`: `2.0.0`
-- `com.ugf.logs`: `5.1.3`
+- `com.ugf.logs`: `5.1.4`
 
 
 ### Description
