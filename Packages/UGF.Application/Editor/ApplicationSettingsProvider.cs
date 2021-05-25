@@ -9,7 +9,7 @@ namespace UGF.Application.Editor
         [SettingsProvider]
         private static SettingsProvider GetProvider()
         {
-            return new CustomSettingsProvider<ApplicationSettingsAsset>("Project/UGF/Application", ApplicationSettings.Settings, SettingsScope.Project);
+            return new CustomSettingsProvider<ApplicationSettingsAsset>("Project/Unity Game Framework/Application", ApplicationSettings.Settings, SettingsScope.Project);
         }
     }
 }
