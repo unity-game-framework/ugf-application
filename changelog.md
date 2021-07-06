@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.0.0-preview.8](https://github.com/unity-game-framework/ugf-application/releases/tag/8.0.0-preview.8) - 2021-07-06  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/30?closed=1)  
+    
+
+### Fixed
+
+- Fix ApplicationConfigProjectAsset does not open project settings ([#88](https://github.com/unity-game-framework/ugf-application/pull/88))  
+    - Fix `ApplicationConfigProjectAsset` to open _Application_ section in _ProjectSettings_ with `Open Application Project Settings` button in inspector of the asset.
+
 ## [8.0.0-preview.7](https://github.com/unity-game-framework/ugf-application/releases/tag/8.0.0-preview.7) - 2021-05-25  
 
 ### Release Notes
