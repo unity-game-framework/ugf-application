@@ -21,7 +21,7 @@ namespace UGF.Application.Editor
 
                 if (GUILayout.Button("Open Application Project Settings", GUILayout.Width(250F)))
                 {
-                    SettingsService.OpenProjectSettings("Project/UGF/Application");
+                    SettingsService.OpenProjectSettings("Project/Unity Game Framework/Application");
                 }
 
                 GUILayout.FlexibleSpace();
