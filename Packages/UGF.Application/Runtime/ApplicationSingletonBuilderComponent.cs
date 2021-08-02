@@ -3,7 +3,7 @@
 namespace UGF.Application.Runtime
 {
     [AddComponentMenu("Unity Game Framework/Application/Application Singleton Builder", 2000)]
-    public class ApplicationSingletonBuilderComponent : ApplicationOrderedBuilderComponent
+    public class ApplicationSingletonBuilderComponent : ApplicationConfiguredBuilderComponent
     {
         [SerializeField] private bool m_provideStaticInstance = true;
 
