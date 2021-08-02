@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.0.0-preview.9](https://github.com/unity-game-framework/ugf-application/releases/tag/8.0.0-preview.9) - 2021-08-02  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/31?closed=1)  
+    
+
+### Fixed
+
+- Fix application singleton to inherit configured builders ([#90](https://github.com/unity-game-framework/ugf-application/pull/90))  
+    - Update dependencies: `com.ugf.runtimetools` to `2.2.0` version.
+    - Fix `ApplicationSingletonBuilder` class to inherit from `ApplicationConfiguredBuilder` class.
+    - Fix `ApplicationSingletonBuilderComponent ` class to inherit from `ApplicationConfiguredBuilderComponent` class.
+
 ## [8.0.0-preview.8](https://github.com/unity-game-framework/ugf-application/releases/tag/8.0.0-preview.8) - 2021-07-06  
 
 ### Release Notes
