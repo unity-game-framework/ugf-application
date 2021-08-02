@@ -1,6 +1,6 @@
 ﻿namespace UGF.Application.Runtime
 {
-    public class ApplicationSingletonBuilder : ApplicationOrderedBuilder
+    public class ApplicationSingletonBuilder : ApplicationConfiguredBuilder
     {
         public bool ProvideStaticInstance { get; set; } = true;
 
