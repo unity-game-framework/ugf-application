@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.0.0](https://github.com/unity-game-framework/ugf-application/releases/tag/8.0.0) - 2021-11-23  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/32?closed=1)  
+    
+
+### Added
+
+- Add GameObject.GetApplication extension method ([#92](https://github.com/unity-game-framework/ugf-application/pull/92))  
+    - Update package _Unity_ version to `2021.2`.
+    - Update dependencies: `com.ugf.initialize` to `2.7.0`, `com.ugf.runtimetools` to `2.4.0`, `com.ugf.logs` to `5.2.0`, `com.ugf.editortools` to `2.1.0` and `com.ugf.builder` to `2.0.1`. 
+    - Add `GameObject.TryGetApplication()` extension method to get access to application connected to scene of the specified _GameObject_.
+
 ## [8.0.0-preview.9](https://github.com/unity-game-framework/ugf-application/releases/tag/8.0.0-preview.9) - 2021-08-02  
 
 ### Release Notes
