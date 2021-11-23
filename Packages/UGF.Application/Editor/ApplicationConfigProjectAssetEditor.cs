@@ -10,8 +10,7 @@ namespace UGF.Application.Editor
         public override void OnInspectorGUI()
         {
             EditorGUILayout.Space();
-            EditorGUILayout.HelpBox("This is Application Project Config Resource asset " +
-                                    "which can be specified in Application Launcher Resources component to load config from project settings during initialization.", MessageType.Info);
+            EditorGUILayout.HelpBox("This is Application Project Config Resource asset which can be specified in Application Launcher Resources component to load config from project settings during initialization.", MessageType.Info);
 
             EditorGUILayout.Space();
 

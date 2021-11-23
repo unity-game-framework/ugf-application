@@ -2,20 +2,15 @@ using UGF.Application.Runtime;
 using UGF.EditorTools.Editor.IMGUI;
 using UGF.EditorTools.Editor.IMGUI.EnabledProperty;
 using UnityEditor;
-using UnityEditorInternal;
 
 namespace UGF.Application.Editor
 {
     [CustomEditor(typeof(ApplicationConfigAsset), true)]
     internal class ApplicationConfigAssetEditor : UnityEditor.Editor
     {
-        private readonly EditorDrawer m_drawer = new EditorDrawer
-        {
-            DisplayTitlebar = true
-        };
-
         private SerializedProperty m_propertyScript;
         private EnabledPropertyListDrawer m_list;
+        private ReorderableListSelectionDrawerByPath m_listSelection;
 
         private void OnEnable()
         {
@@ -24,16 +19,23 @@ namespace UGF.Application.Editor
             SerializedProperty propertyModules = serializedObject.FindProperty("m_modules");
 
             m_list = new EnabledPropertyListDrawer(propertyModules);
-            m_list.List.onSelectCallback = OnSelect;
+
+            m_listSelection = new ReorderableListSelectionDrawerByPath(m_list, "m_value")
+            {
+                Drawer =
+                {
+                    DisplayTitlebar = true
+                }
+            };
 
             m_list.Enable();
-            m_drawer.Disable();
+            m_listSelection.Enable();
         }
 
         private void OnDisable()
         {
             m_list.Disable();
-            m_drawer.Disable();
+            m_listSelection.Disable();
         }
 
         public override void OnInspectorGUI()
@@ -46,38 +48,13 @@ namespace UGF.Application.Editor
             }
 
             m_list.DrawGUILayout();
+            m_listSelection.DrawGUILayout();
 
             serializedObject.ApplyModifiedProperties();
 
-            if (m_drawer.HasEditor)
-            {
-                m_drawer.DrawGUILayout();
-            }
-            else
+            if (!m_listSelection.Drawer.HasEditor)
             {
                 EditorGUILayout.HelpBox("Select any module to display.", MessageType.Info);
-            }
-        }
-
-        private void OnSelect(ReorderableList list)
-        {
-            if (list.index >= 0 && list.index < list.count)
-            {
-                SerializedProperty propertyElement = m_list.SerializedProperty.GetArrayElementAtIndex(list.index);
-                SerializedProperty propertyModule = propertyElement.FindPropertyRelative("m_value");
-
-                if (propertyModule.objectReferenceValue != null)
-                {
-                    m_drawer.Set(propertyModule.objectReferenceValue);
-                }
-                else
-                {
-                    m_drawer.Clear();
-                }
-            }
-            else
-            {
-                m_drawer.Clear();
             }
         }
     }
