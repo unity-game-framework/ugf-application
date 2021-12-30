@@ -3,7 +3,7 @@
   "displayName": "UGF.Application",
   "version": "8.0.0",
   "unity": "2021.2",
-  "apiCompatibility": ".NET Standard 2.0",
+  "apiCompatibility": ".NET Standard 2.1",
   "description": "Provides an entry point of the application with modules initialization.",
   "author": {
     "name": "Unity Game Framework",
