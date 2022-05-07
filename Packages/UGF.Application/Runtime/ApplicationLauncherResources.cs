@@ -23,7 +23,7 @@ namespace UGF.Application.Runtime
 
         public async Task CreateAsync()
         {
-            var asset = (ApplicationLauncherComponent)await Resources.LoadAsync<ApplicationLauncherComponent>(ResourcesPath).WaitAsync();
+            var asset = await Resources.LoadAsync<ApplicationLauncherComponent>(ResourcesPath).WaitAsync<ApplicationLauncherComponent>();
 
             m_component = Object.Instantiate(asset);
             m_component.Initialize();
