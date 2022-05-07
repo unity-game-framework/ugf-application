@@ -2,20 +2,20 @@
 
 UGF.Application
 
-## Info
+## Information
 
-- **Version**: `8.0.0`
-- **Unity**: `2021.2`
-- **API Compatibility Level**: `.NET Standard 2.0`
+- **Version**: `8.1.0`
+- **Unity**: `2021.3`
+- **API Compatibility Level**: `.NET Standard 2.1`
 
 ### Dependencies
 
-- `com.ugf.initialize`: `2.7.0`
+- `com.ugf.initialize`: `2.8.0`
 - `com.ugf.description`: `2.0.0`
-- `com.ugf.runtimetools`: `2.4.0`
-- `com.ugf.logs`: `5.2.0`
-- `com.ugf.editortools`: `2.1.0`
-- `com.ugf.builder`: `2.0.1`
+- `com.ugf.runtimetools`: `2.7.0`
+- `com.ugf.logs`: `5.3.0`
+- `com.ugf.editortools`: `2.5.0`
+- `com.ugf.builder`: `2.0.2`
 
 
 ### Description
