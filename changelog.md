@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.2.0](https://github.com/unity-game-framework/ugf-application/releases/tag/8.2.0) - 2022-06-06  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/34?closed=1)  
+    
+
+### Added
+
+- Add application resources loader create override ([#95](https://github.com/unity-game-framework/ugf-application/issues/95))  
+    - Update dependencies: `com.ugf.runtimetools` to `2.8.0` version.
+    - Add `ApplicationLauncherResources.OnLoadAsset()` virtual method to override loading behaviour.
+    - Change `ApplicationLauncherResources.CreateAsync()` method to return `IApplication` as result.
+
 ## [8.1.0](https://github.com/unity-game-framework/ugf-application/releases/tag/8.1.0) - 2022-05-07  
 
 ### Release Notes
