@@ -21,14 +21,16 @@ namespace UGF.Application.Runtime
             ResourcesPath = resourcesPath;
         }
 
-        public async Task CreateAsync()
+        public async Task<IApplication> CreateAsync()
         {
-            var asset = await Resources.LoadAsync<ApplicationLauncherComponent>(ResourcesPath).WaitAsync<ApplicationLauncherComponent>();
+            ApplicationLauncherComponent asset = await OnLoadAsset();
 
             m_component = Object.Instantiate(asset);
             m_component.Initialize();
 
             await m_component.LaunchAsync();
+
+            return Application;
         }
 
         public void Destroy()
@@ -38,6 +40,11 @@ namespace UGF.Application.Runtime
             Object.Destroy(m_component.gameObject);
 
             m_component = null;
+        }
+
+        protected virtual async Task<ApplicationLauncherComponent> OnLoadAsset()
+        {
+            return await Resources.LoadAsync<ApplicationLauncherComponent>(ResourcesPath).WaitAsync<ApplicationLauncherComponent>();
         }
     }
 }
