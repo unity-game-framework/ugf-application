@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.3.0](https://github.com/unity-game-framework/ugf-application/releases/tag/8.3.0) - 2022-07-12  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/35?closed=1)  
+    
+
+### Added
+
+- Add application module initialize async ([#97](https://github.com/unity-game-framework/ugf-application/issues/97))  
+    - Update dependencies: `com.ugf.initialize` to `2.9.0`, `com.ugf.runtimetools` to `2.9.2` and `com.ugf.editortools` to `2.8.0` versions.
+    - Add `ApplicationModuleAsync` class as implementation for `IApplicationModuleAsync` interface.
+    - Change `IApplicationModuleAsync` interface to inherit `IInitializeAsync` one.
+    - Change `ApplicationModule` class to inherit `Initializable` class what provides children for initialization.
+
 ## [8.2.0](https://github.com/unity-game-framework/ugf-application/releases/tag/8.2.0) - 2022-06-06  
 
 ### Release Notes
