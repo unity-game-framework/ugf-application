@@ -1,9 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using UGF.Initialize.Runtime;
 
 namespace UGF.Application.Runtime
 {
-    public interface IApplicationModuleAsync : IApplicationModule
+    public interface IApplicationModuleAsync : IApplicationModule, IInitializeAsync
     {
-        Task InitializeAsync();
     }
 }
