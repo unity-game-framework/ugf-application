@@ -1,7 +1,6 @@
 ﻿using System;
-using UGF.RuntimeTools.Runtime.Providers;
+using UGF.Application.Runtime.Scenes;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace UGF.Application.Runtime
 {
@@ -15,10 +14,9 @@ namespace UGF.Application.Runtime
         public static bool TryGetApplication(this GameObject gameObject, out IApplication application)
         {
             if (gameObject == null) throw new ArgumentNullException(nameof(gameObject));
+            if (!gameObject.scene.IsValid()) throw new ArgumentException("Value should be valid.", nameof(gameObject.scene));
 
-            var provider = ProviderInstance.Get<IProvider<Scene, IApplication>>();
-
-            return provider.TryGet(gameObject.scene, out application);
+            return gameObject.scene.TryGetApplication(out application);
         }
     }
 }
