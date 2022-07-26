@@ -1,4 +1,5 @@
-﻿using UGF.RuntimeTools.Runtime.Providers;
+﻿using System;
+using UGF.RuntimeTools.Runtime.Providers;
 using UnityEngine.SceneManagement;
 
 namespace UGF.Application.Runtime.Scenes
@@ -7,12 +8,15 @@ namespace UGF.Application.Runtime.Scenes
     {
         public static IApplication GetApplication(this Scene scene)
         {
-            return ProviderInstance.Get<IProvider<Scene, IApplication>>().Get(scene);
+            return TryGetApplication(scene, out IApplication application) ? application : throw new ArgumentException($"Application not found by the specified scene: '{scene}'.");
         }
 
         public static bool TryGetApplication(this Scene scene, out IApplication application)
         {
-            return ProviderInstance.Get<IProvider<Scene, IApplication>>().TryGet(scene, out application);
+            if (!scene.IsValid()) throw new ArgumentException("Value should be valid.", nameof(scene));
+
+            application = default;
+            return ProviderInstance.TryGet(out IProvider<Scene, IApplication> provider) && provider.TryGet(scene, out application);
         }
     }
 }
