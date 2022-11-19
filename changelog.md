@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.4.0](https://github.com/unity-game-framework/ugf-application/releases/tag/8.4.0) - 2022-11-19  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/37?closed=1)  
+    
+
+### Added
+
+- Add project config setup build step ([#101](https://github.com/unity-game-framework/ugf-application/issues/101))  
+    - Update dependencies: `com.ugf.runtimetools` to `2.17.0` and `com.ugf.editortools` to `2.13.0` versions, add `com.ugf.build` of `1.1.0` version.
+    - Add `ApplicationConfigStep` class as build step to setup project application config.
+
 ## [8.3.1](https://github.com/unity-game-framework/ugf-application/releases/tag/8.3.1) - 2022-07-26  
 
 ### Release Notes

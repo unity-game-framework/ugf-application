@@ -1,7 +1,7 @@
 {
   "name": "com.ugf.application",
   "displayName": "UGF.Application",
-  "version": "8.3.1",
+  "version": "8.4.0",
   "unity": "2021.3",
   "apiCompatibility": ".NET Standard 2.1",
   "description": "Provides an entry point of the application with modules initialization.",
