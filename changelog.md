@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.5.0](https://github.com/unity-game-framework/ugf-application/releases/tag/8.5.0) - 2023-04-08  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/38?closed=1)  
+    
+
+### Added
+
+- Add module collection asset ([#103](https://github.com/unity-game-framework/ugf-application/issues/103))  
+    - Update dependencies: `com.ugf.runtimetools` to `2.18.0`, `com.ugf.editortools` to `2.15.0` and `com.ugf.build` to `1.2.0` versions.
+    - Update package _Unity_ version to `2022.2`.
+    - Add `ApplicationModuleDescription` constructor with register type.
+    - Add `ApplicationModuleCollectionAsset` class as abstract collection asset of modules.
+    - Add `ApplicationModuleCollectionListAsset` class as default implementation of `ApplicationModuleCollectionAsset` to store modules in collection.
+    - Add `ApplicationConfigAsset.Collections` property to define collections of the modules used to add to the config.
+    - Change `IApplicationModule.TryGetModule()` method to have additional search for module by assignable type in case of not found by register type directly.
+
 ## [8.4.0](https://github.com/unity-game-framework/ugf-application/releases/tag/8.4.0) - 2022-11-19  
 
 ### Release Notes
