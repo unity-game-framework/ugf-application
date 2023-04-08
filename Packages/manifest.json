@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.unity.ide.rider": "3.0.16",
+    "com.unity.ide.rider": "3.0.18",
     "com.unity.test-framework": "2.0.1-pre.18"
   },
   "scopedRegistries": [

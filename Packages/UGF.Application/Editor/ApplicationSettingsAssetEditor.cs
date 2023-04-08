@@ -1,5 +1,6 @@
 ﻿using UGF.Application.Runtime;
 using UGF.EditorTools.Editor.IMGUI;
+using UGF.EditorTools.Editor.IMGUI.Scopes;
 using UnityEditor;
 using UnityEngine;
 
@@ -22,8 +23,11 @@ namespace UGF.Application.Editor
         {
             m_propertyConfig = serializedObject.FindProperty("m_config");
 
-            m_drawer = new EditorObjectReferenceDrawer(m_propertyConfig);
-            m_drawer.Drawer.DisplayTitlebar = true;
+            m_drawer = new EditorObjectReferenceDrawer(m_propertyConfig)
+            {
+                Drawer = { DisplayTitlebar = true }
+            };
+
             m_drawer.Enable();
         }
 
@@ -36,11 +40,10 @@ namespace UGF.Application.Editor
         {
             m_styles ??= new Styles();
 
-            serializedObject.UpdateIfRequiredOrScript();
-
-            EditorGUILayout.PropertyField(m_propertyConfig, m_styles.ConfigLabel);
-
-            serializedObject.ApplyModifiedProperties();
+            using (new SerializedObjectUpdateScope(serializedObject))
+            {
+                EditorGUILayout.PropertyField(m_propertyConfig, m_styles.ConfigLabel);
+            }
 
             EditorGUILayout.Space();
 

@@ -126,9 +126,12 @@ namespace UGF.Application.Runtime.Tests
             application.AddModule<IModule>(module0);
 
             var module1 = application.GetModule<IModule>();
+            var module2 = application.GetModule<Module>();
 
             Assert.NotNull(module1);
+            Assert.NotNull(module2);
             Assert.AreEqual(module0, module1);
+            Assert.AreEqual(module0, module2);
         }
 
         [Test]
@@ -143,9 +146,9 @@ namespace UGF.Application.Runtime.Tests
             bool result1 = application.TryGetModule(out IApplicationModule module2);
 
             Assert.True(result0);
-            Assert.False(result1);
+            Assert.True(result1);
             Assert.NotNull(module1);
-            Assert.Null(module2);
+            Assert.NotNull(module2);
             Assert.AreEqual(module0, module1);
         }
     }
