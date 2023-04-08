@@ -1,5 +1,6 @@
 ﻿using UGF.Application.Runtime;
 using UGF.EditorTools.Editor.IMGUI;
+using UGF.EditorTools.Editor.IMGUI.Scopes;
 using UnityEditor;
 
 namespace UGF.Application.Editor
@@ -7,16 +8,11 @@ namespace UGF.Application.Editor
     [CustomEditor(typeof(ApplicationLauncherResourcesComponent), true)]
     internal class ApplicationLauncherResourcesEditor : UnityEditor.Editor
     {
-        private SerializedProperty m_propertyScript;
         private ReorderableListDrawer m_list;
 
         private void OnEnable()
         {
-            m_propertyScript = serializedObject.FindProperty("m_Script");
-
-            SerializedProperty propertyResources = serializedObject.FindProperty("m_resources");
-
-            m_list = new ReorderableListDrawer(propertyResources);
+            m_list = new ReorderableListDrawer(serializedObject.FindProperty("m_resources"));
             m_list.Enable();
         }
 
@@ -27,16 +23,12 @@ namespace UGF.Application.Editor
 
         public override void OnInspectorGUI()
         {
-            serializedObject.UpdateIfRequiredOrScript();
-
-            using (new EditorGUI.DisabledScope(true))
+            using (new SerializedObjectUpdateScope(serializedObject))
             {
-                EditorGUILayout.PropertyField(m_propertyScript);
+                EditorIMGUIUtility.DrawScriptProperty(serializedObject);
+
+                m_list.DrawGUILayout();
             }
-
-            m_list.DrawGUILayout();
-
-            serializedObject.ApplyModifiedProperties();
         }
     }
 }

@@ -1,6 +1,7 @@
 using UGF.Application.Runtime;
 using UGF.EditorTools.Editor.IMGUI;
 using UGF.EditorTools.Editor.IMGUI.EnabledProperty;
+using UGF.EditorTools.Editor.IMGUI.Scopes;
 using UnityEditor;
 
 namespace UGF.Application.Editor
@@ -8,24 +9,18 @@ namespace UGF.Application.Editor
     [CustomEditor(typeof(ApplicationConfigAsset), true)]
     internal class ApplicationConfigAssetEditor : UnityEditor.Editor
     {
-        private SerializedProperty m_propertyScript;
         private EnabledPropertyListDrawer m_list;
         private ReorderableListSelectionDrawerByPath m_listSelection;
 
         private void OnEnable()
         {
-            m_propertyScript = serializedObject.FindProperty("m_Script");
-
             SerializedProperty propertyModules = serializedObject.FindProperty("m_modules");
 
             m_list = new EnabledPropertyListDrawer(propertyModules);
 
             m_listSelection = new ReorderableListSelectionDrawerByPath(m_list, "m_value")
             {
-                Drawer =
-                {
-                    DisplayTitlebar = true
-                }
+                Drawer = { DisplayTitlebar = true }
             };
 
             m_list.Enable();
@@ -40,17 +35,13 @@ namespace UGF.Application.Editor
 
         public override void OnInspectorGUI()
         {
-            serializedObject.UpdateIfRequiredOrScript();
-
-            using (new EditorGUI.DisabledScope(true))
+            using (new SerializedObjectUpdateScope(serializedObject))
             {
-                EditorGUILayout.PropertyField(m_propertyScript);
+                EditorIMGUIUtility.DrawScriptProperty(serializedObject);
+
+                m_list.DrawGUILayout();
+                m_listSelection.DrawGUILayout();
             }
-
-            m_list.DrawGUILayout();
-            m_listSelection.DrawGUILayout();
-
-            serializedObject.ApplyModifiedProperties();
 
             if (!m_listSelection.Drawer.HasEditor)
             {
