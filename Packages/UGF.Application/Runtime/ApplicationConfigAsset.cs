@@ -10,8 +10,10 @@ namespace UGF.Application.Runtime
     public class ApplicationConfigAsset : ApplicationResourceAsset
     {
         [SerializeField] private List<EnabledProperty<ApplicationModuleAsset>> m_modules = new List<EnabledProperty<ApplicationModuleAsset>>();
+        [SerializeField] private List<ApplicationModuleCollectionAsset> m_collections = new List<ApplicationModuleCollectionAsset>();
 
         public List<EnabledProperty<ApplicationModuleAsset>> Modules { get { return m_modules; } }
+        public List<ApplicationModuleCollectionAsset> Collections { get { return m_collections; } }
 
         protected override Task<object> OnBuildAsync()
         {
@@ -27,6 +29,13 @@ namespace UGF.Application.Runtime
 
                     config.Modules.Add(module.Value);
                 }
+            }
+
+            for (int i = 0; i < m_collections.Count; i++)
+            {
+                ApplicationModuleCollectionAsset collection = m_collections[i];
+
+                collection.GetModules(config.Modules);
             }
 
             return Task.FromResult<object>(config);
