@@ -86,7 +86,19 @@ namespace UGF.Application.Runtime
 
         protected override bool OnTryGetModule(Type registerType, out IApplicationModule module)
         {
-            return m_modules.TryGetValue(registerType, out module);
+            if (!m_modules.TryGetValue(registerType, out module))
+            {
+                foreach ((_, IApplicationModule applicationModule) in m_modules)
+                {
+                    if (registerType.IsInstanceOfType(applicationModule))
+                    {
+                        module = applicationModule;
+                        return true;
+                    }
+                }
+            }
+
+            return true;
         }
 
         protected override IEnumerator<IApplicationModule> OnGetEnumerator()
