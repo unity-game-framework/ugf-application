@@ -7,8 +7,8 @@
       "dependencies": {
         "com.ugf.initialize": "2.9.0",
         "com.ugf.description": "2.0.0",
-        "com.ugf.runtimetools": "2.18.0",
-        "com.ugf.editortools": "2.15.0",
+        "com.ugf.runtimetools": "2.19.0",
+        "com.ugf.editortools": "2.18.0",
         "com.ugf.logs": "5.3.0",
         "com.ugf.builder": "2.0.2",
         "com.ugf.build": "1.2.0"
@@ -64,7 +64,7 @@
       "url": "https://api.upmhub.org/registries/unity-game-framework"
     },
     "com.ugf.editortools": {
-      "version": "2.15.0",
+      "version": "2.18.0",
       "depth": 1,
       "source": "registry",
       "dependencies": {},
@@ -88,7 +88,7 @@
       "url": "https://api.upmhub.org/registries/unity-game-framework"
     },
     "com.ugf.runtimetools": {
-      "version": "2.18.0",
+      "version": "2.19.0",
       "depth": 1,
       "source": "registry",
       "dependencies": {
