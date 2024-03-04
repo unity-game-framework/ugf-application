@@ -10,6 +10,7 @@ namespace UGF.Application.Runtime.Scenes
         protected override IApplication OnGetApplication()
         {
             var provider = ProviderInstance.Get<IProvider<Scene, IApplication>>();
+
             IApplication application = provider.Get(gameObject.scene);
 
             return application;
