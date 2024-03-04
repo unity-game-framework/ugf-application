@@ -2,7 +2,7 @@
   "name": "com.ugf.application",
   "displayName": "UGF.Application",
   "version": "8.5.0",
-  "unity": "2022.2",
+  "unity": "2023.2",
   "apiCompatibility": ".NET Standard 2.1",
   "description": "Provides an entry point of the application with modules initialization.",
   "author": {
@@ -16,13 +16,13 @@
   "changelogUrl": "https://github.com/unity-game-framework/ugf-application/blob/main/changelog.md",
   "licensesUrl": "https://github.com/unity-game-framework/ugf-application/blob/main/license",
   "publishConfig": {
-    "registry": "https://unitygameframework.jfrog.io/artifactory/api/npm/default"
+    "registry": "https://api.upmhub.org/registries/unity-game-framework"
   },
   "dependencies": {
     "com.ugf.initialize": "2.9.0",
     "com.ugf.description": "2.0.0",
-    "com.ugf.runtimetools": "2.18.0",
-    "com.ugf.editortools": "2.15.0",
+    "com.ugf.runtimetools": "2.19.0",
+    "com.ugf.editortools": "2.18.0",
     "com.ugf.logs": "5.3.0",
     "com.ugf.builder": "2.0.2",
     "com.ugf.build": "1.2.0"

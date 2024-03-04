@@ -68,9 +68,8 @@ namespace UGF.Application.Runtime
 
         protected override bool OnRemoveModule(Type registerType)
         {
-            if (m_modules.TryGetValue(registerType, out IApplicationModule module))
+            if (m_modules.Remove(registerType, out IApplicationModule module))
             {
-                m_modules.Remove(registerType);
                 m_initialize.Remove(module);
                 return true;
             }
@@ -96,6 +95,8 @@ namespace UGF.Application.Runtime
                         return true;
                     }
                 }
+
+                return false;
             }
 
             return true;
