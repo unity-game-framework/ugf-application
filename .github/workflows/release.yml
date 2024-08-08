@@ -13,6 +13,7 @@ on:
         required: true
 
 env:
+  GITHUB_TOKEN: ${{ secrets.userToken }}
   branch: ${{ github.event.inputs.branch }}
   version: ${{ github.event.inputs.version }}
   configPath: .github/config.yml
@@ -28,6 +29,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
       with:
+        token: ${{ secrets.userToken }}
         ref: ${{ env.branch }}
     - name: Setup
       run: |
@@ -98,8 +100,8 @@ jobs:
         output: changelog.md
     - name: Push
       run: |
-        git config user.name 'github-actions[bot]'
-        git config user.email 'github-actions[bot]@users.noreply.github.com'
+        git config user.name ${{ secrets.userName }}
+        git config user.email ${{ secrets.userEmail }}
         git add ${{ env.packagePath }}
         git add changelog.md
         git add readme.md

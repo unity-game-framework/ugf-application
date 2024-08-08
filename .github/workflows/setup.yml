@@ -20,6 +20,7 @@ on:
         required: false
 
 env:
+  GITHUB_TOKEN: ${{ secrets.userToken }}
   name: ${{ github.event.inputs.name }}
   displayName: ${{ github.event.inputs.displayName }}
   description: ${{ github.event.inputs.description }}
@@ -35,6 +36,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
       with:
+        token: ${{ secrets.userToken }}
         ref: ${{ env.branch }}
     - name: Setup
       run: |
@@ -90,8 +92,8 @@ jobs:
         output: readme.md
     - name: Push
       run: |
-        git config user.name 'github-actions[bot]'
-        git config user.email 'github-actions[bot]@users.noreply.github.com'
+        git config user.name ${{ secrets.userName }}
+        git config user.email ${{ secrets.userEmail }}
         git add *
         git commit -m "Setup project"
         git push

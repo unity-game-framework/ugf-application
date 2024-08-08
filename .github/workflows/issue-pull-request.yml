@@ -28,7 +28,7 @@ jobs:
     - name: Create
       uses: unity-game-framework-actions/issue-pull-request@main
       with:
-        token: ${{ github.token }}
+        token: ${{ secrets.userToken }}
         issue: ${{ env.issue }}
         base: ${{ env.base }}
         head: ${{ env.head }}
