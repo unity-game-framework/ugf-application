@@ -24,7 +24,7 @@ jobs:
     - name: Create
       uses: unity-game-framework-actions/issue-branch@main
       with:
-        token: ${{ secrets.userToken }}
+        token: ${{ github.token }}
         base: ${{ env.base }}
         issue: ${{ env.issue }}
         create: true

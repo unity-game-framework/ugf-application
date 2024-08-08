@@ -33,14 +33,12 @@ jobs:
     - name: Checkout Source
       uses: actions/checkout@v3
       with:
-        token: ${{ secrets.userToken }}
         repository: ${{ env.repo }}
         ref: ${{ env.branch }}
         path: ${{ env.sourceFolder }}
     - name: Checkout Destination
       uses: actions/checkout@v3
       with:
-        token: ${{ secrets.userToken }}
         ref: ${{ env.branch }}
         path: ${{ env.targetFolder }}
     - name: Update
@@ -50,8 +48,9 @@ jobs:
     - name: Push
       run: |
         cd ${{ github.workspace }}/${{ env.targetFolder }}
-        git config user.name ${{ secrets.userName }}
-        git config user.email ${{ secrets.userEmail }}
+
+        git config user.name 'github-actions[bot]'
+        git config user.email 'github-actions[bot]@users.noreply.github.com'
         git add ${{ env.target }}
         git commit -m "Update workflows"
         git push
