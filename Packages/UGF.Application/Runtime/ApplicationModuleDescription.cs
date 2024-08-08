@@ -1,18 +1,8 @@
-﻿using System;
+﻿using UGF.Description.Runtime;
 
 namespace UGF.Application.Runtime
 {
-    public class ApplicationModuleDescription : IApplicationModuleDescription
+    public class ApplicationModuleDescription : DescriptionBase
     {
-        public Type RegisterType { get; set; }
-
-        public ApplicationModuleDescription()
-        {
-        }
-
-        public ApplicationModuleDescription(Type registerType)
-        {
-            RegisterType = registerType ?? throw new ArgumentNullException(nameof(registerType));
-        }
     }
 }

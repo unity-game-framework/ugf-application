@@ -1,8 +1,8 @@
-﻿using UGF.Description.Runtime;
+﻿using UGF.Builder.Runtime;
 
 namespace UGF.Application.Runtime
 {
-    public abstract class ApplicationModuleAsset : DescribedWithDescriptionBuilderAsset<IApplication, IApplicationModule, IApplicationModuleDescription>, IApplicationModuleBuilder
+    public abstract class ApplicationModuleAsset : BuilderAsset<IApplication, IApplicationModule>
     {
     }
 }

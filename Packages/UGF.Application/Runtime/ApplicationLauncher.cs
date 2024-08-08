@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using UGF.Builder.Runtime;
 using UGF.Initialize.Runtime;
 using UGF.Logs.Runtime;
 
@@ -7,8 +8,7 @@ namespace UGF.Application.Runtime
 {
     public class ApplicationLauncher : InitializeBase, IApplicationLauncher
     {
-        public IApplicationBuilder Builder { get; }
-        public IApplicationLauncherResourceLoader ResourceLoader { get; }
+        public IBuilder<IApplication> Builder { get; }
         public IApplication Application { get { return m_application ?? throw new InvalidOperationException("Application not exists."); } }
         public bool HasApplication { get { return m_application != null; } }
         public bool IsLaunched { get { return m_state; } }
@@ -19,10 +19,9 @@ namespace UGF.Application.Runtime
         private InitializeState m_state;
         private IApplication m_application;
 
-        public ApplicationLauncher(IApplicationBuilder builder, IApplicationLauncherResourceLoader resourceLoader)
+        public ApplicationLauncher(IBuilder<IApplication> builder)
         {
             Builder = builder ?? throw new ArgumentNullException(nameof(builder));
-            ResourceLoader = resourceLoader ?? throw new ArgumentNullException(nameof(resourceLoader));
         }
 
         public async Task LaunchAsync()
@@ -31,8 +30,7 @@ namespace UGF.Application.Runtime
 
             OnLaunch();
 
-            IApplicationResources resources = await ResourceLoader.LoadAsync() ?? throw new ArgumentNullException(nameof(resources), "Application Resources can not be null.");
-            IApplication application = OnCreateApplication(resources) ?? throw new ArgumentNullException(nameof(application), "Application can not be null.");
+            IApplication application = OnCreateApplication() ?? throw new ArgumentNullException(nameof(application), "Application can not be null.");
 
             OnInitializeApplication(application);
 
@@ -65,9 +63,9 @@ namespace UGF.Application.Runtime
             Log.Debug("Application launching.");
         }
 
-        protected virtual IApplication OnCreateApplication(IApplicationResources resources)
+        protected virtual IApplication OnCreateApplication()
         {
-            return Builder.Build(resources);
+            return Builder.Build();
         }
 
         protected virtual void OnInitializeApplication(IApplication application)
@@ -80,14 +78,14 @@ namespace UGF.Application.Runtime
             application.Initialize();
         }
 
-        protected virtual Task OnInitializeApplicationAsync(IApplication application)
+        protected virtual async Task OnInitializeApplicationAsync(IApplication application)
         {
             Log.Debug("Application async initialization", new
             {
                 application
             });
 
-            return application.InitializeAsync();
+            await application.InitializeAsync();
         }
 
         protected virtual void UninitializeApplication(IApplication application)

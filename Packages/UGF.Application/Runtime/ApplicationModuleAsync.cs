@@ -4,12 +4,10 @@ using UGF.Initialize.Runtime;
 
 namespace UGF.Application.Runtime
 {
-    public abstract class ApplicationModuleAsync<TDescription> : InitializableAsync, IApplicationModuleAsync where TDescription : class, IApplicationModuleDescription
+    public abstract class ApplicationModuleAsync<TDescription> : InitializableAsync, IApplicationModuleAsync where TDescription : class, IDescription
     {
         public TDescription Description { get; }
         public IApplication Application { get; }
-
-        IApplicationModuleDescription IDescribed<IApplicationModuleDescription>.Description { get { return Description; } }
 
         protected ApplicationModuleAsync(TDescription description, IApplication application)
         {

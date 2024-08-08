@@ -1,21 +1,24 @@
 ﻿using UGF.Application.Runtime;
+using UGF.EditorTools.Editor.Assets;
 using UGF.EditorTools.Editor.IMGUI;
 using UGF.EditorTools.Editor.IMGUI.Scopes;
 using UnityEditor;
 
 namespace UGF.Application.Editor
 {
-    [CustomEditor(typeof(ApplicationModuleCollectionListAsset), true)]
-    internal class ApplicationModuleCollectionListAssetEditor : UnityEditor.Editor
+    [CustomEditor(typeof(ApplicationDescriptionAsset), true)]
+    internal class ApplicationDescriptionAssetEditor : UnityEditor.Editor
     {
-        private ReorderableListDrawer m_listModules;
-        private ReorderableListSelectionDrawerByElement m_listModulesSelection;
+        private SerializedProperty m_propertyProvideStaticInstance;
+        private AssetIdReferenceListDrawer m_listModules;
+        private ReorderableListSelectionDrawerByPathGlobalId m_listModulesSelection;
 
         private void OnEnable()
         {
-            m_listModules = new ReorderableListDrawer(serializedObject.FindProperty("m_modules"));
+            m_propertyProvideStaticInstance = serializedObject.FindProperty("m_provideStaticInstance");
+            m_listModules = new AssetIdReferenceListDrawer(serializedObject.FindProperty("m_modules"));
 
-            m_listModulesSelection = new ReorderableListSelectionDrawerByElement(m_listModules)
+            m_listModulesSelection = new ReorderableListSelectionDrawerByPathGlobalId(m_listModules, "m_asset")
             {
                 Drawer = { DisplayTitlebar = true }
             };
@@ -35,6 +38,8 @@ namespace UGF.Application.Editor
             using (new SerializedObjectUpdateScope(serializedObject))
             {
                 EditorIMGUIUtility.DrawScriptProperty(serializedObject);
+
+                EditorGUILayout.PropertyField(m_propertyProvideStaticInstance);
 
                 m_listModules.DrawGUILayout();
                 m_listModulesSelection.DrawGUILayout();
