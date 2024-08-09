@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using UGF.Builder.Runtime;
 using UGF.Initialize.Runtime;
 using UGF.Logs.Runtime;
 using UGF.RuntimeTools.Runtime.Providers;
@@ -11,14 +12,12 @@ namespace UGF.Application.Runtime
     [AddComponentMenu("Unity Game Framework/Application/Application Launcher", 2000)]
     public class ApplicationLauncherComponent : MonoBehaviour, IInitialize
     {
-        [SerializeField] private ApplicationBuilderComponent m_builder;
-        [SerializeField] private ApplicationLauncherResourceLoaderComponent m_resourceLoader;
+        [SerializeField] private ApplicationAsset m_application;
         [SerializeField] private bool m_launchOnStart = true;
         [SerializeField] private bool m_stopOnQuit = true;
         [SerializeField] private bool m_sceneAccess = true;
 
-        public ApplicationBuilderComponent Builder { get { return m_builder; } set { m_builder = value; } }
-        public ApplicationLauncherResourceLoaderComponent ResourceLoader { get { return m_resourceLoader; } set { m_resourceLoader = value; } }
+        public ApplicationAsset Application { get { return m_application; } set { m_application = value; } }
         public bool LaunchOnStart { get { return m_launchOnStart; } set { m_launchOnStart = value; } }
         public bool StopOnQuit { get { return m_stopOnQuit; } set { m_stopOnQuit = value; } }
         public bool SceneAccess { get { return m_sceneAccess; } set { m_sceneAccess = value; } }
@@ -47,7 +46,7 @@ namespace UGF.Application.Runtime
 
             m_state = m_state.Initialize();
 
-            m_launcher = OnCreateLauncher(m_builder, m_resourceLoader);
+            m_launcher = OnCreateLauncher(m_application);
             m_launcher.Initialize();
 
             Initialized?.Invoke(this);
@@ -98,9 +97,9 @@ namespace UGF.Application.Runtime
             Launcher.Stop();
         }
 
-        protected virtual IApplicationLauncher OnCreateLauncher(IApplicationBuilder builder, IApplicationLauncherResourceLoader resourceLoader)
+        protected virtual IApplicationLauncher OnCreateLauncher(IBuilder<IApplication> builder)
         {
-            var launcher = new ApplicationLauncher(builder, resourceLoader);
+            var launcher = new ApplicationLauncher(builder);
 
             launcher.Launched += Launched;
             launcher.Stopped += Stopped;

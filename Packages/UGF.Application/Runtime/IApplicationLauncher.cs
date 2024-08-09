@@ -5,7 +5,6 @@ namespace UGF.Application.Runtime
 {
     public interface IApplicationLauncher : IInitialize
     {
-        IApplicationLauncherResourceLoader ResourceLoader { get; }
         IApplication Application { get; }
         bool HasApplication { get; }
         bool IsLaunched { get; }
