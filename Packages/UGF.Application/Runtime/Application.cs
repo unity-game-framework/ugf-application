@@ -103,16 +103,6 @@ namespace UGF.Application.Runtime
             return Description;
         }
 
-        public T GetModule<T>() where T : class, IApplicationModule
-        {
-            return Provider.Get<T>();
-        }
-
-        public T GetModule<T>(GlobalId id) where T : class, IApplicationModule
-        {
-            return Provider.Get<T>(id);
-        }
-
         private void OnModuleAdded(IProvider provider, GlobalId id, IApplicationModule entry)
         {
             m_initialize.Add(entry);

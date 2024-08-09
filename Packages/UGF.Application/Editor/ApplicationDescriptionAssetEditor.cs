@@ -6,7 +6,7 @@ using UnityEditor;
 
 namespace UGF.Application.Editor
 {
-    [CustomEditor(typeof(ApplicationDescriptionAsset), true)]
+    [CustomEditor(typeof(ApplicationAsset), true)]
     internal class ApplicationDescriptionAssetEditor : UnityEditor.Editor
     {
         private SerializedProperty m_propertyProvideStaticInstance;
@@ -18,7 +18,7 @@ namespace UGF.Application.Editor
             m_propertyProvideStaticInstance = serializedObject.FindProperty("m_provideStaticInstance");
             m_listModules = new AssetIdReferenceListDrawer(serializedObject.FindProperty("m_modules"));
 
-            m_listModulesSelection = new ReorderableListSelectionDrawerByPathGlobalId(m_listModules, "m_asset")
+            m_listModulesSelection = new ReorderableListSelectionDrawerByPathGlobalId(m_listModules, "m_guid")
             {
                 Drawer = { DisplayTitlebar = true }
             };
