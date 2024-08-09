@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [9.0.0-preview](https://github.com/unity-game-framework/ugf-application/releases/tag/9.0.0-preview) - 2024-08-09  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-application/milestone/40?closed=1)  
+    
+
+### Changed
+
+- Change structure ([#107](https://github.com/unity-game-framework/ugf-application/issues/107))  
+    - Update dependencies: `com.ugf.runtimetools` to `3.0.0-preview.18`, `com.ugf.editortools` to `3.0.0-preview.11`, `com.ugf.logs` to `5.4.0` and `com.ugf.build` to `1.3.0` versions.
+    - Change _Application_ class structure to more simplified one with accessing modules by _Id_ and replacement feature support.
+
 ## [8.6.0](https://github.com/unity-game-framework/ugf-application/releases/tag/8.6.0) - 2024-03-04  
 
 ### Release Notes
